@@ -1,3 +1,4 @@
+import time
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import asdict, dataclass
 from typing import Protocol
@@ -117,17 +118,29 @@ def error_result(question: EvalQuestion, message: str) -> AnswerResult:
 
 
 def evaluate_answers(
-    investigator: AnswerInvestigator, questions: Iterable[EvalQuestion]
+    investigator: AnswerInvestigator,
+    questions: Iterable[EvalQuestion],
+    on_result: Callable[[AnswerResult], None] | None = None,
+    pause_seconds: float = 0.0,
+    sleep: Callable[[float], None] = time.sleep,
 ) -> list[AnswerResult]:
     results: list[AnswerResult] = []
-    for question in questions:
-        try:
-            investigation = investigator.investigate(question.text)
-        except LlmError as error:
-            results.append(error_result(question, str(error)))
-        else:
-            results.append(score_answer(question, investigation))
+    for position, question in enumerate(questions):
+        if position and pause_seconds > 0:
+            sleep(pause_seconds)
+        result = evaluate_question(investigator, question)
+        results.append(result)
+        if on_result is not None:
+            on_result(result)
     return results
+
+
+def evaluate_question(investigator: AnswerInvestigator, question: EvalQuestion) -> AnswerResult:
+    try:
+        investigation = investigator.investigate(question.text)
+    except LlmError as error:
+        return error_result(question, str(error))
+    return score_answer(question, investigation)
 
 
 def summarize_group(members: Sequence[AnswerResult]) -> dict[str, float]:

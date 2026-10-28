@@ -278,3 +278,44 @@ def test_results_are_plain_json_serialisable() -> None:
     )
 
     assert json.loads(json.dumps(result.to_dict()))["question_id"] == "q1"
+
+
+class ScriptedInvestigator:
+    def investigate(self, question: str) -> Investigation:
+        return make_investigation(answer=question)
+
+
+def test_evaluate_answers_reports_each_result_as_soon_as_it_is_scored() -> None:
+    seen: list[str] = []
+
+    results = evaluate_answers(
+        ScriptedInvestigator(),
+        [make_question(), make_question()],
+        on_result=lambda result: seen.append(result.answer),
+    )
+
+    assert seen == ["Which change?", "Which change?"]
+    assert len(results) == 2
+
+
+def test_evaluate_answers_pauses_between_questions_but_not_before_the_first() -> None:
+    pauses: list[float] = []
+
+    evaluate_answers(
+        ScriptedInvestigator(),
+        [make_question(), make_question(), make_question()],
+        pause_seconds=1.5,
+        sleep=pauses.append,
+    )
+
+    assert pauses == [1.5, 1.5]
+
+
+def test_evaluate_answers_does_not_pause_by_default() -> None:
+    pauses: list[float] = []
+
+    evaluate_answers(
+        ScriptedInvestigator(), [make_question(), make_question()], sleep=pauses.append
+    )
+
+    assert pauses == []
