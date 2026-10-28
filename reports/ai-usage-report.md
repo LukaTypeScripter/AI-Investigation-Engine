@@ -18,7 +18,7 @@ Models that run inside the product, as opposed to building it:
 | Model | Role |
 | --- | --- |
 | `BAAI/bge-small-en-v1.5` through FastEmbed (ONNX, local) | Embeddings for semantic search |
-| Gemini (default `gemini-2.5-flash`) with Groq (default `llama-3.3-70b-versatile`) as a fallback | Language models for the agent. Both are configured by environment variables. The default model names were chosen from memory and have not been checked against the providers |
+| Gemini (default `gemini-3.8-flash`) with Groq (default `llama-3.3-70b-versatile`) as a fallback | Language models for the agent. Both are configured by environment variables. The default names and endpoints were checked against the providers' documentation on 2026-10-28; model availability changes, so check again before running |
 
 No paid AI service is needed to run the project.
 
@@ -82,7 +82,7 @@ These matter for the interview because the candidate may be asked about them.
 ## 7. What the AI cannot vouch for
 
 - The language models have not been run against the system yet. Answer quality, abstention behaviour, conflict reporting and prompt-injection resistance are untested with a real model. The evaluation report says so.
-- The default model names for Gemini and Groq were chosen from memory.
+- The Gemini and Groq model names were read from the providers' documentation, but no request has been sent with a real key. Free-tier limits were not published on the pages checked.
 - The hosted deployment has not been performed by the AI. It needs the candidate's accounts.
 
 ## 8. Candidate to complete

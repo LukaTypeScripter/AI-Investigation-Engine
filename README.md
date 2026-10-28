@@ -107,7 +107,7 @@ Every setting is read from the environment or `.env` through `pydantic-settings`
 | --- | --- | --- |
 | `DATABASE_URL` | none (required) | Postgres with the pgvector extension |
 | `GEMINI_API_KEY` | none | Enables Gemini |
-| `GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model name |
+| `GEMINI_MODEL` | `gemini-3.8-flash` | Gemini model name. Check the current list at ai.google.dev/gemini-api/docs/models; `gemini-3.5-flash-lite` is a lighter alternative |
 | `GROQ_API_KEY` | none | Enables Groq, used as the fallback |
 | `GROQ_MODEL` | `llama-3.3-70b-versatile` | Groq model name |
 | `GEMINI_BASE_URL`, `GROQ_BASE_URL` | the providers' OpenAI-compatible endpoints | Override for testing |

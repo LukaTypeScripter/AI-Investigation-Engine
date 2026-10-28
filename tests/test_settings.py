@@ -117,3 +117,10 @@ def test_the_web_service_limits_are_read_from_environment_variables(
 def test_the_web_service_limits_must_be_positive(name: str) -> None:
     with pytest.raises(ValidationError):
         Settings.model_validate({name: 0})
+
+
+def test_defaults_name_the_current_stable_models_of_both_providers() -> None:
+    settings = Settings(_env_file=None)
+
+    assert settings.gemini_model == "gemini-3.8-flash"
+    assert settings.groq_model == "llama-3.3-70b-versatile"
