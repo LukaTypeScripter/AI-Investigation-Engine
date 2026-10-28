@@ -155,13 +155,19 @@ def scalar_to_text(value: object) -> str | None:
     return None
 
 
-def record_metadata(record: Mapping[str, object], file_format: str) -> dict[str, str]:
+def record_extras(record: Mapping[str, object]) -> dict[str, str]:
     extras: dict[str, str] = {}
     for key, value in record.items():
         text = scalar_to_text(value)
         if key not in RESERVED_FIELDS and text is not None:
             extras[key] = text
-    return {**extras, "format": file_format}
+    return extras
+
+
+def searchable_fields(explicit_id: str | None, extras: Mapping[str, str]) -> str:
+    pairs = [("id", explicit_id)] if explicit_id else []
+    pairs.extend(extras.items())
+    return "; ".join(f"{key}: {value}" for key, value in pairs)
 
 
 def record_to_document(source: str, file_format: str, index: int, record: object) -> Document:
@@ -170,14 +176,16 @@ def record_to_document(source: str, file_format: str, index: int, record: object
     text = record.get(FIELD_TEXT)
     if not isinstance(text, str):
         raise ParseError(f"{source}: record {index} has no '{FIELD_TEXT}' field")
-    record_id = scalar_to_text(record.get(FIELD_ID)) or str(index)
-    title = scalar_to_text(record.get(FIELD_TITLE)) or Path(source).stem
+    explicit_id = scalar_to_text(record.get(FIELD_ID))
+    extras = record_extras(record)
+    body = text.strip()
+    fields = searchable_fields(explicit_id, extras)
     return Document(
-        id=f"{source}#{record_id}",
-        text=text.strip(),
-        title=title,
+        id=f"{source}#{explicit_id or index}",
+        text=f"{body}\n{fields}" if body and fields else body,
+        title=scalar_to_text(record.get(FIELD_TITLE)) or Path(source).stem,
         source=source,
-        metadata=record_metadata(record, file_format),
+        metadata={**extras, "format": file_format},
     )
 
 

@@ -115,7 +115,7 @@ def test_json_object_becomes_one_document_with_scalar_metadata() -> None:
     assert documents == [
         Document(
             id="data.json#inc-1",
-            text="Body",
+            text="Body\nid: inc-1; service: payments",
             title="Incident 1",
             source="data.json",
             metadata={"format": "json", "service": "payments"},
@@ -127,6 +127,25 @@ def test_json_array_numbers_records_that_have_no_id() -> None:
     documents = parse("data.json", '[{"text": "first"}, {"text": "second"}]')
 
     assert [document.id for document in documents] == ["data.json#0", "data.json#1"]
+    assert [document.text for document in documents] == ["first", "second"]
+
+
+def test_a_record_with_an_id_but_no_other_fields_gets_a_line_with_just_the_id() -> None:
+    documents = parse("data.json", '[{"id": "x-1", "text": "Body"}]')
+
+    assert documents[0].text == "Body\nid: x-1"
+
+
+def test_record_fields_are_added_to_the_text_so_they_can_be_searched_and_read() -> None:
+    documents = parse(
+        "data.jsonl", '{"id": "r1", "text": "Body", "risk": "low", "date": "2025-03-04"}'
+    )
+
+    assert documents[0].text == "Body\nid: r1; risk: low; date: 2025-03-04"
+
+
+def test_a_record_without_text_stays_skipped_even_when_it_has_fields() -> None:
+    assert parse("data.json", '[{"id": "x", "text": "", "risk": "low"}]') == []
 
 
 def test_json_metadata_keeps_only_non_empty_scalars() -> None:
@@ -143,6 +162,7 @@ def test_json_metadata_keeps_only_non_empty_scalars() -> None:
         "ratio": "0.5",
         "flag": "true",
     }
+    assert documents[0].text == "t\ncount: 3; ratio: 0.5; flag: true"
 
 
 def test_json_records_with_empty_text_are_skipped() -> None:
@@ -189,6 +209,8 @@ def test_csv_rows_become_documents_and_empty_cells_are_left_out_of_metadata() ->
     assert documents[0].title == "Outage"
     assert documents[0].metadata == {"format": "csv", "date": "2024-03-12"}
     assert documents[1].metadata == {"format": "csv"}
+    assert documents[0].text == "Payments failed\nid: 1; date: 2024-03-12"
+    assert documents[1].text == "Refunds late\nid: 2"
 
 
 def test_csv_keeps_newlines_inside_quoted_cells() -> None:
