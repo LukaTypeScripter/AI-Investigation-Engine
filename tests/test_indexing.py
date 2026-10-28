@@ -5,7 +5,11 @@ from investigation_engine.domain import Chunk, Document
 from investigation_engine.ingestion.chunking import SentenceChunker
 from investigation_engine.ingestion.service import IndexChanges, IngestionService
 from investigation_engine.retrieval.bm25 import Bm25Index
-from investigation_engine.retrieval.indexing import SearchIndexer, passage_text
+from investigation_engine.retrieval.indexing import (
+    SearchIndexer,
+    index_missing_vectors,
+    passage_text,
+)
 from investigation_engine.retrieval.vector import InMemoryVectorIndex
 from investigation_engine.storage.memory import InMemoryDocumentStore
 
@@ -142,3 +146,54 @@ def test_indexes_follow_ingestion_updates_and_deletions() -> None:
     assert deletion is not None
     indexer.apply(deletion)
     assert (len(keywords), len(vectors)) == (0, 0)
+
+
+class FakeVectorGaps:
+    def __init__(self, chunks: Sequence[Chunk], missing: Sequence[str]) -> None:
+        self._chunks = {chunk.id: chunk for chunk in chunks}
+        self._missing = list(missing)
+
+    def chunk_ids_without_vector(self) -> list[str]:
+        return list(self._missing)
+
+    def get_chunks(self, chunk_ids: Sequence[str]) -> dict[str, Chunk]:
+        return {
+            chunk_id: self._chunks[chunk_id] for chunk_id in chunk_ids if chunk_id in self._chunks
+        }
+
+
+def test_index_missing_vectors_embeds_only_the_chunks_that_have_no_vector() -> None:
+    embedder = HashingEmbedder()
+    vectors = InMemoryVectorIndex(dimension=embedder.dimension)
+    chunks = [make_chunk(f"a:{n}", f"text number {n}") for n in range(4)]
+    gaps = FakeVectorGaps(chunks, missing=["a:1", "a:3"])
+
+    count = index_missing_vectors(gaps, embedder, vectors, batch_size=1)
+
+    assert count == 2
+    assert len(vectors) == 2
+    assert [len(batch) for batch in embedder.document_batches] == [1, 1]
+    assert [item_id for item_id, _ in vectors.search(embedder.embed_query("text number 3"), 1)] == [
+        "a:3"
+    ]
+
+
+def test_index_missing_vectors_does_nothing_when_every_chunk_has_a_vector() -> None:
+    embedder = HashingEmbedder()
+    vectors = InMemoryVectorIndex(dimension=embedder.dimension)
+
+    count = index_missing_vectors(FakeVectorGaps([make_chunk("a:0", "one")], []), embedder, vectors)
+
+    assert count == 0
+    assert embedder.document_batches == []
+
+
+def test_index_missing_vectors_skips_chunks_deleted_in_the_meantime() -> None:
+    embedder = HashingEmbedder()
+    vectors = InMemoryVectorIndex(dimension=embedder.dimension)
+    gaps = FakeVectorGaps([make_chunk("a:0", "one")], missing=["a:0", "ghost:0"])
+
+    count = index_missing_vectors(gaps, embedder, vectors)
+
+    assert count == 1
+    assert len(vectors) == 1
