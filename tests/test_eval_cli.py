@@ -2,9 +2,9 @@ import json
 from pathlib import Path
 
 import pytest
-from investigation_engine.evaluation.cli import CHUNKERS, main
 
 from fakes import HashingEmbedder
+from investigation_engine.evaluation.cli import CHUNKERS, main
 from investigation_engine.evaluation.questions import EvalQuestion, read_questions, write_questions
 
 
