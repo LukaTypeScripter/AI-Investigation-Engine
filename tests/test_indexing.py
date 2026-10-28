@@ -197,3 +197,20 @@ def test_index_missing_vectors_skips_chunks_deleted_in_the_meantime() -> None:
 
     assert count == 1
     assert len(vectors) == 1
+
+
+def test_index_missing_vectors_reports_the_running_total_after_each_batch() -> None:
+    embedder = HashingEmbedder()
+    vectors = InMemoryVectorIndex(dimension=embedder.dimension)
+    chunks = [make_chunk(f"a:{n}", f"text number {n}") for n in range(5)]
+    totals: list[int] = []
+
+    index_missing_vectors(
+        FakeVectorGaps(chunks, [chunk.id for chunk in chunks]),
+        embedder,
+        vectors,
+        batch_size=2,
+        on_progress=totals.append,
+    )
+
+    assert totals == [2, 4, 5]

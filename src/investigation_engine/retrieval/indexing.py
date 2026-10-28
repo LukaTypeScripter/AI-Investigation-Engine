@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from itertools import batched
 from typing import Protocol
 
@@ -55,6 +55,7 @@ def index_missing_vectors(
     embedder: Embedder,
     vectors: VectorIndex,
     batch_size: int = DEFAULT_EMBEDDING_BATCH,
+    on_progress: Callable[[int], None] | None = None,
 ) -> int:
     indexed = 0
     for chunk_ids in batched(source.chunk_ids_without_vector(), batch_size):
@@ -66,4 +67,6 @@ def index_missing_vectors(
             [(chunk.id, vector) for chunk, vector in zip(chunks, embeddings, strict=True)]
         )
         indexed += len(chunks)
+        if on_progress is not None:
+            on_progress(indexed)
     return indexed
