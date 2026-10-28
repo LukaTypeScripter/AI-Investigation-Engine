@@ -6,13 +6,13 @@ from psycopg import Connection
 from investigation_engine.storage.database import Database
 
 UPSERT_VECTOR = (
-    "INSERT INTO chunk_vectors (chunk_id, embedding) VALUES (%s, %s) "
+    "INSERT INTO chunk_vectors (chunk_id, embedding) VALUES (%s, %s::halfvec) "
     "ON CONFLICT (chunk_id) DO UPDATE SET embedding = EXCLUDED.embedding"
 )
 NEAREST_NEIGHBOURS = (
     "SELECT chunk_id, score FROM ("
-    "SELECT chunk_id, 1 - (embedding <=> %(vector)s) AS score FROM chunk_vectors "
-    "ORDER BY embedding <=> %(vector)s LIMIT %(limit)s) nearest "
+    "SELECT chunk_id, 1 - (embedding <=> %(vector)s::halfvec) AS score FROM chunk_vectors "
+    "ORDER BY embedding <=> %(vector)s::halfvec LIMIT %(limit)s) nearest "
     "ORDER BY score DESC, chunk_id"
 )
 

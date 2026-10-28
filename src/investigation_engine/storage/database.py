@@ -47,11 +47,11 @@ STATIC_SCHEMA = (
 
 VECTOR_TABLE = sql.SQL(
     "CREATE TABLE IF NOT EXISTS chunk_vectors "
-    "(chunk_id text PRIMARY KEY, embedding vector({dimension}) NOT NULL)"
+    "(chunk_id text PRIMARY KEY, embedding halfvec({dimension}) NOT NULL)"
 )
 VECTOR_INDEX = (
     "CREATE INDEX IF NOT EXISTS chunk_vectors_embedding "
-    "ON chunk_vectors USING hnsw (embedding vector_cosine_ops)"
+    "ON chunk_vectors USING hnsw (embedding halfvec_cosine_ops)"
 )
 DROP_TABLES = "DROP TABLE IF EXISTS chunk_vectors, chunk_owners, chunks, documents CASCADE"
 
