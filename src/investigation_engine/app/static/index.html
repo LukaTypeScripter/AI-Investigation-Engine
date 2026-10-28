@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investigation Engine</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --text: #1b1f27;
+    --muted: #5d6675;
+    --border: #d9dde4;
+    --accent: #2457d6;
+    --accent-text: #ffffff;
+    --ok: #17703f;
+    --ok-bg: #e3f4ea;
+    --warn: #8a5a00;
+    --warn-bg: #fdf1d6;
+    --bad: #a02525;
+    --bad-bg: #fbe4e4;
+    --chip: #eef1f6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b;
+      --surface: #1a1f28;
+      --text: #e8ebf1;
+      --muted: #9aa4b5;
+      --border: #2d3440;
+      --accent: #6d93f5;
+      --accent-text: #0d1220;
+      --ok: #6fd69c;
+      --ok-bg: #16301f;
+      --warn: #f0c36a;
+      --warn-bg: #33290f;
+      --bad: #f19a9a;
+      --bad-bg: #3a1c1c;
+      --chip: #252c38;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header, main { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  header { padding-top: 28px; padding-bottom: 8px; }
+  h1 { margin: 0 0 4px; font-size: 1.6rem; }
+  h2 { margin: 0 0 12px; font-size: 1.1rem; }
+  .tagline { margin: 0 0 12px; color: var(--muted); max-width: 70ch; }
+  .stats { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    background: var(--chip); color: var(--muted); font-size: 0.85rem;
+  }
+  main { display: grid; gap: 16px; padding-bottom: 40px; grid-template-columns: 1fr; }
+  @media (min-width: 960px) { main { grid-template-columns: 3fr 2fr; align-items: start; } }
+  section {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; min-width: 0;
+  }
+  label.field { display: block; font-weight: 600; margin-bottom: 6px; }
+  textarea, input[type="search"] {
+    width: 100%; padding: 10px; font: inherit; color: var(--text);
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  button, .button {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 40px; padding: 0 16px; font: inherit; font-weight: 600;
+    border-radius: 8px; border: 1px solid var(--border); background: var(--surface);
+    color: var(--text); cursor: pointer;
+  }
+  button.primary, .button.primary {
+    background: var(--accent); border-color: var(--accent); color: var(--accent-text);
+  }
+  button.danger { color: var(--bad); }
+  button.small { min-height: 32px; padding: 0 10px; font-size: 0.85rem; }
+  button:disabled { opacity: 0.55; cursor: not-allowed; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+  .examples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .examples button {
+    min-height: 30px; padding: 0 10px; font-size: 0.85rem; font-weight: 500;
+    background: var(--chip); border-color: transparent; color: var(--muted);
+  }
+  .badge {
+    display: inline-block; padding: 3px 12px; border-radius: 999px;
+    font-weight: 700; font-size: 0.85rem;
+  }
+  .badge.answered { background: var(--ok-bg); color: var(--ok); }
+  .badge.insufficient_evidence { background: var(--warn-bg); color: var(--warn); }
+  .badge.conflicting_evidence { background: var(--bad-bg); color: var(--bad); }
+  .answer { font-size: 1.05rem; margin: 10px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .cite {
+    display: inline; padding: 0 5px; margin: 0 1px; border-radius: 5px;
+    border: 1px solid var(--border); background: var(--chip); color: var(--accent);
+    font-size: 0.8rem; font-weight: 700; min-height: 0; cursor: pointer;
+  }
+  .panel-note { border-left: 4px solid var(--border); padding: 6px 12px; margin: 10px 0; }
+  .panel-note.conflict { border-color: var(--bad); background: var(--bad-bg); }
+  .card { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-top: 8px; }
+  .card.flash { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+  .card h3 { margin: 0; font-size: 0.95rem; }
+  .meta { color: var(--muted); font-size: 0.85rem; overflow-wrap: anywhere; }
+  details summary { cursor: pointer; color: var(--accent); font-size: 0.9rem; margin-top: 4px; }
+  details p { margin: 6px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .error { background: var(--bad-bg); color: var(--bad); padding: 10px 12px; border-radius: 8px; }
+  .notice { background: var(--warn-bg); color: var(--warn); padding: 10px 12px; border-radius: 8px; }
+  ul.plain { list-style: none; margin: 0; padding: 0; }
+  ul.plain li {
+    display: flex; gap: 8px; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+  }
+  ul.plain li > div { min-width: 0; }
+  .doc-title { font-weight: 600; overflow-wrap: anywhere; }
+  .upload-log { margin: 10px 0 0; font-size: 0.9rem; }
+  .upload-log li { padding: 2px 0; border: 0; justify-content: flex-start; }
+  .upload-log .fail { color: var(--bad); }
+  .dropzone.dragging { outline: 3px dashed var(--accent); outline-offset: 4px; }
+  .pager { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Investigation Engine</h1>
+  <p class="tagline">Ask a question across your documents. Answers are cited, and the engine says so when the evidence is missing or the sources disagree.</p>
+  <div class="stats" id="stats" aria-live="polite"></div>
+</header>
+<main>
+  <section aria-labelledby="ask-heading">
+    <h2 id="ask-heading">Ask</h2>
+    <form id="ask-form">
+      <label class="field" for="question">Your question</label>
+      <textarea id="question" maxlength="1000" placeholder="For example: Why were payments delayed on 5 March 2025?" required></textarea>
+      <div class="row">
+        <button class="primary" type="submit" id="ask-button">Ask</button>
+        <button type="button" id="search-button">Search only</button>
+        <span class="meta" id="ask-hint">Search only shows the matching passages without a language model.</span>
+      </div>
+      <div class="examples" id="examples" aria-label="Example questions"></div>
+    </form>
+    <div id="result" aria-live="polite"></div>
+  </section>
+
+  <section class="dropzone" id="documents-panel" aria-labelledby="documents-heading">
+    <h2 id="documents-heading">Documents</h2>
+    <label class="button primary" for="file-input">Upload files</label>
+    <input class="sr-only" id="file-input" type="file" multiple accept=".txt,.md,.html,.htm,.json,.jsonl,.csv">
+    <span class="meta">or drop them here (txt, md, html, json, jsonl, csv)</span>
+    <ul class="plain upload-log" id="upload-log"></ul>
+    <div class="row">
+      <label class="sr-only" for="filter">Filter documents</label>
+      <input type="search" id="filter" placeholder="Filter by title or file name">
+    </div>
+    <ul class="plain" id="document-list"></ul>
+    <div class="pager">
+      <button class="small" id="previous-page" type="button">Previous</button>
+      <span class="meta" id="page-info"></span>
+      <button class="small" id="next-page" type="button">Next</button>
+    </div>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+const PAGE_SIZE = 10;
+const STATUS_LABELS = {
+  answered: "Answered",
+  insufficient_evidence: "Not enough evidence",
+  conflicting_evidence: "Sources conflict",
+};
+const EXAMPLES = [
+  "Why were payments delayed on 5 March 2025?",
+  "Which service was modified by change CHG-1041?",
+  "Do the sources agree on when the gateway was rolled back?",
+  "Who won the 2031 World Cup?",
+];
+
+const state = { offset: 0, total: 0, filter: "", canAnswer: false };
+const el = (id) => document.getElementById(id);
+
+function make(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+async function api(path, options) {
+  const response = await fetch(path, options);
+  if (response.status === 204) return null;
+  let body = null;
+  try { body = await response.json(); } catch (_) { body = null; }
+  if (!response.ok) {
+    const detail = body && typeof body.detail === "string" ? body.detail : "Request failed (" + response.status + ").";
+    throw new Error(detail);
+  }
+  return body;
+}
+
+function showError(container, message) {
+  container.replaceChildren(make("div", "error", message));
+}
+
+async function refreshStats() {
+  const stats = el("stats");
+  try {
+    const health = await api("/api/health");
+    state.canAnswer = health.can_answer;
+    stats.replaceChildren(
+      make("span", "chip", health.documents.toLocaleString() + " documents"),
+      make("span", "chip", health.chunks.toLocaleString() + " chunks"),
+      make("span", "chip", health.can_answer ? "answers on" : "answers off: no language model key"),
+    );
+  } catch (error) {
+    stats.replaceChildren(make("span", "chip", error.message));
+  }
+}
+
+function documentRow(item) {
+  const row = make("li");
+  const info = make("div");
+  info.append(
+    make("div", "doc-title", item.title || item.id),
+    make("div", "meta", item.source + " · " + item.chunk_count + (item.chunk_count === 1 ? " chunk" : " chunks")),
+  );
+  const remove = make("button", "small danger", "Delete");
+  remove.type = "button";
+  remove.addEventListener("click", () => confirmDelete(remove, item));
+  row.append(info, remove);
+  return row;
+}
+
+function confirmDelete(button, item) {
+  if (button.dataset.armed !== "yes") {
+    button.dataset.armed = "yes";
+    button.textContent = "Confirm?";
+    setTimeout(() => { button.dataset.armed = ""; button.textContent = "Delete"; }, 3000);
+    return;
+  }
+  button.disabled = true;
+  api("/api/documents/" + encodeURIComponent(item.id), { method: "DELETE" })
+    .then(() => Promise.all([loadDocuments(), refreshStats()]))
+    .catch((error) => { button.disabled = false; showUploadMessage(error.message, true); });
+}
+
+async function loadDocuments() {
+  const query = new URLSearchParams({ limit: PAGE_SIZE, offset: state.offset, q: state.filter });
+  const list = el("document-list");
+  try {
+    const page = await api("/api/documents?" + query);
+    state.total = page.total;
+    if (page.items.length === 0 && state.offset > 0) {
+      state.offset = Math.max(0, state.offset - PAGE_SIZE);
+      return loadDocuments();
+    }
+    list.replaceChildren(...page.items.map(documentRow));
+    if (page.items.length === 0) list.append(make("li", "meta", "No documents yet. Upload some to begin."));
+    const first = page.total === 0 ? 0 : state.offset + 1;
+    el("page-info").textContent = first + "–" + (state.offset + page.items.length) + " of " + page.total.toLocaleString();
+  } catch (error) {
+    showError(list, error.message);
+  }
+  el("previous-page").disabled = state.offset === 0;
+  el("next-page").disabled = state.offset + PAGE_SIZE >= state.total;
+}
+
+function showUploadMessage(text, failed) {
+  const item = make("li", failed ? "fail" : "", text);
+  el("upload-log").prepend(item);
+  while (el("upload-log").children.length > 6) el("upload-log").lastChild.remove();
+}
+
+function describeUpload(result) {
+  if (result.added.length) return result.filename + ": added (" + result.chunks_added + " chunks)";
+  if (result.updated.length) return result.filename + ": updated";
+  return result.filename + ": already up to date";
+}
+
+async function uploadFiles(files) {
+  for (const file of files) {
+    try {
+      const result = await api("/api/documents?filename=" + encodeURIComponent(file.name), {
+        method: "POST",
+        headers: { "Content-Type": "application/octet-stream" },
+        body: file,
+      });
+      showUploadMessage(describeUpload(result), false);
+    } catch (error) {
+      showUploadMessage(file.name + ": " + error.message, true);
+    }
+  }
+  state.offset = 0;
+  await Promise.all([loadDocuments(), refreshStats()]);
+}
+
+function renderAnswerText(text) {
+  const paragraph = make("p", "answer");
+  for (const part of text.split(/(\[E\d+\])/)) {
+    const match = /^\[(E\d+)\]$/.exec(part);
+    if (!match) { paragraph.append(part); continue; }
+    const token = make("button", "cite", part);
+    token.type = "button";
+    token.addEventListener("click", () => focusCitation(match[1]));
+    paragraph.append(token);
+  }
+  return paragraph;
+}
+
+function focusCitation(evidenceId) {
+  const card = el("cite-" + evidenceId);
+  if (!card) return;
+  card.querySelector("details").open = true;
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.classList.add("flash");
+  setTimeout(() => card.classList.remove("flash"), 1500);
+}
+
+function sourceNames(sources) {
+  return sources.map((source) => source.source || source.document_id).join(", ");
+}
+
+function citationCard(citation) {
+  const card = make("div", "card");
+  card.id = "cite-" + citation.evidence_id;
+  card.append(
+    make("h3", "", "[" + citation.evidence_id + "] " + (citation.title || "untitled")),
+    make("div", "meta", "Source: " + sourceNames(citation.sources)),
+  );
+  const details = make("details");
+  details.append(make("summary", "", "Show the passage"), make("p", "", citation.text));
+  card.append(details);
+  return card;
+}
+
+function conflictNote(conflict) {
+  const note = make("div", "panel-note conflict");
+  note.append(
+    make("strong", "", "Conflict: "), conflict.description,
+    make("div", "meta", "Evidence: " + conflict.evidence_ids.map((id) => "[" + id + "]").join(" ")),
+  );
+  return note;
+}
+
+function renderAnswer(result) {
+  const parts = [make("span", "badge " + result.status, STATUS_LABELS[result.status] || result.status)];
+  parts.push(renderAnswerText(result.answer));
+  result.conflicts.forEach((conflict) => parts.push(conflictNote(conflict)));
+  if (result.citations.length) {
+    parts.push(make("h2", "", "Evidence"));
+    result.citations.forEach((citation) => parts.push(citationCard(citation)));
+  }
+  const searches = result.searches.length ? "Searches: " + result.searches.join(" | ") + ". " : "";
+  const tokens = result.usage.prompt_tokens + result.usage.completion_tokens;
+  parts.push(make("p", "meta", searches + result.llm_calls + " model calls, " + tokens + " tokens, " + (result.elapsed_ms / 1000).toFixed(1) + " s."));
+  el("result").replaceChildren(...parts);
+}
+
+function hitCard(hit, position) {
+  const card = make("div", "card");
+  const ranks = [];
+  if (hit.keyword_rank) ranks.push("keyword #" + hit.keyword_rank);
+  if (hit.vector_rank) ranks.push("vector #" + hit.vector_rank);
+  card.append(
+    make("h3", "", position + ". " + (hit.title || "untitled")),
+    make("div", "meta", sourceNames(hit.sources) + " · score " + hit.score.toFixed(4) + (ranks.length ? " · " + ranks.join(", ") : "")),
+    make("p", "", hit.text),
+  );
+  return card;
+}
+
+function renderSearch(result) {
+  if (result.hits.length === 0) {
+    el("result").replaceChildren(make("div", "notice", "Nothing matched that query."));
+    return;
+  }
+  el("result").replaceChildren(...result.hits.map((hit, index) => hitCard(hit, index + 1)));
+}
+
+function setBusy(busy) {
+  el("ask-button").disabled = busy;
+  el("search-button").disabled = busy;
+}
+
+async function submitQuestion(mode) {
+  const question = el("question").value.trim();
+  if (!question) { el("question").focus(); return; }
+  setBusy(true);
+  el("result").replaceChildren(make("p", "meta", mode === "ask" ? "Investigating…" : "Searching…"));
+  try {
+    const request = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(mode === "ask" ? { question } : { query: question, limit: 8 }),
+    };
+    if (mode === "ask") renderAnswer(await api("/api/ask", request));
+    else renderSearch(await api("/api/search", request));
+  } catch (error) {
+    showError(el("result"), error.message);
+  } finally {
+    setBusy(false);
+  }
+}
+
+function setUp() {
+  el("ask-form").addEventListener("submit", (event) => { event.preventDefault(); submitQuestion("ask"); });
+  el("search-button").addEventListener("click", () => submitQuestion("search"));
+  EXAMPLES.forEach((text) => {
+    const button = make("button", "", text);
+    button.type = "button";
+    button.addEventListener("click", () => { el("question").value = text; el("question").focus(); });
+    el("examples").append(button);
+  });
+  el("file-input").addEventListener("change", (event) => {
+    uploadFiles([...event.target.files]);
+    event.target.value = "";
+  });
+  const zone = el("documents-panel");
+  ["dragenter", "dragover"].forEach((name) => zone.addEventListener(name, (event) => {
+    event.preventDefault();
+    zone.classList.add("dragging");
+  }));
+  ["dragleave", "drop"].forEach((name) => zone.addEventListener(name, (event) => {
+    event.preventDefault();
+    zone.classList.remove("dragging");
+  }));
+  zone.addEventListener("drop", (event) => uploadFiles([...event.dataTransfer.files]));
+  let timer = null;
+  el("filter").addEventListener("input", (event) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { state.filter = event.target.value.trim(); state.offset = 0; loadDocuments(); }, 250);
+  });
+  el("previous-page").addEventListener("click", () => { state.offset = Math.max(0, state.offset - PAGE_SIZE); loadDocuments(); });
+  el("next-page").addEventListener("click", () => { state.offset += PAGE_SIZE; loadDocuments(); });
+  refreshStats();
+  loadDocuments();
+}
+
+setUp();
+</script>
+</body>
+</html>

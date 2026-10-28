@@ -1,8 +1,12 @@
 import zlib
 from collections.abc import Mapping, Sequence
 
+from investigation_engine.app.engine import Engine
+from investigation_engine.ingestion.chunking import SentenceChunker
 from investigation_engine.llm.types import Completion, Message, ToolCall, ToolSpec, Usage
-from investigation_engine.retrieval.bm25 import tokenize
+from investigation_engine.retrieval.bm25 import Bm25Index, tokenize
+from investigation_engine.retrieval.vector import InMemoryVectorIndex
+from investigation_engine.storage.memory import InMemoryDocumentStore
 
 
 def make_completion(text: str = "Paris", model: str = "m1") -> Completion:
@@ -84,3 +88,20 @@ class HashingEmbedder:
         for token in tokenize(text):
             vector[zlib.crc32(token.encode("utf-8")) % self.dimension] += 1.0
         return vector
+
+
+def make_engine(
+    client: FakeClient | None = None,
+    store: InMemoryDocumentStore | None = None,
+    keywords: Bm25Index | None = None,
+    embedder: HashingEmbedder | None = None,
+) -> Engine:
+    embedder = HashingEmbedder() if embedder is None else embedder
+    return Engine(
+        store=InMemoryDocumentStore() if store is None else store,
+        embedder=embedder,
+        vectors=InMemoryVectorIndex(embedder.dimension),
+        keywords=Bm25Index() if keywords is None else keywords,
+        chunker=SentenceChunker(max_words=30),
+        llm=client,
+    )

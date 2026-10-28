@@ -6,17 +6,16 @@ import pytest
 from fakes import (
     FakeClient,
     HashingEmbedder,
+    make_engine,
     make_tool_completion,
     search_call,
     submit_call,
 )
-from investigation_engine.app.engine import Engine, NothingToIndexError
-from investigation_engine.ingestion.chunking import SentenceChunker
+from investigation_engine.app.engine import NothingToIndexError
 from investigation_engine.ingestion.parsers import UnsupportedFormatError
 from investigation_engine.llm.errors import LlmUnavailable
 from investigation_engine.llm.factory import ConfigurationError
 from investigation_engine.retrieval.bm25 import Bm25Index
-from investigation_engine.retrieval.vector import InMemoryVectorIndex
 from investigation_engine.storage.memory import InMemoryDocumentStore
 
 OUTAGE = b"Payments failed on 5 March because of a bad deploy."
@@ -45,23 +44,6 @@ class GatedEmbedder(HashingEmbedder):
         finally:
             with self._guard:
                 self.active -= 1
-
-
-def make_engine(
-    client: FakeClient | None = None,
-    store: InMemoryDocumentStore | None = None,
-    keywords: Bm25Index | None = None,
-    embedder: HashingEmbedder | None = None,
-) -> Engine:
-    embedder = HashingEmbedder() if embedder is None else embedder
-    return Engine(
-        store=InMemoryDocumentStore() if store is None else store,
-        embedder=embedder,
-        vectors=InMemoryVectorIndex(embedder.dimension),
-        keywords=Bm25Index() if keywords is None else keywords,
-        chunker=SentenceChunker(max_words=30),
-        llm=client,
-    )
 
 
 def test_an_uploaded_file_is_reported_as_added_and_becomes_searchable() -> None:

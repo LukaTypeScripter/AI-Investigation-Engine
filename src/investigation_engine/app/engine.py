@@ -5,6 +5,7 @@ from typing import NamedTuple, Protocol
 from investigation_engine.agent.evidence import SourceLookup
 from investigation_engine.agent.investigator import Investigator, InvestigatorConfig
 from investigation_engine.agent.models import Investigation
+from investigation_engine.domain import SourceRef
 from investigation_engine.embeddings import Embedder
 from investigation_engine.ingestion.chunking import Chunker
 from investigation_engine.ingestion.parsers import parse_bytes
@@ -132,6 +133,9 @@ class Engine:
 
     def search(self, query: str, limit: int) -> list[Hit]:
         return self._retriever.retrieve(query, limit)
+
+    def sources_of(self, chunk_id: str) -> list[SourceRef]:
+        return self._store.sources_of(chunk_id)
 
     def ask(self, question: str) -> Investigation:
         if self._investigator is None:
