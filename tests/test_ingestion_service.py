@@ -14,7 +14,7 @@ from investigation_engine.storage.postgres import PostgresDocumentStore
 class StoreUnderTest(DocumentStore, Protocol):
     def get_chunks(self, chunk_ids: Sequence[str]) -> dict[str, Chunk]: ...
 
-    def sources_of(self, chunk_id: str) -> list[SourceRef]: ...
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]: ...
 
     def document_ids(self) -> set[str]: ...
 
@@ -270,18 +270,29 @@ def test_store_rejects_saving_the_same_document_twice(store: StoreUnderTest) -> 
         store.save(document, "hash", [], {})
 
 
-def test_sources_of_lists_every_document_that_contains_a_chunk(store: StoreUnderTest) -> None:
+def test_sources_of_many_lists_every_document_that_contains_each_chunk(
+    store: StoreUnderTest,
+) -> None:
     service = make_service(store)
-    service.ingest([make_document("a", "Same text."), make_document("b", "Same text.")])
+    service.ingest(
+        [
+            make_document("a", "Same text. Own words."),
+            make_document("b", "Same text."),
+        ]
+    )
 
-    assert store.sources_of("a:0") == [
-        SourceRef("a", "a", "a.txt"),
-        SourceRef("b", "b", "b.txt"),
-    ]
+    assert store.sources_of_many(["a:0", "a:1"]) == {
+        "a:0": [SourceRef("a", "a", "a.txt"), SourceRef("b", "b", "b.txt")],
+        "a:1": [SourceRef("a", "a", "a.txt")],
+    }
 
 
-def test_sources_of_an_unknown_chunk_is_empty(store: StoreUnderTest) -> None:
-    assert store.sources_of("ghost:0") == []
+def test_sources_of_many_leaves_out_chunks_it_does_not_know(store: StoreUnderTest) -> None:
+    service = make_service(store)
+    service.ingest([make_document("a", "A one.")])
+
+    assert store.sources_of_many(["ghost:0", "a:0"]) == {"a:0": [SourceRef("a", "a", "a.txt")]}
+    assert store.sources_of_many([]) == {}
 
 
 def test_get_chunks_returns_only_the_ids_the_store_knows(store: StoreUnderTest) -> None:

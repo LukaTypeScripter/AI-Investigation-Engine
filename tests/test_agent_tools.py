@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 import pytest
 
 from investigation_engine.agent.evidence import EvidenceBoard
@@ -16,9 +18,9 @@ class NoSources:
     def __init__(self) -> None:
         self.requested: list[str] = []
 
-    def sources_of(self, chunk_id: str) -> list[SourceRef]:
-        self.requested.append(chunk_id)
-        return []
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]:
+        self.requested.extend(chunk_ids)
+        return {}
 
 
 def board_with_three_items() -> EvidenceBoard:

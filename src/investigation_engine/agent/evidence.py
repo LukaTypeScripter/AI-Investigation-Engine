@@ -12,7 +12,7 @@ TRIMMED_SUFFIX = "..."
 
 
 class SourceLookup(Protocol):
-    def sources_of(self, chunk_id: str) -> list[SourceRef]: ...
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,7 +34,9 @@ class EvidenceBoard:
         self._items_by_chunk: dict[str, EvidenceItem] = {}
 
     def add(self, hits: Sequence[Hit]) -> list[EvidenceItem]:
-        return [self._item_for(hit.chunk) for hit in hits]
+        unseen = [hit.chunk.id for hit in hits if hit.chunk.id not in self._items_by_chunk]
+        sources = self._sources.sources_of_many(unseen) if unseen else {}
+        return [self._item_for(hit.chunk, sources) for hit in hits]
 
     def get(self, evidence_id: str) -> EvidenceItem | None:
         return self._items.get(normalize_evidence_id(evidence_id))
@@ -59,11 +61,11 @@ class EvidenceBoard:
         blocks = [self._render_item(item) for item in items]
         return "\n\n".join([f"Search results for: {query}", *blocks])
 
-    def _item_for(self, chunk: Chunk) -> EvidenceItem:
+    def _item_for(self, chunk: Chunk, sources_by_chunk: dict[str, list[SourceRef]]) -> EvidenceItem:
         existing = self._items_by_chunk.get(chunk.id)
         if existing is not None:
             return existing
-        sources = tuple(self._sources.sources_of(chunk.id)) or (
+        sources = tuple(sources_by_chunk.get(chunk.id, ())) or (
             SourceRef(chunk.document_id, chunk.title, chunk.source),
         )
         item = EvidenceItem(f"E{len(self._items) + 1}", chunk, sources)

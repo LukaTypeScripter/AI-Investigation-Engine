@@ -75,9 +75,17 @@ class InMemoryDocumentStore:
             chunk_id: self._chunks[chunk_id] for chunk_id in chunk_ids if chunk_id in self._chunks
         }
 
-    def sources_of(self, chunk_id: str) -> list[SourceRef]:
-        owners = self._owners.get(chunk_id, {})
-        documents = (self._documents[document_id].document for document_id in owners)
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]:
+        return {
+            chunk_id: self._sources_of(chunk_id)
+            for chunk_id in chunk_ids
+            if chunk_id in self._owners
+        }
+
+    def _sources_of(self, chunk_id: str) -> list[SourceRef]:
+        documents = (
+            self._documents[document_id].document for document_id in self._owners[chunk_id]
+        )
         return [SourceRef(document.id, document.title, document.source) for document in documents]
 
     def list_documents(

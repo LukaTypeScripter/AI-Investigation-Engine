@@ -104,7 +104,8 @@ def make_retriever(stack: SearchStack, config: RetrievalConfig) -> HybridRetriev
 
 
 def document_ranking(hits: Sequence[Hit], sources: SourceLookup) -> list[str]:
-    ordered = (ref.document_id for hit in hits for ref in sources.sources_of(hit.chunk.id))
+    by_chunk = sources.sources_of_many([hit.chunk.id for hit in hits])
+    ordered = (ref.document_id for hit in hits for ref in by_chunk.get(hit.chunk.id, []))
     return list(dict.fromkeys(ordered))
 
 

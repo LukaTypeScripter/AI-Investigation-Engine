@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 import pytest
 
 from fakes import (
@@ -47,8 +49,10 @@ class StubSources:
     def __init__(self, sources: dict[str, list[SourceRef]] | None = None) -> None:
         self._sources = sources or {}
 
-    def sources_of(self, chunk_id: str) -> list[SourceRef]:
-        return self._sources.get(chunk_id, [])
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]:
+        return {
+            chunk_id: self._sources[chunk_id] for chunk_id in chunk_ids if chunk_id in self._sources
+        }
 
 
 DEPLOY = make_hit("deploy:0", "A bad deploy on 5 March broke the payment gateway.", "Deploy log")

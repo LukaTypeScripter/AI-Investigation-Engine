@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 import pytest
 
 from investigation_engine.agent.evidence import EvidenceBoard, normalize_evidence_id
@@ -8,9 +10,13 @@ from investigation_engine.retrieval.hybrid import Hit
 class StubSources:
     def __init__(self, sources: dict[str, list[SourceRef]] | None = None) -> None:
         self._sources = sources or {}
+        self.requests: list[list[str]] = []
 
-    def sources_of(self, chunk_id: str) -> list[SourceRef]:
-        return self._sources.get(chunk_id, [])
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]:
+        self.requests.append(list(chunk_ids))
+        return {
+            chunk_id: self._sources[chunk_id] for chunk_id in chunk_ids if chunk_id in self._sources
+        }
 
 
 def make_hit(chunk_id: str, text: str = "Some text.", title: str = "Title") -> Hit:
@@ -131,3 +137,21 @@ def test_citation_carries_the_chunk_text_and_every_source() -> None:
 def test_citation_for_an_unknown_id_is_an_error() -> None:
     with pytest.raises(KeyError):
         make_board().citation("E1")
+
+
+def test_the_sources_of_all_new_chunks_are_requested_in_one_call() -> None:
+    sources = StubSources()
+
+    make_board(sources).add([make_hit("a:0"), make_hit("b:0"), make_hit("c:0")])
+
+    assert sources.requests == [["a:0", "b:0", "c:0"]]
+
+
+def test_chunks_that_already_have_an_evidence_id_are_not_looked_up_again() -> None:
+    sources = StubSources()
+    board = make_board(sources)
+    board.add([make_hit("a:0")])
+
+    board.add([make_hit("a:0"), make_hit("b:0")])
+
+    assert sources.requests == [["a:0"], ["b:0"]]

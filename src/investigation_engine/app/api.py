@@ -152,7 +152,8 @@ def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI
     )
     def search(body: SearchIn, engine: EngineDependency) -> SearchOut:
         hits = engine.search(body.query, body.limit)
-        return SearchOut(hits=[hit_out(hit, engine.sources_of(hit.chunk.id)) for hit in hits])
+        sources = engine.sources_of_many([hit.chunk.id for hit in hits])
+        return SearchOut(hits=[hit_out(hit, sources.get(hit.chunk.id, [])) for hit in hits])
 
     @app.post(
         "/api/ask",

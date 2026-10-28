@@ -1,4 +1,5 @@
 import threading
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import NamedTuple, Protocol
 
@@ -134,8 +135,8 @@ class Engine:
     def search(self, query: str, limit: int) -> list[Hit]:
         return self._retriever.retrieve(query, limit)
 
-    def sources_of(self, chunk_id: str) -> list[SourceRef]:
-        return self._store.sources_of(chunk_id)
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]:
+        return self._store.sources_of_many(chunk_ids)
 
     def ask(self, question: str) -> Investigation:
         if self._investigator is None:

@@ -20,6 +20,11 @@ SELECT_CHUNK_PAGE = (
     "SELECT id, document_id, position, text, title, source FROM chunks "
     "WHERE id > %s ORDER BY id LIMIT %s"
 )
+SELECT_SOURCES = (
+    "SELECT o.chunk_id, d.id, d.title, d.source FROM chunk_owners o "
+    "JOIN documents d ON d.id = o.document_id WHERE o.chunk_id = ANY(%s) "
+    "ORDER BY o.chunk_id, o.seq"
+)
 LIST_DOCUMENTS = (
     "SELECT d.id, d.title, d.source, "
     "(SELECT count(*) FROM chunk_owners o WHERE o.document_id = d.id) "
@@ -89,15 +94,16 @@ class PostgresDocumentStore:
         found = {row[0]: to_chunk(row) for row in rows}
         return {chunk_id: found[chunk_id] for chunk_id in chunk_ids if chunk_id in found}
 
-    def sources_of(self, chunk_id: str) -> list[SourceRef]:
+    def sources_of_many(self, chunk_ids: Sequence[str]) -> dict[str, list[SourceRef]]:
+        if not chunk_ids:
+            return {}
         rows = self._database.run(
-            lambda connection: connection.execute(
-                "SELECT d.id, d.title, d.source FROM chunk_owners o "
-                "JOIN documents d ON d.id = o.document_id WHERE o.chunk_id = %s ORDER BY o.seq",
-                (chunk_id,),
-            ).fetchall()
+            lambda connection: connection.execute(SELECT_SOURCES, (list(chunk_ids),)).fetchall()
         )
-        return [SourceRef(*row) for row in rows]
+        sources: dict[str, list[SourceRef]] = {}
+        for chunk_id, document_id, title, source in rows:
+            sources.setdefault(chunk_id, []).append(SourceRef(document_id, title, source))
+        return sources
 
     def list_documents(
         self, limit: int = DEFAULT_PAGE_SIZE, offset: int = 0, containing: str = ""
