@@ -64,6 +64,11 @@ class InMemoryDocumentStore:
                 rehomed.append(self._rehome(chunk_id))
         return Deletion(removed_chunk_ids=removed, rehomed_chunks=rehomed)
 
+    def get_chunks(self, chunk_ids: Sequence[str]) -> dict[str, Chunk]:
+        return {
+            chunk_id: self._chunks[chunk_id] for chunk_id in chunk_ids if chunk_id in self._chunks
+        }
+
     def document_ids(self) -> set[str]:
         return set(self._documents)
 

@@ -224,3 +224,13 @@ def test_store_rejects_saving_the_same_document_twice() -> None:
 
     with pytest.raises(ValueError, match="already stored"):
         store.save(document, "hash", [], {})
+
+
+def test_get_chunks_returns_only_the_ids_the_store_knows() -> None:
+    service, store = make_service()
+    service.ingest([make_document("a", "A one. B two.")])
+
+    found = store.get_chunks(["a:1", "ghost", "a:0"])
+
+    assert list(found) == ["a:1", "a:0"]
+    assert found["a:1"].text == "B two."
