@@ -1,0 +1,44 @@
+[project]
+name = "investigation-engine"
+version = "0.1.0"
+description = "Multi-document investigation engine with hybrid retrieval and cited, evidence-grounded answers"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+investigation-engine = "investigation_engine:main"
+
+[build-system]
+requires = ["uv_build>=0.11.28,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+    "ty>=0.0.93",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests", "tools"]
+extend-exclude = [".claude"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4", "RET", "ARG", "PTH", "ERA", "ANN", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "ANN"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tools"]
+
+[tool.ty.environment]
+python-version = "3.12"
+extra-paths = ["tools"]
+
+[tool.ty.src]
+include = ["src", "tests", "tools"]
