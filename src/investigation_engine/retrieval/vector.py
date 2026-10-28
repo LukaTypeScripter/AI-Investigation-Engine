@@ -16,9 +16,20 @@ class InMemoryVectorIndex:
         return len(self._ids)
 
     def add(self, item_id: str, vector: Sequence[float]) -> None:
+        self._store(item_id, self._indexable(vector))
+
+    def add_many(self, items: Sequence[tuple[str, Sequence[float]]]) -> None:
+        units = [(item_id, self._indexable(vector)) for item_id, vector in items]
+        for item_id, unit in units:
+            self._store(item_id, unit)
+
+    def _indexable(self, vector: Sequence[float]) -> np.ndarray:
         unit = self._unit(vector)
         if unit is None:
             raise ValueError("cannot index a zero vector")
+        return unit
+
+    def _store(self, item_id: str, unit: np.ndarray) -> None:
         position = self._positions.get(item_id)
         if position is None:
             position = len(self._ids)

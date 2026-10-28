@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 from fakes import HashingEmbedder
 from investigation_engine.domain import Chunk, Document
 from investigation_engine.ingestion.chunking import SentenceChunker
@@ -76,6 +78,27 @@ def test_apply_embeds_chunks_in_batches() -> None:
     indexer.apply(added(*(make_chunk(f"a:{n}", f"text number {n}") for n in range(5))))
 
     assert [len(batch) for batch in embedder.document_batches] == [2, 2, 1]
+
+
+class BatchRecordingVectorIndex(InMemoryVectorIndex):
+    def __init__(self, dimension: int) -> None:
+        super().__init__(dimension)
+        self.batch_sizes: list[int] = []
+
+    def add_many(self, items: Sequence[tuple[str, Sequence[float]]]) -> None:
+        self.batch_sizes.append(len(items))
+        super().add_many(items)
+
+
+def test_apply_writes_each_embedding_batch_to_the_vector_index_in_one_call() -> None:
+    embedder = HashingEmbedder()
+    vectors = BatchRecordingVectorIndex(embedder.dimension)
+    indexer = SearchIndexer(embedder, vectors, Bm25Index(), batch_size=2)
+
+    indexer.apply(added(*(make_chunk(f"a:{n}", f"text number {n}") for n in range(5))))
+
+    assert vectors.batch_sizes == [2, 2, 1]
+    assert len(vectors) == 5
 
 
 def test_apply_without_changes_does_not_call_the_embedder() -> None:

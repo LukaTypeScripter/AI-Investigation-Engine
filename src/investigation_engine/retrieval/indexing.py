@@ -36,6 +36,8 @@ class SearchIndexer:
         for batch in batched(chunks, self._batch_size):
             texts = [passage_text(chunk) for chunk in batch]
             vectors = self._embedder.embed_documents(texts)
-            for chunk, text, vector in zip(batch, texts, vectors, strict=True):
-                self._vectors.add(chunk.id, vector)
+            self._vectors.add_many(
+                [(chunk.id, vector) for chunk, vector in zip(batch, vectors, strict=True)]
+            )
+            for chunk, text in zip(batch, texts, strict=True):
                 self._keywords.add(chunk.id, text)
