@@ -31,13 +31,15 @@ class HybridRetriever:
     def __init__(
         self,
         embedder: Embedder,
-        vectors: VectorSearch,
-        keywords: KeywordSearch,
+        vectors: VectorSearch | None,
+        keywords: KeywordSearch | None,
         chunks: ChunkLookup,
         reranker: Reranker | None = None,
         candidates: int = DEFAULT_CANDIDATES,
         rank_constant: int = DEFAULT_RANK_CONSTANT,
     ) -> None:
+        if vectors is None and keywords is None:
+            raise ValueError("at least one of vector search and keyword search is required")
         self._embedder = embedder
         self._vectors = vectors
         self._keywords = keywords
@@ -49,10 +51,8 @@ class HybridRetriever:
     def retrieve(self, query: str, limit: int) -> list[Hit]:
         if not query.strip():
             return []
-        vector_ids = self._ids(
-            self._vectors.search(self._embedder.embed_query(query), self._candidates)
-        )
-        keyword_ids = self._ids(self._keywords.search(query, self._candidates))
+        vector_ids = self._vector_ids(query)
+        keyword_ids = self._keyword_ids(query)
         fused = reciprocal_rank_fusion([vector_ids, keyword_ids], self._rank_constant)
         pool = fused[: self._candidates]
         chunks = self._chunks.get_chunks([chunk_id for chunk_id, _ in pool])
@@ -64,6 +64,17 @@ class HybridRetriever:
             Hit(chunk, score, vector_ranks.get(chunk.id), keyword_ranks.get(chunk.id))
             for chunk, score in ordered[:limit]
         ]
+
+    def _vector_ids(self, query: str) -> list[str]:
+        if self._vectors is None:
+            return []
+        vector = self._embedder.embed_query(query)
+        return self._ids(self._vectors.search(vector, self._candidates))
+
+    def _keyword_ids(self, query: str) -> list[str]:
+        if self._keywords is None:
+            return []
+        return self._ids(self._keywords.search(query, self._candidates))
 
     @staticmethod
     def _ids(results: Sequence[tuple[str, float]]) -> list[str]:

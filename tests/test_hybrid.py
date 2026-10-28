@@ -181,3 +181,55 @@ def test_end_to_end_the_relevant_document_comes_first() -> None:
     assert hits[0].chunk.document_id == "payments"
     assert hits[0].vector_rank == 1
     assert hits[0].keyword_rank == 1
+
+
+def test_a_retriever_without_vector_search_ranks_by_keywords_only() -> None:
+    retriever = HybridRetriever(
+        embedder=HashingEmbedder(),
+        vectors=None,
+        keywords=StubKeywordSearch(["c", "b"]),
+        chunks=StubChunks("a", "b", "c"),
+    )
+
+    hits = retriever.retrieve("query", 10)
+
+    assert [hit.chunk.id for hit in hits] == ["c", "b"]
+    assert [hit.vector_rank for hit in hits] == [None, None]
+    assert [hit.keyword_rank for hit in hits] == [1, 2]
+
+
+def test_a_retriever_without_keyword_search_ranks_by_vectors_only() -> None:
+    embedder = HashingEmbedder()
+    retriever = HybridRetriever(
+        embedder=embedder,
+        vectors=StubVectorSearch(["b", "a"]),
+        keywords=None,
+        chunks=StubChunks("a", "b"),
+    )
+
+    hits = retriever.retrieve("query", 10)
+
+    assert [hit.chunk.id for hit in hits] == ["b", "a"]
+    assert [hit.keyword_rank for hit in hits] == [None, None]
+    assert embedder.queries == ["query"]
+
+
+def test_a_retriever_that_skips_vectors_never_embeds_the_query() -> None:
+    embedder = HashingEmbedder()
+    retriever = HybridRetriever(
+        embedder=embedder,
+        vectors=None,
+        keywords=StubKeywordSearch(["a"]),
+        chunks=StubChunks("a"),
+    )
+
+    retriever.retrieve("query", 5)
+
+    assert embedder.queries == []
+
+
+def test_a_retriever_needs_at_least_one_kind_of_search() -> None:
+    with pytest.raises(ValueError, match="at least one"):
+        HybridRetriever(
+            embedder=HashingEmbedder(), vectors=None, keywords=None, chunks=StubChunks()
+        )
