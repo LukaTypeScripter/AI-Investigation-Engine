@@ -145,4 +145,4 @@ Each of these was a real bug in this project. Be able to describe it.
 - Answer quality has not been measured with a real model yet.
 - The deployment needs the candidate's own accounts.
 - The evaluation set is small. Differences below about 0.04 are noise.
-- Uploads and deletions are open to anyone who has the URL.
+- No authentication. Anyone with the URL can upload and can delete uploaded files. Built-in documents (loaded by the seed command) are protected because uploads are tagged `origin: upload` and only those can be changed.

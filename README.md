@@ -118,6 +118,7 @@ Every setting is read from the environment or `.env` through `pydantic-settings`
 | `RETRIEVAL_CANDIDATES` | `50` | Candidates taken from each search before fusion |
 | `RERANK_RESULTS` | `false` | Turns on the re-ranker (see the evaluation report) |
 | `CHUNK_MAX_WORDS` | `120` | Chunk size for uploads |
+| `PROTECT_BUILT_IN_DOCUMENTS` | `true` | Only files uploaded through the page can be replaced or deleted. Documents loaded by the seed command are read-only (HTTP 403) |
 | `MAX_UPLOAD_BYTES` | `5000000` | Upload size limit |
 | `MAX_QUESTION_CHARS` | `1000` | Question length limit |
 | `FASTEMBED_CACHE_PATH` | system temp folder | Where the embedding model is stored |
@@ -204,5 +205,5 @@ Free Spaces sleep after a period without traffic and wake on the next request. N
 
 - The answer-quality evaluation depends on the language model and on free-tier rate limits. See the evaluation report for what was measured and what was not.
 - One server process holds the BM25 index in memory, so the service runs a single worker. Searches take a lock on the keyword index, so concurrent searches are serialised.
-- Uploads and deletions are open to anyone who can reach the page. A real deployment would add authentication.
+- Anyone who can reach the page can upload files and delete the files that were uploaded through it. The documents loaded by the seed command are protected from changes, but there is no authentication and no per-user separation. A real deployment would add both.
 - The embedding model is English. The tokenizer handles other scripts, but retrieval quality was only measured on English text.
