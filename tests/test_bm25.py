@@ -115,3 +115,83 @@ def test_add_existing_id_replaces_its_content() -> None:
 def test_invalid_parameters_are_rejected(k1: float, b: float) -> None:
     with pytest.raises(ValueError, match="BM25"):
         Bm25Index(k1=k1, b=b)
+
+
+VOCABULARY = [
+    "the",
+    "of",
+    "was",
+    "gateway",
+    "payment",
+    "ledger",
+    "refund",
+    "outage",
+    "march",
+    "deploy",
+    "alpha",
+    "beta",
+    "gamma",
+    "delta",
+    "epsilon",
+    "zeta",
+    "theta",
+    "kappa",
+    "sigma",
+    "omega",
+]
+
+
+def synthetic_corpus(size: int) -> dict[str, str]:
+    corpus: dict[str, str] = {}
+    for number in range(size):
+        length = 4 + number % 13
+        words = [
+            VOCABULARY[(number * 7 + position * 13 + (number * position) % 5) % 4]
+            if position % 3 == 0
+            else VOCABULARY[(number * 3 + position * 11 + number // 7) % len(VOCABULARY)]
+            for position in range(length)
+        ]
+        corpus[f"d{number:03d}"] = " ".join(words)
+    return corpus
+
+
+def reference_search(
+    corpus: dict[str, str], query: str, limit: int, k1: float = 1.5, b: float = 0.75
+) -> list[tuple[str, float]]:
+    tokens = {item_id: tokenize(text) for item_id, text in corpus.items()}
+    average = sum(len(words) for words in tokens.values()) / len(tokens)
+    scores: dict[str, float] = {}
+    for term in set(tokenize(query)):
+        containing = [item_id for item_id, words in tokens.items() if term in words]
+        for item_id in containing:
+            idf = math.log(1 + (len(tokens) - len(containing) + 0.5) / (len(containing) + 0.5))
+            frequency = tokens[item_id].count(term)
+            norm = 1 - b + b * len(tokens[item_id]) / average
+            scores[item_id] = scores.get(item_id, 0.0) + idf * (
+                frequency * (k1 + 1) / (frequency + k1 * norm)
+            )
+    return sorted(scores.items(), key=lambda pair: (-pair[1], pair[0]))[:limit]
+
+
+@pytest.mark.parametrize(
+    "query",
+    [
+        "the of was",
+        "gateway payment",
+        "the gateway deploy march alpha",
+        "zeta omega the",
+        "payment outage refund ledger gateway",
+        "unknownterm gateway",
+        "the",
+    ],
+)
+@pytest.mark.parametrize("limit", [1, 3, 10, 500])
+def test_search_matches_a_plain_bm25_computation_on_a_larger_corpus(query: str, limit: int) -> None:
+    corpus = synthetic_corpus(300)
+    index = build_index(corpus)
+
+    found = index.search(query, limit)
+    expected = reference_search(corpus, query, limit)
+
+    assert [item_id for item_id, _ in found] == [item_id for item_id, _ in expected]
+    assert [score for _, score in found] == pytest.approx([score for _, score in expected])
