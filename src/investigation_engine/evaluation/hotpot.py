@@ -13,7 +13,9 @@ DATASET = "hotpotqa/hotpot_qa"
 CONFIG = "distractor"
 SPLIT = "validation"
 DEFAULT_PAGE_SIZE = 100
-DEFAULT_ATTEMPTS = 4
+DEFAULT_ATTEMPTS = 6
+PAUSE_BETWEEN_PAGES = 0.5
+MAX_WAIT_SECONDS = 60.0
 RETRYABLE_STATUSES = frozenset({429, 500, 502, 503, 504})
 DOCUMENT_ID_PREFIX = "hotpot:"
 DOCUMENT_SOURCE = "hotpotqa/validation"
@@ -131,6 +133,7 @@ def fetch_page(
     }
     failure = "no attempt was made"
     for attempt in range(1, attempts + 1):
+        advised_wait: float | None = None
         try:
             response = client.get(ROWS_URL, params=parameters)
         except httpx.TransportError as error:
@@ -141,9 +144,33 @@ def fetch_page(
             failure = f"HTTP {response.status_code} from the dataset server"
             if response.status_code not in RETRYABLE_STATUSES:
                 break
+            advised_wait = parse_retry_after(response)
         if attempt < attempts:
-            sleep(float(2 ** (attempt - 1)))
+            sleep(retry_delay(attempt, advised_wait))
     raise DownloadError(f"could not download rows at offset {offset}: {failure}")
+
+
+def parse_retry_after(response: httpx.Response) -> float | None:
+    try:
+        seconds = float(response.headers.get("retry-after", ""))
+    except ValueError:
+        return None
+    return seconds if seconds >= 0 else None
+
+
+def retry_delay(attempt: int, advised_wait: float | None) -> float:
+    if advised_wait is not None:
+        return min(advised_wait, MAX_WAIT_SECONDS)
+    return min(float(2 ** (attempt - 1)), MAX_WAIT_SECONDS)
+
+
+def resume_point(partial: Path) -> int:
+    if not partial.exists():
+        return 0
+    data = partial.read_bytes()
+    complete = data[: data.rfind(b"\n") + 1]
+    partial.write_bytes(complete)
+    return complete.count(b"\n")
 
 
 def download_validation(
@@ -152,14 +179,17 @@ def download_validation(
     page_size: int = DEFAULT_PAGE_SIZE,
     attempts: int = DEFAULT_ATTEMPTS,
     sleep: Callable[[float], None] = time.sleep,
+    pause: float = PAUSE_BETWEEN_PAGES,
 ) -> int:
     destination.parent.mkdir(parents=True, exist_ok=True)
     partial = destination.with_name(destination.name + ".part")
-    count = 0
+    count = resume_point(partial)
+    total = count + 1
     try:
-        with partial.open("w", encoding="utf-8") as handle:
-            total = page_size
+        with partial.open("a", encoding="utf-8") as handle:
             while count < total:
+                if count > 0:
+                    sleep(pause)
                 payload = fetch_page(client, count, page_size, attempts, sleep)
                 rows = payload["rows"]
                 total = int(str(payload["num_rows_total"]))
@@ -167,8 +197,11 @@ def download_validation(
                     break
                 for entry in rows:
                     handle.write(json.dumps(entry["row"], ensure_ascii=False) + "\n")
+                handle.flush()
                 count += len(rows)
-        partial.replace(destination)
-    finally:
-        partial.unlink(missing_ok=True)
+    except DownloadError:
+        if count == 0:
+            partial.unlink(missing_ok=True)
+        raise
+    partial.replace(destination)
     return count

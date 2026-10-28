@@ -130,14 +130,16 @@ def page_handler(total: int, requests: list[httpx.Request]):
 
 def test_download_validation_pages_through_every_row(tmp_path: Path) -> None:
     requests: list[httpx.Request] = []
+    sleeps: list[float] = []
     client = httpx.Client(transport=httpx.MockTransport(page_handler(250, requests)))
     destination = tmp_path / "out" / "rows.jsonl"
 
-    count = download_validation(client, destination, page_size=100)
+    count = download_validation(client, destination, page_size=100, sleep=sleeps.append)
 
     assert count == 250
     assert len(destination.read_text(encoding="utf-8").splitlines()) == 250
     assert [int(r.url.params["offset"]) for r in requests] == [0, 100, 200]
+    assert sleeps == [0.5, 0.5]
     assert requests[0].url.params["dataset"] == "hotpotqa/hotpot_qa"
     assert requests[0].url.params["config"] == "distractor"
     assert requests[0].url.params["split"] == "validation"
@@ -187,3 +189,79 @@ def test_download_validation_gives_up_after_the_allowed_attempts(tmp_path: Path)
     assert sleeps == [1.0, 2.0]
     assert not destination.exists()
     assert list(tmp_path.iterdir()) == []
+
+
+def test_download_validation_waits_as_long_as_the_server_asks_when_rate_limited(
+    tmp_path: Path,
+) -> None:
+    sleeps: list[float] = []
+    good = page_handler(5, [])
+    answers = iter([httpx.Response(429, headers={"retry-after": "7"})])
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return next(answers, None) or good(request)
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+
+    assert download_validation(client, tmp_path / "rows.jsonl", sleep=sleeps.append) == 5
+    assert sleeps == [7.0]
+
+
+def test_download_validation_never_waits_longer_than_the_cap(tmp_path: Path) -> None:
+    sleeps: list[float] = []
+    good = page_handler(5, [])
+    answers = iter([httpx.Response(429, headers={"retry-after": "9999"})])
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return next(answers, None) or good(request)
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+
+    download_validation(client, tmp_path / "rows.jsonl", sleep=sleeps.append)
+
+    assert sleeps == [60.0]
+
+
+def test_a_failed_download_keeps_its_rows_and_the_next_run_resumes_after_them(
+    tmp_path: Path,
+) -> None:
+    destination = tmp_path / "rows.jsonl"
+    sleeps: list[float] = []
+    good = page_handler(250, [])
+
+    def breaks_after_the_first_page(request: httpx.Request) -> httpx.Response:
+        if int(request.url.params["offset"]) >= 100:
+            return httpx.Response(500, request=request)
+        return good(request)
+
+    broken = httpx.Client(transport=httpx.MockTransport(breaks_after_the_first_page))
+    with pytest.raises(DownloadError):
+        download_validation(broken, destination, attempts=1, sleep=sleeps.append)
+    partial = tmp_path / "rows.jsonl.part"
+    assert len(partial.read_text(encoding="utf-8").splitlines()) == 100
+    assert not destination.exists()
+
+    requests: list[httpx.Request] = []
+    working = httpx.Client(transport=httpx.MockTransport(page_handler(250, requests)))
+    count = download_validation(working, destination, sleep=sleeps.append)
+
+    assert count == 250
+    assert [int(r.url.params["offset"]) for r in requests] == [100, 200]
+    assert len(destination.read_text(encoding="utf-8").splitlines()) == 250
+    assert not partial.exists()
+
+
+def test_resuming_discards_a_line_that_was_cut_off_mid_write(tmp_path: Path) -> None:
+    destination = tmp_path / "rows.jsonl"
+    partial = tmp_path / "rows.jsonl.part"
+    partial.write_text(json.dumps(make_row("q0")) + '\n{"id": "q1", "ques', encoding="utf-8")
+    requests: list[httpx.Request] = []
+    sleeps: list[float] = []
+    client = httpx.Client(transport=httpx.MockTransport(page_handler(5, requests)))
+
+    count = download_validation(client, destination, sleep=sleeps.append)
+
+    assert count == 5
+    assert [int(r.url.params["offset"]) for r in requests] == [1]
+    lines = destination.read_text(encoding="utf-8").splitlines()
+    assert [json.loads(line)["id"] for line in lines] == ["q0", "q1", "q2", "q3", "q4"]
