@@ -191,7 +191,9 @@ def test_search_matches_a_plain_bm25_computation_on_a_larger_corpus(query: str, 
     index = build_index(corpus)
 
     found = index.search(query, limit)
-    expected = reference_search(corpus, query, limit)
 
-    assert [item_id for item_id, _ in found] == [item_id for item_id, _ in expected]
-    assert [score for _, score in found] == pytest.approx([score for _, score in expected])
+    true_scores = dict(reference_search(corpus, query, len(corpus)))
+    best_scores = sorted(true_scores.values(), reverse=True)[:limit]
+    assert [score for _, score in found] == pytest.approx(best_scores)
+    for item_id, score in found:
+        assert true_scores[item_id] == pytest.approx(score)
