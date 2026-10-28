@@ -68,6 +68,7 @@ class HashingEmbedder:
     def __init__(self, dimension: int = 64) -> None:
         self.dimension = dimension
         self.document_batches: list[list[str]] = []
+        self.queries: list[str] = []
 
     def embed_documents(self, texts: Sequence[str]) -> list[list[float]]:
         batch = list(texts)
@@ -75,6 +76,7 @@ class HashingEmbedder:
         return [self._vector(text) for text in batch]
 
     def embed_query(self, text: str) -> list[float]:
+        self.queries.append(text)
         return self._vector(text)
 
     def _vector(self, text: str) -> list[float]:
