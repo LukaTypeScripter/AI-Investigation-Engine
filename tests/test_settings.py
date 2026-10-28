@@ -90,3 +90,30 @@ def test_invalid_numbers_are_rejected(value: str, monkeypatch: pytest.MonkeyPatc
 
     with pytest.raises(ValidationError):
         Settings(_env_file=None)
+
+
+def test_defaults_describe_the_web_service_limits() -> None:
+    settings = Settings(_env_file=None)
+
+    assert settings.max_upload_bytes == 5_000_000
+    assert settings.max_question_chars == 1000
+    assert settings.chunk_max_words == 120
+    assert settings.rerank_results is False
+
+
+def test_the_web_service_limits_are_read_from_environment_variables(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("MAX_UPLOAD_BYTES", "1000")
+    monkeypatch.setenv("RERANK_RESULTS", "true")
+
+    settings = Settings(_env_file=None)
+
+    assert settings.max_upload_bytes == 1000
+    assert settings.rerank_results is True
+
+
+@pytest.mark.parametrize("name", ["max_upload_bytes", "max_question_chars", "chunk_max_words"])
+def test_the_web_service_limits_must_be_positive(name: str) -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate({name: 0})

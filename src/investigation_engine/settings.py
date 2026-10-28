@@ -19,3 +19,7 @@ class Settings(BaseSettings):
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     embedding_dimension: int = Field(default=384, gt=0)
     retrieval_candidates: int = Field(default=50, gt=0)
+    rerank_results: bool = False
+    chunk_max_words: int = Field(default=120, gt=0)
+    max_upload_bytes: int = Field(default=5_000_000, gt=0)
+    max_question_chars: int = Field(default=1000, gt=0)
