@@ -1,5 +1,4 @@
 from collections.abc import Collection, Iterator, Mapping, Sequence
-from dataclasses import dataclass
 
 from psycopg import Connection
 from psycopg.types.json import Jsonb
@@ -7,10 +6,12 @@ from psycopg.types.json import Jsonb
 from investigation_engine.domain import Chunk, Document, SourceRef
 from investigation_engine.ingestion.dedup import fingerprint
 from investigation_engine.ingestion.service import Deletion
+from investigation_engine.storage.catalog import (
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_STREAM_BATCH,
+    DocumentSummary,
+)
 from investigation_engine.storage.database import Database
-
-DEFAULT_PAGE_SIZE = 50
-DEFAULT_STREAM_BATCH = 1000
 
 SELECT_CHUNKS_BY_ID = (
     "SELECT id, document_id, position, text, title, source FROM chunks WHERE id = ANY(%s)"
@@ -31,14 +32,6 @@ COUNT_DOCUMENTS = (
     "OR strpos(lower(d.title), lower(%(text)s)) > 0 "
     "OR strpos(lower(d.source), lower(%(text)s)) > 0)"
 )
-
-
-@dataclass(frozen=True, slots=True)
-class DocumentSummary:
-    id: str
-    title: str
-    source: str
-    chunk_count: int
 
 
 def to_chunk(row: tuple[str, str, int, str, str, str]) -> Chunk:

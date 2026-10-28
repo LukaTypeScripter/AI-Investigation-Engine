@@ -1,9 +1,15 @@
-from collections.abc import Collection, Mapping, Sequence
+from collections.abc import Collection, Iterator, Mapping, Sequence
 from dataclasses import dataclass, replace
+from itertools import batched
 
 from investigation_engine.domain import Chunk, Document, SourceRef
 from investigation_engine.ingestion.dedup import fingerprint
 from investigation_engine.ingestion.service import Deletion
+from investigation_engine.storage.catalog import (
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_STREAM_BATCH,
+    DocumentSummary,
+)
 
 
 @dataclass(slots=True)
@@ -74,6 +80,33 @@ class InMemoryDocumentStore:
         documents = (self._documents[document_id].document for document_id in owners)
         return [SourceRef(document.id, document.title, document.source) for document in documents]
 
+    def list_documents(
+        self, limit: int = DEFAULT_PAGE_SIZE, offset: int = 0, containing: str = ""
+    ) -> list[DocumentSummary]:
+        newest_first = reversed(self._documents.values())
+        matching = [stored for stored in newest_first if self._matches(stored.document, containing)]
+        return [
+            DocumentSummary(
+                stored.document.id,
+                stored.document.title,
+                stored.document.source,
+                len(stored.chunk_ids),
+            )
+            for stored in matching[offset : offset + limit]
+        ]
+
+    def count_documents(self, containing: str = "") -> int:
+        return sum(
+            1 for stored in self._documents.values() if self._matches(stored.document, containing)
+        )
+
+    def count_chunks(self) -> int:
+        return len(self._chunks)
+
+    def iter_chunks(self, batch_size: int = DEFAULT_STREAM_BATCH) -> Iterator[Chunk]:
+        for batch in batched(sorted(self._chunks), batch_size):
+            yield from (self._chunks[chunk_id] for chunk_id in batch)
+
     def document_ids(self) -> set[str]:
         return set(self._documents)
 
@@ -85,6 +118,15 @@ class InMemoryDocumentStore:
 
     def owners_of(self, chunk_id: str) -> dict[str, int]:
         return dict(self._owners[chunk_id])
+
+    @staticmethod
+    def _matches(document: Document, containing: str) -> bool:
+        needle = containing.casefold()
+        return (
+            not needle
+            or needle in document.title.casefold()
+            or needle in document.source.casefold()
+        )
 
     def _drop_chunk(self, chunk_id: str) -> None:
         chunk = self._chunks.pop(chunk_id)
