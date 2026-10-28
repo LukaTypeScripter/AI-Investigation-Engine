@@ -1,3 +1,4 @@
+import logging
 import time
 from collections.abc import AsyncGenerator, Callable
 from contextlib import asynccontextmanager
@@ -26,6 +27,8 @@ from investigation_engine.app.schemas import (
 from investigation_engine.ingestion.parsers import ParseError, UnsupportedFormatError
 from investigation_engine.llm.errors import LlmError, LlmRateLimited, LlmUnavailable
 from investigation_engine.llm.factory import ConfigurationError
+
+logger = logging.getLogger(__name__)
 
 STATIC_DIRECTORY = Path(__file__).parent / "static"
 MILLISECONDS = 1000
@@ -178,10 +181,13 @@ def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI
         except ConfigurationError as error:
             raise HTTPException(503, str(error)) from error
         except LlmRateLimited as error:
+            logger.warning("language model rate limited: %s", error)
             raise HTTPException(429, RATE_LIMITED_MESSAGE) from error
         except LlmUnavailable as error:
+            logger.warning("language model unavailable: %s", error)
             raise HTTPException(503, UNAVAILABLE_MESSAGE) from error
         except LlmError as error:
+            logger.warning("language model failed: %s", error)
             raise HTTPException(502, BAD_RESPONSE_MESSAGE) from error
         elapsed_ms = round((time.perf_counter() - started) * MILLISECONDS)
         return answer_out(investigation, elapsed_ms)

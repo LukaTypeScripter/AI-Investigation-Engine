@@ -274,3 +274,13 @@ def test_the_root_serves_the_web_page(client: TestClient) -> None:
 
 def test_unknown_api_paths_return_404(client: TestClient) -> None:
     assert client.get("/api/nothing").status_code == 404
+
+
+def test_a_language_model_failure_is_written_to_the_log_with_its_reason(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    with answering_client(LlmRejected("m1: HTTP 404: model not found")) as client:
+        response = client.post("/api/ask", json={"question": "Why did payments fail?"})
+
+    assert "model not found" not in response.text
+    assert "model not found" in caplog.text
