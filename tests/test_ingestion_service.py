@@ -1,6 +1,6 @@
 import pytest
 
-from investigation_engine.domain import Document
+from investigation_engine.domain import Document, SourceRef
 from investigation_engine.ingestion.chunking import SentenceChunker
 from investigation_engine.ingestion.parsers import parse_bytes
 from investigation_engine.ingestion.service import IngestionService
@@ -224,6 +224,22 @@ def test_store_rejects_saving_the_same_document_twice() -> None:
 
     with pytest.raises(ValueError, match="already stored"):
         store.save(document, "hash", [], {})
+
+
+def test_sources_of_lists_every_document_that_contains_a_chunk() -> None:
+    service, store = make_service()
+    service.ingest([make_document("a", "Same text."), make_document("b", "Same text.")])
+
+    assert store.sources_of("a:0") == [
+        SourceRef("a", "a", "a.txt"),
+        SourceRef("b", "b", "b.txt"),
+    ]
+
+
+def test_sources_of_an_unknown_chunk_is_empty() -> None:
+    _, store = make_service()
+
+    assert store.sources_of("ghost:0") == []
 
 
 def test_get_chunks_returns_only_the_ids_the_store_knows() -> None:

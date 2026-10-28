@@ -1,7 +1,7 @@
 from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass, replace
 
-from investigation_engine.domain import Chunk, Document
+from investigation_engine.domain import Chunk, Document, SourceRef
 from investigation_engine.ingestion.dedup import fingerprint
 from investigation_engine.ingestion.service import Deletion
 
@@ -68,6 +68,11 @@ class InMemoryDocumentStore:
         return {
             chunk_id: self._chunks[chunk_id] for chunk_id in chunk_ids if chunk_id in self._chunks
         }
+
+    def sources_of(self, chunk_id: str) -> list[SourceRef]:
+        owners = self._owners.get(chunk_id, {})
+        documents = (self._documents[document_id].document for document_id in owners)
+        return [SourceRef(document.id, document.title, document.source) for document in documents]
 
     def document_ids(self) -> set[str]:
         return set(self._documents)
