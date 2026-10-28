@@ -128,3 +128,19 @@ def parse_completion(payload: object) -> Completion:
         model=str(root.get("model") or ""),
         finish_reason=str(choice.get("finish_reason") or ""),
     )
+
+
+def completion_to_wire(completion: Completion) -> dict[str, object]:
+    return {
+        "model": completion.model,
+        "choices": [
+            {
+                "message": message_to_wire(completion.message),
+                "finish_reason": completion.finish_reason,
+            }
+        ],
+        "usage": {
+            "prompt_tokens": completion.usage.prompt_tokens,
+            "completion_tokens": completion.usage.completion_tokens,
+        },
+    }

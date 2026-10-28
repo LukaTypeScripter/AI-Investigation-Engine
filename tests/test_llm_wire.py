@@ -3,8 +3,8 @@ from collections.abc import Mapping
 import pytest
 
 from investigation_engine.llm.errors import LlmMalformedResponse
-from investigation_engine.llm.types import Message, ToolCall, ToolSpec, Usage
-from investigation_engine.llm.wire import build_request_body, parse_completion
+from investigation_engine.llm.types import Completion, Message, ToolCall, ToolSpec, Usage
+from investigation_engine.llm.wire import build_request_body, completion_to_wire, parse_completion
 
 
 def completion_payload(
@@ -140,3 +140,18 @@ def test_parse_completion_rejects_tool_arguments_that_are_not_json() -> None:
 def test_parse_completion_rejects_responses_without_a_message(payload: object) -> None:
     with pytest.raises(LlmMalformedResponse):
         parse_completion(payload)
+
+
+def test_text_completion_round_trips_through_the_wire_format() -> None:
+    original = Completion(Message("assistant", "Paris"), Usage(3, 1), "m1", "stop")
+
+    assert parse_completion(completion_to_wire(original)) == original
+
+
+def test_tool_call_completion_round_trips_through_the_wire_format() -> None:
+    call = ToolCall("c1", "search", {"query": "x", "limit": 2})
+    original = Completion(
+        Message("assistant", None, tool_calls=(call,)), Usage(3, 1), "m1", "tool_calls"
+    )
+
+    assert parse_completion(completion_to_wire(original)) == original
