@@ -10,11 +10,26 @@ services:
       - "5433:5432"
     volumes:
       - investigation-db-data:/var/lib/postgresql/data
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U investigation"]
       interval: 3s
       timeout: 3s
       retries: 20
+
+  app:
+    build: .
+    container_name: investigation-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://investigation:investigation@db:5432/investigation
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "7860:7860"
 
 volumes:
   investigation-db-data:

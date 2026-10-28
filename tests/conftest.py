@@ -6,7 +6,9 @@ import pytest
 
 from investigation_engine.storage.database import Database
 
-DEFAULT_TEST_DATABASE_URL = "postgresql://investigation:investigation@127.0.0.1:5433/investigation"
+DEFAULT_TEST_DATABASE_URL = (
+    "postgresql://investigation:investigation@127.0.0.1:5433/investigation_test"
+)
 CONNECT_TIMEOUT_SECONDS = 2
 
 
