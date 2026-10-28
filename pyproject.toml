@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Multi-document investigation engine with hybrid retrieval and cited, evidence-grounded answers"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "httpx>=0.28.1",
+]
 
 [project.scripts]
 investigation-engine = "investigation_engine:main"
