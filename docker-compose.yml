@@ -1,0 +1,20 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: investigation-db
+    environment:
+      POSTGRES_USER: investigation
+      POSTGRES_PASSWORD: investigation
+      POSTGRES_DB: investigation
+    ports:
+      - "5433:5432"
+    volumes:
+      - investigation-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U investigation"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  investigation-db-data:
