@@ -1,0 +1,5334 @@
+{
+  "seed": 42,
+  "max_documents": null,
+  "reports": [
+    {
+      "config": "bm25_only",
+      "chunker": "sentence-120",
+      "documents": 66607,
+      "chunks": 81243,
+      "duplicate_chunks": 58,
+      "mean_latency_ms": 147.17378039209754,
+      "metrics": {
+        "all": {
+          "recall@1": 0.3790849673202614,
+          "full_recall@1": 0.0784313725490196,
+          "recall@5": 0.7679738562091503,
+          "full_recall@5": 0.5882352941176471,
+          "recall@10": 0.8333333333333334,
+          "full_recall@10": 0.7058823529411765,
+          "mrr": 0.8011982570806101
+        },
+        "multi_step": {
+          "recall@1": 0.37820512820512825,
+          "full_recall@1": 0.0,
+          "recall@5": 0.7564102564102565,
+          "full_recall@5": 0.5384615384615384,
+          "recall@10": 0.8269230769230769,
+          "full_recall@10": 0.6538461538461539,
+          "mrr": 0.8536324786324786
+        },
+        "multi_document": {
+          "recall@1": 0.32142857142857145,
+          "full_recall@1": 0.0,
+          "recall@5": 0.75,
+          "full_recall@5": 0.5714285714285714,
+          "recall@10": 0.7857142857142857,
+          "full_recall@10": 0.6428571428571429,
+          "mrr": 0.7857142857142857
+        },
+        "simple": {
+          "recall@1": 0.6666666666666666,
+          "full_recall@1": 0.6666666666666666,
+          "recall@5": 0.8333333333333334,
+          "full_recall@5": 0.8333333333333334,
+          "recall@10": 0.8333333333333334,
+          "full_recall@10": 0.8333333333333334,
+          "mrr": 0.7222222222222222
+        },
+        "conflicting": {
+          "recall@1": 0.2,
+          "full_recall@1": 0.0,
+          "recall@5": 0.8,
+          "full_recall@5": 0.6,
+          "recall@10": 1.0,
+          "full_recall@10": 1.0,
+          "mrr": 0.6666666666666667
+        }
+      },
+      "questions": [
+        {
+          "question_id": "5ae63b2255429908198fa526",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:2015 Clemson Tigers football team",
+            "hotpot:2012 Orange Bowl",
+            "hotpot:2013 BCS National Championship Game",
+            "hotpot:2014 Orange Bowl (December)",
+            "hotpot:2014 Orange Bowl (January)",
+            "hotpot:2015 Orange Bowl",
+            "hotpot:2013 Orange Bowl",
+            "hotpot:2007 Orange Bowl",
+            "hotpot:2012 NCAA Division I FBS football rankings",
+            "hotpot:1981 Oklahoma Sooners football team"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7fb1765542992e7d278d20",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Ainslie Glen, Nova Scotia",
+            "hotpot:Boston Christmas Tree",
+            "hotpot:Christmas tree production in Canada",
+            "hotpot:Christmas Island, Nova Scotia",
+            "hotpot:Malachy Salter",
+            "hotpot:French Village, Nova Scotia",
+            "hotpot:Foster Hutchinson (jurist)",
+            "hotpot:Gloryhound",
+            "hotpot:Mount Ingino Christmas Tree",
+            "hotpot:Benjamin Green (merchant)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a80ad19554299485f5986a8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Tommy Cannon",
+            "hotpot:Bobby Ball",
+            "hotpot:The Fattest Man in Britain",
+            "hotpot:Cannon and Ball",
+            "hotpot:The Cannon and Ball Show",
+            "hotpot:Esma Cannon",
+            "hotpot:Cannon and Ball's Casino",
+            "hotpot:Marco Antonio Campos",
+            "hotpot:Crystal Powell (comedian)",
+            "hotpot:Ben Miller"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5a75d9b4554299109176e5a7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Dungeness crab",
+            "hotpot:Gari (ginger)",
+            "hotpot:Straightneck squash",
+            "hotpot:Mary's Harbour",
+            "hotpot:Crab cracker",
+            "hotpot:Malus baccata",
+            "hotpot:Cancer pagurus",
+            "hotpot:Crab trap",
+            "hotpot:Flesh fly",
+            "hotpot:Type 067 utility landing craft"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae6050f55429929b0807a5e",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:A Rather Blustery Day",
+            "hotpot:Kate Higgins",
+            "hotpot:Hip Hip Pooh-Ray!",
+            "hotpot:Winnie the Pooh and the Blustery Day",
+            "hotpot:John Kassir",
+            "hotpot:The Rain Rain Rain Came Down Down Down",
+            "hotpot:Heffalumps and Woozles",
+            "hotpot:Elements (miniseries)",
+            "hotpot:Rather Die Young",
+            "hotpot:What's Next to the Moon (album)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abc089b5542993f40c73c57",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:MacBook (Retina)",
+            "hotpot:MacBook family",
+            "hotpot:MacBook Pro",
+            "hotpot:Retina Display",
+            "hotpot:Apricot Portable",
+            "hotpot:V3 Gaming PC",
+            "hotpot:Chuck Colby",
+            "hotpot:LanSlide Gaming PCs",
+            "hotpot:History of laptops",
+            "hotpot:Single-board computer"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a86eee85542994775f60787",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Ringling, Montana",
+            "hotpot:Ingomar, Montana",
+            "hotpot:Harlowton, Montana",
+            "hotpot:Savage's Station, Virginia",
+            "hotpot:Quogue (LIRR station)",
+            "hotpot:Western Avenue station (Milwaukee District)",
+            "hotpot:Gettysburg Spring Railroad",
+            "hotpot:Cambridge Springs (Erie Railroad station)",
+            "hotpot:50th Street (IRT Sixth Avenue Line)",
+            "hotpot:St. Louis, Peoria and Northern Railroad Depot"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7b3ec95542995eb53be8d3",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Edward C. Hugler",
+            "hotpot:Alexander Acosta",
+            "hotpot:Jim Acosta",
+            "hotpot:John Alexander (footballer, born 1955)",
+            "hotpot:Competency-based job description",
+            "hotpot:Edward Curtis Smith",
+            "hotpot:Alexander Garvin",
+            "hotpot:Edward Cochrane McLean",
+            "hotpot:Edward C. Noonan",
+            "hotpot:Guy Sundt"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7363ec5542991f29ee2dd7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:USS Tortuga (LSD-26)",
+            "hotpot:USS Tortuga (LSD-46)",
+            "hotpot:USS Tortuga",
+            "hotpot:Dry Tortugas National Park",
+            "hotpot:Dry Tortugas",
+            "hotpot:Pulley Ridge",
+            "hotpot:Dry Tortugas Ferry to Fort Jefferson",
+            "hotpot:USS Guadalcanal (CVE-60)",
+            "hotpot:Florida Reef",
+            "hotpot:Loggerhead Key"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5a8a5c0d554299515336137b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Blackpool Illuminations",
+            "hotpot:Moor Park, Blackpool",
+            "hotpot:A.F.C. Blackpool",
+            "hotpot:Freckleton",
+            "hotpot:Blackpool Gazette",
+            "hotpot:Poulton-le-Fylde railway station",
+            "hotpot:Audrey Mossom",
+            "hotpot:Stanley Park, Blackpool",
+            "hotpot:Gărâna Jazz Festival",
+            "hotpot:Shakori Hills Grassroots Festival"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab2771e554299340b5254d8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Said Fazal Akbar",
+            "hotpot:Yousef Pashtun",
+            "hotpot:List of Governors of Dakota Territory",
+            "hotpot:Luciano Valero",
+            "hotpot:James R. Beverley",
+            "hotpot:Walter Newton",
+            "hotpot:Caleb Stegall",
+            "hotpot:Natalie Shirley",
+            "hotpot:Ed Schafer",
+            "hotpot:Governor of Minnesota"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abfcdb55542993fe9a41e7b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Stunt Cycle",
+            "hotpot:Jackson Burns",
+            "hotpot:Evel Knievel",
+            "hotpot:Chris Pontius",
+            "hotpot:Dave England",
+            "hotpot:Danny Aiello III",
+            "hotpot:Butch Laswell",
+            "hotpot:Ryan Dunn",
+            "hotpot:Corey Scott",
+            "hotpot:Rachelle Beinart"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab8cd3d5542991b5579f009",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Peter Gifford",
+            "hotpot:The Chosen Few (1980's Australian Band)",
+            "hotpot:Ugly Kid Joe",
+            "hotpot:Kill Casino",
+            "hotpot:(How to Live) As Ghosts",
+            "hotpot:Rock of Love with Bret Michaels",
+            "hotpot:Pen name",
+            "hotpot:The Atlantics",
+            "hotpot:Chris Joannou",
+            "hotpot:Cat Butt"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4e48655429942dd415f9c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Glen River, County Down",
+            "hotpot:Profile Lake",
+            "hotpot:List of tallest mountains in the Solar System",
+            "hotpot:Dublin Pond",
+            "hotpot:Moonsault Scramble",
+            "hotpot:Jirisan",
+            "hotpot:List of tallest dams in China",
+            "hotpot:List of tallest buildings in Indianapolis",
+            "hotpot:Umba River (Tanzania)",
+            "hotpot:Bumping River"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a79f6825542996c55b2dcb4",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Linda Stender",
+            "hotpot:Wesley Lance",
+            "hotpot:New Jersey's 7th congressional district",
+            "hotpot:Leonard Lance",
+            "hotpot:Peter Jacob",
+            "hotpot:Michael J. Doherty",
+            "hotpot:Lenny Cooke",
+            "hotpot:List of New Jersey County Colleges",
+            "hotpot:Monmouth Heights at Manalapan, New Jersey",
+            "hotpot:New Jersey Superior Court"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5adf74075542992d7e9f937c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:RL-83 Blindicide",
+            "hotpot:ARDE 40 mm under barrel grenade launcher",
+            "hotpot:Bazooka",
+            "hotpot:Saturn I",
+            "hotpot:T34 Calliope",
+            "hotpot:Heckler &amp; Koch AG36",
+            "hotpot:AN/PRC-148",
+            "hotpot:T40 Whizbang",
+            "hotpot:LRAC F1",
+            "hotpot:J-rock"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8f38fa55429924144829f5",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Java",
+            "hotpot:State of East Java",
+            "hotpot:Mount Merbabu",
+            "hotpot:Volcanology of Java",
+            "hotpot:Pasundan",
+            "hotpot:Madura Island",
+            "hotpot:Cirebon",
+            "hotpot:Stamford Raffles",
+            "hotpot:Javan leopard",
+            "hotpot:Ingerophrynus"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.1111111111111111
+          }
+        },
+        {
+          "question_id": "5a88451655429938390d3f12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Grigory Drozd",
+            "hotpot:Auli'i Cravalho",
+            "hotpot:Tony Bellew",
+            "hotpot:Jermall Charlo",
+            "hotpot:José López (boxer)",
+            "hotpot:Joseph Anthony",
+            "hotpot:Leon Spinks",
+            "hotpot:Marlon Reid",
+            "hotpot:Samuel Peter",
+            "hotpot:Jermell Charlo"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4832e5542991751b4d79d",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:The White Angel (1936 film)",
+            "hotpot:Matthew McConaughey filmography",
+            "hotpot:The Namesake (film)",
+            "hotpot:William Preston (actor)",
+            "hotpot:Forgotten Sins",
+            "hotpot:The Lone Wolf Takes a Chance",
+            "hotpot:Juarez (film)",
+            "hotpot:Becky Sharp",
+            "hotpot:The Christmas Tree (1996 film)",
+            "hotpot:Young Romance (film)"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.25
+          }
+        },
+        {
+          "question_id": "5ae0156455429942ec259c15",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Alan Faena",
+            "hotpot:Faena Arts Center",
+            "hotpot:Ximena Caminos",
+            "hotpot:Beaufille",
+            "hotpot:Wertheim Performing Arts Center",
+            "hotpot:Ariella Fashion House",
+            "hotpot:Austin School of Film",
+            "hotpot:Marc Ecko",
+            "hotpot:Dolce &amp; Gabbana",
+            "hotpot:Appel Farm Arts and Music Center"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae0f2bf5542997b2ef7d09e",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Spring 1945 offensive in Italy",
+            "hotpot:Battle of Bologna",
+            "hotpot:Siege of Breslau",
+            "hotpot:Operation Grapeshot order of battle",
+            "hotpot:Battle of Guam (1941)",
+            "hotpot:South German Offensive",
+            "hotpot:Battle of the Argenta Gap",
+            "hotpot:Battle of Belleau Wood",
+            "hotpot:Operation Roast",
+            "hotpot:Battle of Manila (1945)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae234005542994d89d5b392",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:James Dean Bradfield",
+            "hotpot:An English Gentleman",
+            "hotpot:National Association for Chiropractic Medicine",
+            "hotpot:Found That Soul",
+            "hotpot:Ocean Spray (song)",
+            "hotpot:You Stole the Sun from My Heart",
+            "hotpot:So Why So Sad",
+            "hotpot:Some Kind of Bliss",
+            "hotpot:Optometry",
+            "hotpot:Professionalization"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab56f3e5542992aa134a317",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Crocosmia aurea",
+            "hotpot:Cimicifuga",
+            "hotpot:Crocosmia",
+            "hotpot:Actaea arizonica",
+            "hotpot:Crocosmia paniculata",
+            "hotpot:Actaea elata",
+            "hotpot:Bolax",
+            "hotpot:Tibouchina",
+            "hotpot:Chaerophyllum elegans",
+            "hotpot:Zamioculcas"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5add647a5542995b365fab26",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Aloinopsis",
+            "hotpot:Washingtonia",
+            "hotpot:Suburban Legends (Tim Remix)",
+            "hotpot:Bangjja",
+            "hotpot:Jeongol",
+            "hotpot:I Write Sins Not Tragedies",
+            "hotpot:Asplenium onopteris",
+            "hotpot:Nandao",
+            "hotpot:Victor Johnston",
+            "hotpot:Heinkel He 277"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8c5b635542996e8ac88a75",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Chinese Chongqing Dog",
+            "hotpot:Kanni",
+            "hotpot:Tugou",
+            "hotpot:Podenco Canario",
+            "hotpot:Levriero Italiano",
+            "hotpot:Chien Français Blanc et Orange",
+            "hotpot:Grand Bleu de Gascogne",
+            "hotpot:Wetterhoun",
+            "hotpot:German Spaniel",
+            "hotpot:Petit Bleu de Gascogne"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae2138c5542997283cd23b7",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Villa Paletti",
+            "hotpot:Betrayal at House on the Hill",
+            "hotpot:Brian Campbell (game designer)",
+            "hotpot:David Parlett",
+            "hotpot:List of word board games",
+            "hotpot:Bear games",
+            "hotpot:Aston Villa Under-23s and Academy",
+            "hotpot:Deduction board game",
+            "hotpot:Robert Charles Bell",
+            "hotpot:BoardGameGeek"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8e8af55542990e94052b3f",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:University of California Pavement Research Center",
+            "hotpot:University of California, Berkeley",
+            "hotpot:University of Southern California",
+            "hotpot:Karl Aschenbrenner",
+            "hotpot:Brown University School of Engineering",
+            "hotpot:Charles P. Nott",
+            "hotpot:Brown University",
+            "hotpot:Graduate Theological Union",
+            "hotpot:Carnegie Mellon University",
+            "hotpot:Smadar Lavie"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5abec2ca5542997719eab5b9",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Carondelet Canal",
+            "hotpot:Miami and Erie Canal",
+            "hotpot:Miami and Erie Canal Deep Cut",
+            "hotpot:Warren County Canal",
+            "hotpot:Erie Canal Lock 52 Complex",
+            "hotpot:Miami Canal",
+            "hotpot:Beaver and Erie Canal",
+            "hotpot:Pennsylvania and Ohio Canal",
+            "hotpot:New York State Canal Corporation",
+            "hotpot:Walhonding Canal"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab73de755429928e1fe383b",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Sord M5",
+            "hotpot:Interact Home Computer",
+            "hotpot:Sord M23P",
+            "hotpot:Timex Sinclair 1000",
+            "hotpot:M5 Industries",
+            "hotpot:Single-board computer",
+            "hotpot:DéCLARAtions",
+            "hotpot:Nuits Blanches",
+            "hotpot:The Home Computer Advanced Course",
+            "hotpot:Pecom 32"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ac41f1d5542991943173924",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:California State University, Dominguez Hills",
+            "hotpot:Cal State Dominguez Hills Toros",
+            "hotpot:Dominguez Oil Field",
+            "hotpot:Willie J. Hagan",
+            "hotpot:StubHub Center",
+            "hotpot:Gabriela Soto Laveaga",
+            "hotpot:Central Avenue (Los Angeles)",
+            "hotpot:Abraham Kidane",
+            "hotpot:Granville, Ohio",
+            "hotpot:Ohio State University, Mansfield Campus"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-01",
+          "category": "simple",
+          "ranked_documents": [
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "INC-2211.md",
+            "hotpot:Wu-Syndicate",
+            "hotpot:Martin/General Dynamics RB-57F Canberra",
+            "hotpot:Change (Taylor Swift song)",
+            "INC-2230.md",
+            "hotpot:Sam Hoyt"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-02",
+          "category": "simple",
+          "ranked_documents": [
+            "postmortem-INC-2207.html",
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "runbook-gateway-rollback.txt",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "architecture.txt",
+            "INC-2211.md"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.3333333333333333
+          }
+        },
+        {
+          "question_id": "inc-03",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1043",
+            "INC-2211.md",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5546",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "architecture.txt",
+            "alerts.json#ALRT-5534",
+            "INC-2219.md"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-04",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-ledger-backlog.txt",
+            "INC-2211.md",
+            "runbook-settlement.txt",
+            "alerts.json#ALRT-5534",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "runbook-gateway-rollback.txt",
+            "architecture.txt",
+            "changes.csv#CHG-1043",
+            "hotpot:Ledger Hill"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-05",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "alerts.json#ALRT-5531",
+            "postmortem-INC-2207.html",
+            "architecture.txt",
+            "changes.csv#CHG-1052",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "hotpot:Paytm"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-06",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1052",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2211.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "changes.csv#CHG-1041",
+            "architecture.txt",
+            "changes.csv#CHG-1044"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-07",
+          "category": "multi_step",
+          "ranked_documents": [
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1041",
+            "changes.csv#CHG-1044",
+            "runbook-gateway-rollback.txt",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "INC-2230.md"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.3333333333333333
+          }
+        },
+        {
+          "question_id": "inc-08",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2211.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "postmortem-INC-2207.html",
+            "changes.csv#CHG-1043",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5534"
+          ],
+          "metrics": {
+            "recall@1": 0.3333333333333333,
+            "full_recall@1": 0.0,
+            "recall@5": 0.6666666666666666,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-09",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2211.md",
+            "runbook-ledger-backlog.txt",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1043",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5534",
+            "INC-2219.md",
+            "postmortem-INC-2207.html",
+            "INC-2230.md"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-10",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "changes.csv#CHG-1044",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1041",
+            "architecture.txt"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-11",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2219.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1042",
+            "alerts.json#ALRT-5540",
+            "INC-2230.md",
+            "INC-2211.md",
+            "postmortem-INC-2207.html",
+            "architecture.txt",
+            "hotpot:Yolanda Saldívar"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2230.md",
+            "INC-2211.md",
+            "changes.csv#CHG-1050",
+            "runbook-settlement.txt",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5560",
+            "INC-2219.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "hotpot:Yolanda Saldívar"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-13",
+          "category": "multi_document",
+          "ranked_documents": [
+            "INC-2211.md",
+            "changes.csv#CHG-1043",
+            "architecture.txt",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5546",
+            "runbook-ledger-backlog.txt"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-14",
+          "category": "multi_document",
+          "ranked_documents": [
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5534",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5560",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-15",
+          "category": "multi_document",
+          "ranked_documents": [
+            "postmortem-INC-2207.html",
+            "hotpot:Michael V Kalaphates",
+            "INC-2219.md",
+            "hotpot:Shape risk",
+            "hotpot:BRCA mutation",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "hotpot:Revised Cardiac Risk Index",
+            "hotpot:Systemic risk",
+            "hotpot:Reinvestment risk"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-16",
+          "category": "multi_document",
+          "ranked_documents": [
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2211.md",
+            "INC-2230.md",
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5534",
+            "hotpot:4Change"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-22",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "status-page-export.html",
+            "INC-2230.md",
+            "alerts.json#ALRT-5546",
+            "hotpot:Yolanda Saldívar"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.3333333333333333
+          }
+        },
+        {
+          "question_id": "inc-23",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "status-page-export.html",
+            "INC-2230.md",
+            "alerts.json#ALRT-5546",
+            "hotpot:Battle of Manila (1574)"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-24",
+          "category": "conflicting",
+          "ranked_documents": [
+            "changes.csv#CHG-1044",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1041",
+            "postmortem-INC-2207.html",
+            "architecture.txt",
+            "alerts.json#ALRT-5531",
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1052",
+            "hotpot:Paytm"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-25",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5599",
+            "INC-2219.md",
+            "INC-2211.md",
+            "status-page-export.html",
+            "hotpot:Todd Bertuzzi–Steve Moore incident",
+            "INC-2230.md",
+            "hotpot:Jin Jing",
+            "hotpot:1976 Tehran UFO incident"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-26",
+          "category": "conflicting",
+          "ranked_documents": [
+            "runbook-settlement.txt",
+            "changes.csv#CHG-1050",
+            "INC-2230.md",
+            "INC-2211.md",
+            "hotpot:Land Run of 1892",
+            "hotpot:Luminosity — Ignite the Night!",
+            "alerts.json#ALRT-5552",
+            "hotpot:Duty to settle",
+            "hotpot:CNN Philippines Nightly News",
+            "hotpot:NBC Nightly News"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "config": "vector_only",
+      "chunker": "sentence-120",
+      "documents": 66607,
+      "chunks": 81243,
+      "duplicate_chunks": 58,
+      "mean_latency_ms": 155.52178823518085,
+      "metrics": {
+        "all": {
+          "recall@1": 0.39542483660130723,
+          "full_recall@1": 0.0784313725490196,
+          "recall@5": 0.8398692810457516,
+          "full_recall@5": 0.7843137254901961,
+          "recall@10": 0.9019607843137255,
+          "full_recall@10": 0.8627450980392157,
+          "mrr": 0.8161181139122315
+        },
+        "multi_step": {
+          "recall@1": 0.37820512820512825,
+          "full_recall@1": 0.0,
+          "recall@5": 0.9230769230769231,
+          "full_recall@5": 0.8461538461538461,
+          "recall@10": 0.9423076923076923,
+          "full_recall@10": 0.8846153846153846,
+          "mrr": 0.875
+        },
+        "multi_document": {
+          "recall@1": 0.38095238095238093,
+          "full_recall@1": 0.0,
+          "recall@5": 0.7380952380952381,
+          "full_recall@5": 0.7142857142857143,
+          "recall@10": 0.8214285714285714,
+          "full_recall@10": 0.7857142857142857,
+          "mrr": 0.8003826530612245
+        },
+        "simple": {
+          "recall@1": 0.6666666666666666,
+          "full_recall@1": 0.6666666666666666,
+          "recall@5": 0.8333333333333334,
+          "full_recall@5": 0.8333333333333334,
+          "recall@10": 0.8333333333333334,
+          "full_recall@10": 0.8333333333333334,
+          "mrr": 0.75
+        },
+        "conflicting": {
+          "recall@1": 0.2,
+          "full_recall@1": 0.0,
+          "recall@5": 0.7,
+          "full_recall@5": 0.6,
+          "recall@10": 1.0,
+          "full_recall@10": 1.0,
+          "mrr": 0.6333333333333333
+        }
+      },
+      "questions": [
+        {
+          "question_id": "5ae63b2255429908198fa526",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:2014 Orange Bowl (January)",
+            "hotpot:2012 Orange Bowl",
+            "hotpot:2014 Orange Bowl (December)",
+            "hotpot:2015 Orange Bowl",
+            "hotpot:2012 NCAA Division I FBS football rankings",
+            "hotpot:2013 Orange Bowl",
+            "hotpot:2013 BCS National Championship Game",
+            "hotpot:2011 Orange Bowl",
+            "hotpot:2015 Clemson Tigers football team",
+            "hotpot:2015 Miami Hurricanes football team"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.25
+          }
+        },
+        {
+          "question_id": "5a7fb1765542992e7d278d20",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Ainslie Glen, Nova Scotia",
+            "hotpot:Boston Christmas Tree",
+            "hotpot:Liberty Tree",
+            "hotpot:Boston Harbor",
+            "hotpot:Christmas Island, Nova Scotia",
+            "hotpot:Christmas tree production in Canada",
+            "hotpot:Saint John, New Brunswick",
+            "hotpot:Boston, Lincolnshire",
+            "hotpot:Boston Bruins",
+            "hotpot:Liberty Tree District"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a80ad19554299485f5986a8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Bobby Ball",
+            "hotpot:Tommy Cannon",
+            "hotpot:Cannon and Ball",
+            "hotpot:The Cannon and Ball Show",
+            "hotpot:The Fattest Man in Britain",
+            "hotpot:Cannon and Ball's Casino",
+            "hotpot:Hugh Laurie",
+            "hotpot:Michael Barrymore",
+            "hotpot:Roy 'Chubby' Brown",
+            "hotpot:Johnny Brown (actor)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a75d9b4554299109176e5a7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Crab fisheries",
+            "hotpot:Cancer pagurus",
+            "hotpot:Crab cracker",
+            "hotpot:Dungeness crab",
+            "hotpot:Malus baccata",
+            "hotpot:She-crab soup",
+            "hotpot:Crab trap",
+            "hotpot:Mary's Harbour",
+            "hotpot:Flesh fly",
+            "hotpot:Apple"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae6050f55429929b0807a5e",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:A Rather Blustery Day",
+            "hotpot:Robby Benson",
+            "hotpot:Jim Cummings",
+            "hotpot:Cliff Edwards",
+            "hotpot:Ricky Gervais",
+            "hotpot:Steven Tyler",
+            "hotpot:Jim Lindberg",
+            "hotpot:&quot;Weird Al&quot; Yankovic",
+            "hotpot:Eddie Vedder",
+            "hotpot:Till Lindemann"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abc089b5542993f40c73c57",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:MacBook (Retina)",
+            "hotpot:MacBook Pro",
+            "hotpot:MacBook family",
+            "hotpot:Retina Display",
+            "hotpot:IPad (4th generation)",
+            "hotpot:Iiyama Vision Master Pro 17 computer monitor",
+            "hotpot:Mac OS 8",
+            "hotpot:Compaq Presario V6000",
+            "hotpot:Apple Mighty Mouse",
+            "hotpot:Apple Inc."
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a86eee85542994775f60787",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Ringling, Montana",
+            "hotpot:Harlowton, Montana",
+            "hotpot:Ingomar, Montana",
+            "hotpot:Kansas Pacific Railway",
+            "hotpot:Chicago, Milwaukee, St. Paul and Pacific Railroad",
+            "hotpot:Saint Paul and Pacific Railroad",
+            "hotpot:Denver, South Park and Pacific Railroad",
+            "hotpot:Erie Railroad",
+            "hotpot:Alaska Railroad",
+            "hotpot:Monson Railroad"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7b3ec95542995eb53be8d3",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Alexander Acosta",
+            "hotpot:Edward C. Hugler",
+            "hotpot:Ulysses S. Grant",
+            "hotpot:Loretta Lynch",
+            "hotpot:Cynthia Hogan",
+            "hotpot:Lawrence Eagleburger",
+            "hotpot:William Flynn Martin",
+            "hotpot:Dwight D. Eisenhower",
+            "hotpot:George W. Haley",
+            "hotpot:Howard Warren Buffett"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7363ec5542991f29ee2dd7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:USS Tortuga (LSD-26)",
+            "hotpot:USS Tortuga (LSD-46)",
+            "hotpot:Dry Tortugas",
+            "hotpot:USS Tortuga",
+            "hotpot:Dry Tortugas National Park",
+            "hotpot:Pago Pago",
+            "hotpot:San Antonio",
+            "hotpot:Sarasota, Florida",
+            "hotpot:La Tortue, Saint Barthélemy",
+            "hotpot:Loggerhead Key"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5a8a5c0d554299515336137b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Blackpool Illuminations",
+            "hotpot:Audrey Mossom",
+            "hotpot:Strictly Come Dancing",
+            "hotpot:Gillian Lynne",
+            "hotpot:Julianne Hough",
+            "hotpot:The Strictly",
+            "hotpot:Marco Da Silva (dancer)",
+            "hotpot:Poulton-le-Fylde railway station",
+            "hotpot:Frank Andersson",
+            "hotpot:Bobby Fox"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab2771e554299340b5254d8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Said Fazal Akbar",
+            "hotpot:Mohammad Najibullah",
+            "hotpot:Hamid Karzai",
+            "hotpot:Abdul Rahim Ghafoorzai",
+            "hotpot:Yousef Pashtun",
+            "hotpot:Barakzai dynasty",
+            "hotpot:1842 retreat from Kabul",
+            "hotpot:James K. Polk",
+            "hotpot:Ronald Reagan",
+            "hotpot:Dost Mohammad Khan (Emir of Afghanistan)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abfcdb55542993fe9a41e7b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Evel Knievel",
+            "hotpot:Stunt Cycle",
+            "hotpot:Stan Barrett",
+            "hotpot:Corey Scott",
+            "hotpot:Al Capone",
+            "hotpot:Butch Laswell",
+            "hotpot:Ryan Dunn",
+            "hotpot:Phil Hill",
+            "hotpot:Chris Jericho",
+            "hotpot:Bob Lazier"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab8cd3d5542991b5579f009",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Peter Gifford",
+            "hotpot:Guns N' Roses",
+            "hotpot:Badfinger",
+            "hotpot:The Beatles",
+            "hotpot:Elbow (band)",
+            "hotpot:The Stone Roses",
+            "hotpot:Eagles (band)",
+            "hotpot:Bad Religion",
+            "hotpot:The Easybeats",
+            "hotpot:Peter Bardens"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4e48655429942dd415f9c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Lake Superior",
+            "hotpot:Glen River, County Down",
+            "hotpot:Mount Stimson",
+            "hotpot:Wind River Range",
+            "hotpot:Glenwood Canyon",
+            "hotpot:Snowy River",
+            "hotpot:Avalanche Lake (New York)",
+            "hotpot:Hayford Peak",
+            "hotpot:Red Rock River (Montana)",
+            "hotpot:Watauga River"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5a79f6825542996c55b2dcb4",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Linda Stender",
+            "hotpot:Leonard Lance",
+            "hotpot:New Jersey's 7th congressional district",
+            "hotpot:Wesley Lance",
+            "hotpot:Marcia A. Karrow",
+            "hotpot:Hillary Clinton",
+            "hotpot:Peter Jacob",
+            "hotpot:Bill Bradley",
+            "hotpot:Michael J. Doherty",
+            "hotpot:Irene Griffin"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5adf74075542992d7e9f937c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:RL-83 Blindicide",
+            "hotpot:Heckler &amp; Koch AG36",
+            "hotpot:M795",
+            "hotpot:M107 projectile",
+            "hotpot:Bazooka",
+            "hotpot:M18 Hellcat",
+            "hotpot:155 GH 52 APU",
+            "hotpot:M115 howitzer",
+            "hotpot:LRAC F1",
+            "hotpot:M90 Stršljen"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8f38fa55429924144829f5",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Rampokan",
+            "hotpot:Javan leopard",
+            "hotpot:Java",
+            "hotpot:Volcanology of Java",
+            "hotpot:Yala National Park",
+            "hotpot:Budhi Pallien",
+            "hotpot:Rampur Greyhound",
+            "hotpot:Japanese black bear",
+            "hotpot:Guanacaste National Park (Costa Rica)",
+            "hotpot:Kallima paralekta"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a88451655429938390d3f12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Grigory Drozd",
+            "hotpot:Tony Bellew",
+            "hotpot:Muhammad Ali",
+            "hotpot:Tom Hardy",
+            "hotpot:Mahershala Ali",
+            "hotpot:Mike Tyson",
+            "hotpot:Hasim Rahman",
+            "hotpot:Daniel Henney",
+            "hotpot:Anthony Mundine",
+            "hotpot:Wagner Moura"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4832e5542991751b4d79d",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:The Crucible (1996 film)",
+            "hotpot:William Preston (actor)",
+            "hotpot:Romeo + Juliet",
+            "hotpot:Hamlet (1996 film)",
+            "hotpot:Memphis Belle (film)",
+            "hotpot:The Last of the Mohicans (1992 film)",
+            "hotpot:The Stepford Husbands",
+            "hotpot:Schindler's List",
+            "hotpot:Twelfth Night (1996 film)",
+            "hotpot:Tromeo and Juliet"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae0156455429942ec259c15",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Alan Faena",
+            "hotpot:Faena Arts Center",
+            "hotpot:Dolce &amp; Gabbana",
+            "hotpot:Marc Ecko",
+            "hotpot:Acne Studios",
+            "hotpot:Carl Anglim",
+            "hotpot:Comme des Garçons",
+            "hotpot:Rei Kawakubo",
+            "hotpot:IKEA",
+            "hotpot:Prada"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae0f2bf5542997b2ef7d09e",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Spring 1945 offensive in Italy",
+            "hotpot:Battle of Guam (1944)",
+            "hotpot:Battle of Guam (1941)",
+            "hotpot:Battle of Okinawa",
+            "hotpot:George McMillin",
+            "hotpot:Attack on Pearl Harbor",
+            "hotpot:Battle of Gettysburg",
+            "hotpot:Battle of France",
+            "hotpot:Operation Michael",
+            "hotpot:Battle of Wake Island"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae234005542994d89d5b392",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:James Dean Bradfield",
+            "hotpot:Rob Thomas (musician)",
+            "hotpot:Robert Young (actor)",
+            "hotpot:Timothy Busfield",
+            "hotpot:James Stewart",
+            "hotpot:Todd Field",
+            "hotpot:Thomas James (businessman)",
+            "hotpot:Thomas Robsahm",
+            "hotpot:Robert Sean Leonard",
+            "hotpot:Bob Thomas (actor)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab56f3e5542992aa134a317",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Crocosmia",
+            "hotpot:Cimicifuga",
+            "hotpot:Crocosmia aurea",
+            "hotpot:Crocosmia paniculata",
+            "hotpot:Nepenthes",
+            "hotpot:Conicosia",
+            "hotpot:Tillandsia",
+            "hotpot:Jasminocereus",
+            "hotpot:Eustoma",
+            "hotpot:Calibanus"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5add647a5542995b365fab26",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Aloinopsis",
+            "hotpot:Washingtonia",
+            "hotpot:Aloysia",
+            "hotpot:Alopecurus",
+            "hotpot:Boltonia",
+            "hotpot:Corokia",
+            "hotpot:Catasetum",
+            "hotpot:Brintonia",
+            "hotpot:Weldenia",
+            "hotpot:Catopsis"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8c5b635542996e8ac88a75",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Kanni",
+            "hotpot:Chinese Chongqing Dog",
+            "hotpot:Akita (dog)",
+            "hotpot:Tugou",
+            "hotpot:Finnish Spitz",
+            "hotpot:Dunker",
+            "hotpot:Chesapeake Bay Retriever",
+            "hotpot:Wetterhoun",
+            "hotpot:Rampur Greyhound",
+            "hotpot:Korean Jindo"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae2138c5542997283cd23b7",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Villa Paletti",
+            "hotpot:Betrayal at House on the Hill",
+            "hotpot:Put (card game)",
+            "hotpot:Horror on the Hill",
+            "hotpot:Houses of the Blooded",
+            "hotpot:House of the surgeon",
+            "hotpot:The Sorcerer's Cave",
+            "hotpot:Deduction board game",
+            "hotpot:Anthony Horowitz",
+            "hotpot:Samuel Beckett"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8e8af55542990e94052b3f",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:University of California, Berkeley",
+            "hotpot:Stanford University",
+            "hotpot:Brown University School of Engineering",
+            "hotpot:Brown University",
+            "hotpot:University of Southern California",
+            "hotpot:Massachusetts Institute of Technology",
+            "hotpot:University of California",
+            "hotpot:University of California, San Francisco",
+            "hotpot:University of California, Santa Barbara",
+            "hotpot:California State University"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abec2ca5542997719eab5b9",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Miami and Erie Canal",
+            "hotpot:Carondelet Canal",
+            "hotpot:Miami Canal",
+            "hotpot:Pennsylvania and Ohio Canal",
+            "hotpot:Miami and Erie Canal Deep Cut",
+            "hotpot:Tamiami Canal",
+            "hotpot:Beaver and Erie Canal",
+            "hotpot:Warren County Canal",
+            "hotpot:Champlain Canal",
+            "hotpot:Sandy and Beaver Canal"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab73de755429928e1fe383b",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Sord M5",
+            "hotpot:Interact Home Computer",
+            "hotpot:Sord M23P",
+            "hotpot:MacBook Pro",
+            "hotpot:Apple Mighty Mouse",
+            "hotpot:Everex",
+            "hotpot:M5 Industries",
+            "hotpot:Souq.com",
+            "hotpot:Tandem Computers",
+            "hotpot:Nguyenkim Shopping Center"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ac41f1d5542991943173924",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:California State University, Dominguez Hills",
+            "hotpot:Cal State Dominguez Hills Toros",
+            "hotpot:California State University",
+            "hotpot:Ohio State University",
+            "hotpot:University of California",
+            "hotpot:California State University, San Bernardino",
+            "hotpot:University of California, Santa Barbara",
+            "hotpot:Dominguez Oil Field",
+            "hotpot:Western University of Health Sciences",
+            "hotpot:Ohio State University, Mansfield Campus"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-01",
+          "category": "simple",
+          "ranked_documents": [
+            "hotpot:FTS2000",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2230.md",
+            "hotpot:Loan modification in the United States",
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5534",
+            "hotpot:Commissioner v. Banks",
+            "alerts.json#ALRT-5599",
+            "hotpot:Airline Deregulation Act"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-02",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5531",
+            "changes.csv#CHG-1052",
+            "alerts.json#ALRT-5534",
+            "INC-2211.md",
+            "runbook-gateway-rollback.txt"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-03",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1043",
+            "alerts.json#ALRT-5546",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5534",
+            "INC-2211.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1052",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5599"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-04",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-ledger-backlog.txt",
+            "INC-2211.md",
+            "alerts.json#ALRT-5534",
+            "alerts.json#ALRT-5546",
+            "changes.csv#CHG-1043",
+            "runbook-gateway-rollback.txt",
+            "runbook-settlement.txt",
+            "changes.csv#CHG-1052",
+            "copy-of-INC-2207.md",
+            "INC-2207.md"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-05",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1044",
+            "hotpot:Spurs Sports &amp; Entertainment",
+            "hotpot:Spectrum SportsNet (Los Angeles)",
+            "hotpot:Comcast Spectacor",
+            "hotpot:Pat Bowlen",
+            "hotpot:Gasparilla Bowl",
+            "runbook-ledger-backlog.txt",
+            "copy-of-INC-2207.md",
+            "INC-2207.md"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-06",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1052",
+            "alerts.json#ALRT-5531",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1044",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "INC-2211.md",
+            "INC-2230.md",
+            "changes.csv#CHG-1041"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-07",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5531",
+            "INC-2219.md",
+            "alerts.json#ALRT-5534",
+            "INC-2211.md",
+            "alerts.json#ALRT-5599"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-08",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2211.md",
+            "alerts.json#ALRT-5546",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1043",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5534",
+            "INC-2219.md",
+            "status-page-export.html",
+            "alerts.json#ALRT-5531"
+          ],
+          "metrics": {
+            "recall@1": 0.3333333333333333,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-09",
+          "category": "multi_step",
+          "ranked_documents": [
+            "alerts.json#ALRT-5546",
+            "INC-2211.md",
+            "changes.csv#CHG-1043",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5534",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1052",
+            "alerts.json#ALRT-5599",
+            "runbook-settlement.txt"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-10",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5531",
+            "changes.csv#CHG-1044",
+            "INC-2219.md",
+            "runbook-gateway-rollback.txt",
+            "INC-2211.md",
+            "postmortem-INC-2207.html",
+            "changes.csv#CHG-1052",
+            "changes.csv#CHG-1041"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-11",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2219.md",
+            "changes.csv#CHG-1042",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5560",
+            "INC-2211.md",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5534",
+            "alerts.json#ALRT-5552"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2230.md",
+            "changes.csv#CHG-1050",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5560",
+            "runbook-settlement.txt",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5599",
+            "INC-2211.md",
+            "INC-2219.md"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-13",
+          "category": "multi_document",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2211.md",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5546",
+            "changes.csv#CHG-1052",
+            "changes.csv#CHG-1043",
+            "INC-2219.md",
+            "postmortem-INC-2207.html",
+            "changes.csv#CHG-1041"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.14285714285714285
+          }
+        },
+        {
+          "question_id": "inc-14",
+          "category": "multi_document",
+          "ranked_documents": [
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5560",
+            "hotpot:Calendar date",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5531",
+            "hotpot:Harrods bombings",
+            "alerts.json#ALRT-5534",
+            "hotpot:KIH54",
+            "hotpot:Emergency Action Message"
+          ],
+          "metrics": {
+            "recall@1": 0.3333333333333333,
+            "full_recall@1": 0.0,
+            "recall@5": 0.3333333333333333,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-15",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Revised Cardiac Risk Index",
+            "INC-2230.md",
+            "hotpot:NICS Improvement Amendments Act of 2007",
+            "hotpot:Chief Financial Officers Act",
+            "hotpot:Loan modification in the United States",
+            "hotpot:Financial condition report",
+            "hotpot:Florida Amendment 2 (2016)",
+            "hotpot:Electronic remittance advice",
+            "hotpot:Spaziano v. Florida",
+            "hotpot:FIPS 140-3"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-16",
+          "category": "multi_document",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5599",
+            "hotpot:Fly540",
+            "INC-2211.md",
+            "hotpot:KIH54",
+            "INC-2230.md",
+            "hotpot:Ethiopian Airlines accidents and incidents"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0625
+          }
+        },
+        {
+          "question_id": "inc-22",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5540",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5599",
+            "status-page-export.html",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5560"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.16666666666666666
+          }
+        },
+        {
+          "question_id": "inc-23",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5540",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5599",
+            "status-page-export.html",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5560"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-24",
+          "category": "conflicting",
+          "ranked_documents": [
+            "changes.csv#CHG-1044",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1041",
+            "alerts.json#ALRT-5531",
+            "runbook-gateway-rollback.txt",
+            "status-page-export.html",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "changes.csv#CHG-1052"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-25",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5599",
+            "alerts.json#ALRT-5531",
+            "INC-2219.md",
+            "INC-2211.md",
+            "INC-2230.md",
+            "alerts.json#ALRT-5560",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5546"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-26",
+          "category": "conflicting",
+          "ranked_documents": [
+            "runbook-settlement.txt",
+            "changes.csv#CHG-1050",
+            "alerts.json#ALRT-5552",
+            "INC-2230.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "status-page-export.html",
+            "alerts.json#ALRT-5560",
+            "INC-2211.md",
+            "postmortem-INC-2207.html"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "config": "hybrid_rrf",
+      "chunker": "sentence-120",
+      "documents": 66607,
+      "chunks": 81243,
+      "duplicate_chunks": 58,
+      "mean_latency_ms": 157.5361372547466,
+      "metrics": {
+        "all": {
+          "recall@1": 0.39542483660130723,
+          "full_recall@1": 0.0784313725490196,
+          "recall@5": 0.8562091503267973,
+          "full_recall@5": 0.7647058823529411,
+          "recall@10": 0.9215686274509803,
+          "full_recall@10": 0.8823529411764706,
+          "mrr": 0.8171802054154995
+        },
+        "multi_step": {
+          "recall@1": 0.39743589743589747,
+          "full_recall@1": 0.0,
+          "recall@5": 0.9038461538461539,
+          "full_recall@5": 0.8076923076923077,
+          "recall@10": 0.9423076923076923,
+          "full_recall@10": 0.8846153846153846,
+          "mrr": 0.8878205128205128
+        },
+        "multi_document": {
+          "recall@1": 0.34523809523809523,
+          "full_recall@1": 0.0,
+          "recall@5": 0.7976190476190476,
+          "full_recall@5": 0.7142857142857143,
+          "recall@10": 0.8928571428571429,
+          "full_recall@10": 0.8571428571428571,
+          "mrr": 0.7780612244897959
+        },
+        "simple": {
+          "recall@1": 0.6666666666666666,
+          "full_recall@1": 0.6666666666666666,
+          "recall@5": 0.8333333333333334,
+          "full_recall@5": 0.8333333333333334,
+          "recall@10": 0.8333333333333334,
+          "full_recall@10": 0.8333333333333334,
+          "mrr": 0.75
+        },
+        "conflicting": {
+          "recall@1": 0.2,
+          "full_recall@1": 0.0,
+          "recall@5": 0.8,
+          "full_recall@5": 0.6,
+          "recall@10": 1.0,
+          "full_recall@10": 1.0,
+          "mrr": 0.64
+        }
+      },
+      "questions": [
+        {
+          "question_id": "5ae63b2255429908198fa526",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:2012 Orange Bowl",
+            "hotpot:2014 Orange Bowl (January)",
+            "hotpot:2014 Orange Bowl (December)",
+            "hotpot:2015 Clemson Tigers football team",
+            "hotpot:2013 BCS National Championship Game",
+            "hotpot:2015 Orange Bowl",
+            "hotpot:2013 Orange Bowl",
+            "hotpot:2012 NCAA Division I FBS football rankings",
+            "hotpot:2007 Orange Bowl",
+            "hotpot:2011 Orange Bowl"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.25
+          }
+        },
+        {
+          "question_id": "5a7fb1765542992e7d278d20",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Ainslie Glen, Nova Scotia",
+            "hotpot:Boston Christmas Tree",
+            "hotpot:Christmas tree production in Canada",
+            "hotpot:Christmas Island, Nova Scotia",
+            "hotpot:Liberty Tree",
+            "hotpot:Chicago Christmas Tree",
+            "hotpot:Mount Ingino Christmas Tree",
+            "hotpot:East Jeddore, Nova Scotia",
+            "hotpot:Saint John, New Brunswick",
+            "hotpot:Liberty Tree District"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a80ad19554299485f5986a8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Bobby Ball",
+            "hotpot:Tommy Cannon",
+            "hotpot:Cannon and Ball",
+            "hotpot:The Fattest Man in Britain",
+            "hotpot:The Cannon and Ball Show",
+            "hotpot:Cannon and Ball's Casino",
+            "hotpot:Esma Cannon",
+            "hotpot:Hugh Laurie",
+            "hotpot:Nick Cannon",
+            "hotpot:Ben Miller"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a75d9b4554299109176e5a7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Dungeness crab",
+            "hotpot:Crab cracker",
+            "hotpot:Cancer pagurus",
+            "hotpot:Malus baccata",
+            "hotpot:Mary's Harbour",
+            "hotpot:Crab trap",
+            "hotpot:She-crab soup",
+            "hotpot:Apple",
+            "hotpot:Flesh fly",
+            "hotpot:Crab fisheries"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae6050f55429929b0807a5e",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:A Rather Blustery Day",
+            "hotpot:Jim Cummings",
+            "hotpot:Kate Higgins",
+            "hotpot:Robby Benson",
+            "hotpot:Hip Hip Pooh-Ray!",
+            "hotpot:Cliff Edwards",
+            "hotpot:Winnie the Pooh and the Blustery Day",
+            "hotpot:John Kassir",
+            "hotpot:Ricky Gervais",
+            "hotpot:Steven Tyler"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abc089b5542993f40c73c57",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:MacBook (Retina)",
+            "hotpot:MacBook Pro",
+            "hotpot:MacBook family",
+            "hotpot:Retina Display",
+            "hotpot:Apricot Portable",
+            "hotpot:Single-board computer",
+            "hotpot:History of laptops",
+            "hotpot:Backlight",
+            "hotpot:Portable media player",
+            "hotpot:PPC 512"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a86eee85542994775f60787",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Ringling, Montana",
+            "hotpot:Harlowton, Montana",
+            "hotpot:Ingomar, Montana",
+            "hotpot:Chicago, Milwaukee, St. Paul and Pacific Railroad",
+            "hotpot:Gettysburg Spring Railroad",
+            "hotpot:Lorton station (VRE)",
+            "hotpot:Little River Railroad (Tennessee)",
+            "hotpot:Great Lakes Central Railroad",
+            "hotpot:Kansas Pacific Railway",
+            "hotpot:Savage's Station, Virginia"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7b3ec95542995eb53be8d3",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Alexander Acosta",
+            "hotpot:Edward C. Hugler",
+            "hotpot:Edward C. Noonan",
+            "hotpot:Jim Acosta",
+            "hotpot:Ed Acker",
+            "hotpot:Ulysses S. Grant",
+            "hotpot:John Alexander (footballer, born 1955)",
+            "hotpot:Loretta Lynch",
+            "hotpot:Competency-based job description",
+            "hotpot:Cynthia Hogan"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7363ec5542991f29ee2dd7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:USS Tortuga (LSD-26)",
+            "hotpot:USS Tortuga (LSD-46)",
+            "hotpot:USS Tortuga",
+            "hotpot:Dry Tortugas",
+            "hotpot:Dry Tortugas National Park",
+            "hotpot:Loggerhead Key",
+            "hotpot:Dry Tortugas Ferry to Fort Jefferson",
+            "hotpot:Lord Howe Island",
+            "hotpot:Guaymas",
+            "hotpot:Florida Reef"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5a8a5c0d554299515336137b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Blackpool Illuminations",
+            "hotpot:Audrey Mossom",
+            "hotpot:Poulton-le-Fylde railway station",
+            "hotpot:Moor Park, Blackpool",
+            "hotpot:Freckleton",
+            "hotpot:A.F.C. Blackpool",
+            "hotpot:Blackpool Gazette",
+            "hotpot:Stanley Park, Blackpool",
+            "hotpot:Listed buildings in Blackpool",
+            "hotpot:Lindisfarne Festival"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab2771e554299340b5254d8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Said Fazal Akbar",
+            "hotpot:Yousef Pashtun",
+            "hotpot:Abdul Rahim Ghafoorzai",
+            "hotpot:Mohammad Najibullah",
+            "hotpot:Hamid Karzai",
+            "hotpot:List of Governors of Dakota Territory",
+            "hotpot:Luciano Valero",
+            "hotpot:James R. Beverley",
+            "hotpot:Barakzai dynasty",
+            "hotpot:Walter Newton"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abfcdb55542993fe9a41e7b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Stunt Cycle",
+            "hotpot:Evel Knievel",
+            "hotpot:Corey Scott",
+            "hotpot:Butch Laswell",
+            "hotpot:Ryan Dunn",
+            "hotpot:Stan Barrett",
+            "hotpot:Taso N. Stavrakis",
+            "hotpot:Jackson Burns",
+            "hotpot:Chris Pontius",
+            "hotpot:Al Capone"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab8cd3d5542991b5579f009",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Peter Gifford",
+            "hotpot:The Chosen Few (1980's Australian Band)",
+            "hotpot:The Atlantics",
+            "hotpot:Guns N' Roses",
+            "hotpot:Badfinger",
+            "hotpot:Ugly Kid Joe",
+            "hotpot:Kill Casino",
+            "hotpot:The Beatles",
+            "hotpot:(How to Live) As Ghosts",
+            "hotpot:Elbow (band)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4e48655429942dd415f9c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Glen River, County Down",
+            "hotpot:Wheeler Peak Glacier",
+            "hotpot:Castle Rock Mountain",
+            "hotpot:Chateauguay Valley",
+            "hotpot:Lake Superior",
+            "hotpot:Profile Lake",
+            "hotpot:List of tallest mountains in the Solar System",
+            "hotpot:Mount Stimson",
+            "hotpot:Dublin Pond",
+            "hotpot:Wind River Range"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a79f6825542996c55b2dcb4",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Linda Stender",
+            "hotpot:Leonard Lance",
+            "hotpot:Wesley Lance",
+            "hotpot:New Jersey's 7th congressional district",
+            "hotpot:Peter Jacob",
+            "hotpot:Michael J. Doherty",
+            "hotpot:Marcia A. Karrow",
+            "hotpot:Hillary Clinton",
+            "hotpot:Lenny Cooke",
+            "hotpot:Bill Bradley"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5adf74075542992d7e9f937c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:RL-83 Blindicide",
+            "hotpot:Heckler &amp; Koch AG36",
+            "hotpot:Bazooka",
+            "hotpot:ARDE 40 mm under barrel grenade launcher",
+            "hotpot:LRAC F1",
+            "hotpot:T40 Whizbang",
+            "hotpot:M7 grenade launcher",
+            "hotpot:M90 Stršljen",
+            "hotpot:M1 Grenade Adapter",
+            "hotpot:RPG-22"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8f38fa55429924144829f5",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Java",
+            "hotpot:Volcanology of Java",
+            "hotpot:Javan leopard",
+            "hotpot:Rampokan",
+            "hotpot:Mount Merbabu",
+            "hotpot:Madura Island",
+            "hotpot:Giant gourami",
+            "hotpot:Tanjung Layar",
+            "hotpot:Hydrocotyle javanica",
+            "hotpot:State of East Java"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.3333333333333333
+          }
+        },
+        {
+          "question_id": "5a88451655429938390d3f12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Grigory Drozd",
+            "hotpot:Tony Bellew",
+            "hotpot:Mike Tyson",
+            "hotpot:Dave Allen (boxer)",
+            "hotpot:Daniel Radcliffe",
+            "hotpot:Carl Frampton",
+            "hotpot:Auli'i Cravalho",
+            "hotpot:Muhammad Ali",
+            "hotpot:Jermall Charlo",
+            "hotpot:Tom Hardy"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4832e5542991751b4d79d",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:William Preston (actor)",
+            "hotpot:The Crucible (1996 film)",
+            "hotpot:Romeo + Juliet",
+            "hotpot:Vanity Fair (2004 film)",
+            "hotpot:The Ghost and the Darkness",
+            "hotpot:Tromeo and Juliet",
+            "hotpot:The White Angel (1936 film)",
+            "hotpot:Matthew McConaughey filmography",
+            "hotpot:The Namesake (film)",
+            "hotpot:Hamlet (1996 film)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae0156455429942ec259c15",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Alan Faena",
+            "hotpot:Faena Arts Center",
+            "hotpot:Dolce &amp; Gabbana",
+            "hotpot:Marc Ecko",
+            "hotpot:Comme des Garçons",
+            "hotpot:Acne Studios",
+            "hotpot:Manimal Vinyl",
+            "hotpot:Disco Ruined My Life",
+            "hotpot:Prada",
+            "hotpot:Elle (magazine)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae0f2bf5542997b2ef7d09e",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Spring 1945 offensive in Italy",
+            "hotpot:Battle of Guam (1941)",
+            "hotpot:Battle of the Argenta Gap",
+            "hotpot:Battle of Bologna",
+            "hotpot:Battle of Guam (1944)",
+            "hotpot:Operation Grapeshot order of battle",
+            "hotpot:Battle of Belleau Wood",
+            "hotpot:Battle of Manila (1945)",
+            "hotpot:Battle of Wake Island",
+            "hotpot:Operation Roast"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae234005542994d89d5b392",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:James Dean Bradfield",
+            "hotpot:Thomas James (businessman)",
+            "hotpot:Rob Thomas (musician)",
+            "hotpot:Disease (song)",
+            "hotpot:James Dean",
+            "hotpot:An English Gentleman",
+            "hotpot:National Association for Chiropractic Medicine",
+            "hotpot:Robert Young (actor)",
+            "hotpot:Found That Soul",
+            "hotpot:Timothy Busfield"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab56f3e5542992aa134a317",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Crocosmia aurea",
+            "hotpot:Crocosmia",
+            "hotpot:Cimicifuga",
+            "hotpot:Crocosmia paniculata",
+            "hotpot:Actaea racemosa",
+            "hotpot:Dictyosperma",
+            "hotpot:Actaea arizonica",
+            "hotpot:Nepenthes",
+            "hotpot:Actaea elata",
+            "hotpot:Conicosia"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5add647a5542995b365fab26",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Aloinopsis",
+            "hotpot:Washingtonia",
+            "hotpot:Aloysia",
+            "hotpot:Suburban Legends (Tim Remix)",
+            "hotpot:Alopecurus",
+            "hotpot:Bangjja",
+            "hotpot:Boltonia",
+            "hotpot:Jeongol",
+            "hotpot:Corokia",
+            "hotpot:I Write Sins Not Tragedies"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8c5b635542996e8ac88a75",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Chinese Chongqing Dog",
+            "hotpot:Kanni",
+            "hotpot:Tugou",
+            "hotpot:Wetterhoun",
+            "hotpot:Finnish Spitz",
+            "hotpot:Chesapeake Bay Retriever",
+            "hotpot:Norrbottenspets",
+            "hotpot:Transylvanian Hound",
+            "hotpot:Bosnian Coarse-haired Hound",
+            "hotpot:Levriero Italiano"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae2138c5542997283cd23b7",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Villa Paletti",
+            "hotpot:Betrayal at House on the Hill",
+            "hotpot:Deduction board game",
+            "hotpot:Up at the Villa (film)",
+            "hotpot:At the Villa Rose (1930 film)",
+            "hotpot:Aston Villa F.C.",
+            "hotpot:Pandemic (board game)",
+            "hotpot:Brian Campbell (game designer)",
+            "hotpot:Put (card game)",
+            "hotpot:David Parlett"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8e8af55542990e94052b3f",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:University of California, Berkeley",
+            "hotpot:Brown University School of Engineering",
+            "hotpot:University of Southern California",
+            "hotpot:Brown University",
+            "hotpot:Graduate Theological Union",
+            "hotpot:University of California Pavement Research Center",
+            "hotpot:Carnegie Mellon University",
+            "hotpot:Stanford University",
+            "hotpot:University of California, Santa Barbara",
+            "hotpot:University of California, San Francisco"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abec2ca5542997719eab5b9",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Carondelet Canal",
+            "hotpot:Miami and Erie Canal",
+            "hotpot:Miami and Erie Canal Deep Cut",
+            "hotpot:Miami Canal",
+            "hotpot:Pennsylvania and Ohio Canal",
+            "hotpot:Warren County Canal",
+            "hotpot:Beaver and Erie Canal",
+            "hotpot:Tamiami Canal",
+            "hotpot:Erie Canal Lock 52 Complex",
+            "hotpot:Walhonding Canal"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab73de755429928e1fe383b",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Sord M5",
+            "hotpot:Interact Home Computer",
+            "hotpot:Sord M23P",
+            "hotpot:M5 Industries",
+            "hotpot:Timex Sinclair 1000",
+            "hotpot:The Home Computer Advanced Course",
+            "hotpot:ZX81",
+            "hotpot:TRS-80 Color Computer",
+            "hotpot:MacBook Pro",
+            "hotpot:Apple Mighty Mouse"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ac41f1d5542991943173924",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:California State University, Dominguez Hills",
+            "hotpot:Cal State Dominguez Hills Toros",
+            "hotpot:Dominguez Oil Field",
+            "hotpot:Ohio State University",
+            "hotpot:California State University",
+            "hotpot:Ohio State University, Mansfield Campus",
+            "hotpot:California State University, San Bernardino",
+            "hotpot:University of California",
+            "hotpot:StubHub Center",
+            "hotpot:California Polytechnic State University"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-01",
+          "category": "simple",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2230.md",
+            "INC-2219.md",
+            "postmortem-INC-2207.html",
+            "INC-2211.md",
+            "hotpot:FTS2000",
+            "hotpot:Loan modification in the United States",
+            "alerts.json#ALRT-5540",
+            "hotpot:Wu-Syndicate"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-02",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5531",
+            "runbook-gateway-rollback.txt",
+            "INC-2219.md",
+            "changes.csv#CHG-1052",
+            "INC-2211.md"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-03",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1043",
+            "runbook-ledger-backlog.txt",
+            "INC-2211.md",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5534",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "runbook-settlement.txt"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-04",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-ledger-backlog.txt",
+            "INC-2211.md",
+            "alerts.json#ALRT-5534",
+            "runbook-settlement.txt",
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1043",
+            "alerts.json#ALRT-5546",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "architecture.txt"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-05",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1044",
+            "runbook-ledger-backlog.txt",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2211.md",
+            "runbook-settlement.txt",
+            "hotpot:Comcast Spectacor",
+            "architecture.txt",
+            "hotpot:U.S. Bancorp"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-06",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1052",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "INC-2219.md",
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "runbook-gateway-rollback.txt"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-07",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "alerts.json#ALRT-5531",
+            "INC-2219.md",
+            "INC-2211.md",
+            "status-page-export.html",
+            "INC-2230.md"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-08",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2211.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5546",
+            "changes.csv#CHG-1043",
+            "INC-2219.md",
+            "runbook-ledger-backlog.txt",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5534",
+            "alerts.json#ALRT-5531"
+          ],
+          "metrics": {
+            "recall@1": 0.3333333333333333,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-09",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2211.md",
+            "alerts.json#ALRT-5546",
+            "runbook-ledger-backlog.txt",
+            "changes.csv#CHG-1043",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5534",
+            "INC-2219.md",
+            "INC-2230.md",
+            "postmortem-INC-2207.html"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-10",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1044",
+            "alerts.json#ALRT-5531",
+            "INC-2219.md",
+            "postmortem-INC-2207.html",
+            "runbook-gateway-rollback.txt",
+            "INC-2211.md",
+            "changes.csv#CHG-1041",
+            "changes.csv#CHG-1052"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-11",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2219.md",
+            "changes.csv#CHG-1042",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5540",
+            "INC-2211.md",
+            "INC-2230.md",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5560",
+            "alerts.json#ALRT-5546"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2230.md",
+            "changes.csv#CHG-1050",
+            "alerts.json#ALRT-5552",
+            "runbook-settlement.txt",
+            "INC-2211.md",
+            "alerts.json#ALRT-5560",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "postmortem-INC-2207.html"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-13",
+          "category": "multi_document",
+          "ranked_documents": [
+            "INC-2211.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1043",
+            "alerts.json#ALRT-5531",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5546",
+            "INC-2219.md",
+            "architecture.txt",
+            "changes.csv#CHG-1052"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.25
+          }
+        },
+        {
+          "question_id": "inc-14",
+          "category": "multi_document",
+          "ranked_documents": [
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5560",
+            "alerts.json#ALRT-5534",
+            "INC-2219.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "hotpot:Calendar date"
+          ],
+          "metrics": {
+            "recall@1": 0.3333333333333333,
+            "full_recall@1": 0.0,
+            "recall@5": 0.6666666666666666,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-15",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Revised Cardiac Risk Index",
+            "INC-2219.md",
+            "INC-2230.md",
+            "hotpot:Financial condition report",
+            "hotpot:Risk assessment",
+            "hotpot:Risk measure",
+            "postmortem-INC-2207.html",
+            "hotpot:Michael V Kalaphates",
+            "hotpot:NICS Improvement Amendments Act of 2007",
+            "hotpot:Shape risk"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-16",
+          "category": "multi_document",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5540",
+            "INC-2211.md",
+            "INC-2230.md",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5546",
+            "hotpot:War risk insurance",
+            "hotpot:Cebgo"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.14285714285714285
+          }
+        },
+        {
+          "question_id": "inc-22",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "postmortem-INC-2207.html",
+            "status-page-export.html",
+            "INC-2211.md",
+            "INC-2230.md",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5540"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.2
+          }
+        },
+        {
+          "question_id": "inc-23",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "postmortem-INC-2207.html",
+            "status-page-export.html",
+            "INC-2211.md",
+            "alerts.json#ALRT-5546",
+            "INC-2230.md",
+            "alerts.json#ALRT-5540"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-24",
+          "category": "conflicting",
+          "ranked_documents": [
+            "changes.csv#CHG-1044",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1041",
+            "alerts.json#ALRT-5531",
+            "postmortem-INC-2207.html",
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1052",
+            "INC-2219.md",
+            "architecture.txt"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-25",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5599",
+            "INC-2219.md",
+            "INC-2211.md",
+            "INC-2230.md",
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5552",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5546"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-26",
+          "category": "conflicting",
+          "ranked_documents": [
+            "runbook-settlement.txt",
+            "changes.csv#CHG-1050",
+            "INC-2230.md",
+            "alerts.json#ALRT-5552",
+            "INC-2211.md",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5560",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "hotpot:Land Run of 1892"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "config": "hybrid_rerank",
+      "chunker": "sentence-120",
+      "documents": 66607,
+      "chunks": 81243,
+      "duplicate_chunks": 58,
+      "mean_latency_ms": 164.73010588236446,
+      "metrics": {
+        "all": {
+          "recall@1": 0.4084967320261438,
+          "full_recall@1": 0.0784313725490196,
+          "recall@5": 0.8366013071895424,
+          "full_recall@5": 0.7058823529411765,
+          "recall@10": 0.9019607843137255,
+          "full_recall@10": 0.8431372549019608,
+          "mrr": 0.8388888888888889
+        },
+        "multi_step": {
+          "recall@1": 0.40384615384615385,
+          "full_recall@1": 0.0,
+          "recall@5": 0.8653846153846154,
+          "full_recall@5": 0.7307692307692307,
+          "recall@10": 0.9230769230769231,
+          "full_recall@10": 0.8461538461538461,
+          "mrr": 0.8942307692307693
+        },
+        "multi_document": {
+          "recall@1": 0.38095238095238093,
+          "full_recall@1": 0.0,
+          "recall@5": 0.7976190476190476,
+          "full_recall@5": 0.6428571428571429,
+          "recall@10": 0.8571428571428571,
+          "full_recall@10": 0.7857142857142857,
+          "mrr": 0.8357142857142856
+        },
+        "simple": {
+          "recall@1": 0.6666666666666666,
+          "full_recall@1": 0.6666666666666666,
+          "recall@5": 0.8333333333333334,
+          "full_recall@5": 0.8333333333333334,
+          "recall@10": 0.8333333333333334,
+          "full_recall@10": 0.8333333333333334,
+          "mrr": 0.75
+        },
+        "conflicting": {
+          "recall@1": 0.2,
+          "full_recall@1": 0.0,
+          "recall@5": 0.8,
+          "full_recall@5": 0.6,
+          "recall@10": 1.0,
+          "full_recall@10": 1.0,
+          "mrr": 0.6666666666666667
+        }
+      },
+      "questions": [
+        {
+          "question_id": "5ae63b2255429908198fa526",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:2015 Clemson Tigers football team",
+            "hotpot:Oklahoma Sooners football",
+            "hotpot:2013 BCS National Championship Game",
+            "hotpot:2012 Orange Bowl",
+            "hotpot:2015 Miami Hurricanes football team",
+            "hotpot:2014 Orange Bowl (January)",
+            "hotpot:2014 Orange Bowl (December)",
+            "hotpot:2015 Orange Bowl",
+            "hotpot:2012 NCAA Division I FBS football rankings",
+            "hotpot:2013 Orange Bowl"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7fb1765542992e7d278d20",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Boston Christmas Tree",
+            "hotpot:Ainslie Glen, Nova Scotia",
+            "hotpot:Christmas Island, Nova Scotia",
+            "hotpot:Christmas tree production in Canada",
+            "hotpot:Chicago Christmas Tree",
+            "hotpot:Mount Ingino Christmas Tree",
+            "hotpot:Liberty Tree",
+            "hotpot:East Jeddore, Nova Scotia",
+            "hotpot:Military history of Nova Scotia",
+            "hotpot:Liberty Tree District"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a80ad19554299485f5986a8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Bobby Ball",
+            "hotpot:Cannon and Ball",
+            "hotpot:The Fattest Man in Britain",
+            "hotpot:Tommy Cannon",
+            "hotpot:The Cannon and Ball Show",
+            "hotpot:Cannon and Ball's Casino",
+            "hotpot:Esma Cannon",
+            "hotpot:Nick Cannon",
+            "hotpot:Ben Miller",
+            "hotpot:Hugh Laurie"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a75d9b4554299109176e5a7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Dungeness crab",
+            "hotpot:Crab cracker",
+            "hotpot:Flesh fly",
+            "hotpot:Crab trap",
+            "hotpot:The Crab Cooker",
+            "hotpot:Cancer pagurus",
+            "hotpot:Malus baccata",
+            "hotpot:Crab fisheries",
+            "hotpot:She-crab soup",
+            "hotpot:Mary's Harbour"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae6050f55429929b0807a5e",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:A Rather Blustery Day",
+            "hotpot:Kate Higgins",
+            "hotpot:Jim Cummings",
+            "hotpot:Winnie the Pooh and the Blustery Day",
+            "hotpot:Rather Die Young",
+            "hotpot:Hip Hip Pooh-Ray!",
+            "hotpot:John Kassir",
+            "hotpot:The Rain Rain Rain Came Down Down Down",
+            "hotpot:Heffalumps and Woozles",
+            "hotpot:The Wonderful Thing About Tiggers"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abc089b5542993f40c73c57",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:MacBook (Retina)",
+            "hotpot:MacBook family",
+            "hotpot:MacBook Pro",
+            "hotpot:Apricot Portable",
+            "hotpot:Retina Display",
+            "hotpot:Single-board computer",
+            "hotpot:Portable media player",
+            "hotpot:History of laptops",
+            "hotpot:Backlight",
+            "hotpot:PPC 512"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a86eee85542994775f60787",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Ringling, Montana",
+            "hotpot:Ingomar, Montana",
+            "hotpot:Harlowton, Montana",
+            "hotpot:Lorton station (VRE)",
+            "hotpot:Gettysburg Spring Railroad",
+            "hotpot:Chicago, Milwaukee, St. Paul and Pacific Railroad",
+            "hotpot:Little River Railroad (Tennessee)",
+            "hotpot:Great Lakes Central Railroad",
+            "hotpot:Quogue (LIRR station)",
+            "hotpot:Hyde Park Railroad Station"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7b3ec95542995eb53be8d3",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Alexander Acosta",
+            "hotpot:Edward C. Hugler",
+            "hotpot:Edward C. Noonan",
+            "hotpot:Jim Acosta",
+            "hotpot:Ed Acker",
+            "hotpot:Edward Schulmerich",
+            "hotpot:Alexander Garvin",
+            "hotpot:Edward Curtis Smith",
+            "hotpot:Edward Lozzi",
+            "hotpot:Edward Cochrane McLean"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a7363ec5542991f29ee2dd7",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:USS Tortuga",
+            "hotpot:USS Tortuga (LSD-26)",
+            "hotpot:Dry Tortugas",
+            "hotpot:USS Tortuga (LSD-46)",
+            "hotpot:Dry Tortugas National Park",
+            "hotpot:Dry Tortugas Ferry to Fort Jefferson",
+            "hotpot:Loggerhead Key",
+            "hotpot:Lord Howe Island",
+            "hotpot:USS Guadalcanal (CVE-60)",
+            "hotpot:Guaymas"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.25
+          }
+        },
+        {
+          "question_id": "5a8a5c0d554299515336137b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Blackpool Illuminations",
+            "hotpot:Lindisfarne Festival",
+            "hotpot:Audrey Mossom",
+            "hotpot:Poulton-le-Fylde railway station",
+            "hotpot:A.F.C. Blackpool",
+            "hotpot:Moor Park, Blackpool",
+            "hotpot:Freckleton",
+            "hotpot:Blackpool Gazette",
+            "hotpot:Stanley Park, Blackpool",
+            "hotpot:Listed buildings in Blackpool"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab2771e554299340b5254d8",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Said Fazal Akbar",
+            "hotpot:Yousef Pashtun",
+            "hotpot:Abdul Rahim Ghafoorzai",
+            "hotpot:Mohammad Najibullah",
+            "hotpot:Governor of Minnesota",
+            "hotpot:Emirate of Afghanistan",
+            "hotpot:William Hill (governor)",
+            "hotpot:List of Governors of Dakota Territory",
+            "hotpot:Luciano Valero",
+            "hotpot:Akbar Atri"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abfcdb55542993fe9a41e7b",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Stunt Cycle",
+            "hotpot:Evel Knievel",
+            "hotpot:Corey Scott",
+            "hotpot:Butch Laswell",
+            "hotpot:Ryan Dunn",
+            "hotpot:Taso N. Stavrakis",
+            "hotpot:Stan Barrett",
+            "hotpot:Jackson Burns",
+            "hotpot:Chris Pontius",
+            "hotpot:Dave England"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab8cd3d5542991b5579f009",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Peter Gifford",
+            "hotpot:The Chosen Few (1980's Australian Band)",
+            "hotpot:Come On, Come In",
+            "hotpot:The Atlantics",
+            "hotpot:How to Rock",
+            "hotpot:Elbow (band)",
+            "hotpot:Pen name",
+            "hotpot:Genesis (band)",
+            "hotpot:Eagles (band)",
+            "hotpot:Oasis (band)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4e48655429942dd415f9c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Glen River, County Down",
+            "hotpot:Wheeler Peak Glacier",
+            "hotpot:Castle Rock Mountain",
+            "hotpot:Bumping River",
+            "hotpot:Muskwa River",
+            "hotpot:Estrella River",
+            "hotpot:Umba River (Tanzania)",
+            "hotpot:Watauga River",
+            "hotpot:List of tallest mountains in the Solar System",
+            "hotpot:List of tallest dams in China"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a79f6825542996c55b2dcb4",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Linda Stender",
+            "hotpot:Leonard Lance",
+            "hotpot:Wesley Lance",
+            "hotpot:New Jersey's 7th congressional district",
+            "hotpot:Peter Jacob",
+            "hotpot:Michael J. Doherty",
+            "hotpot:Marcia A. Karrow",
+            "hotpot:New Jersey Superior Court",
+            "hotpot:New Jersey Folk Festival",
+            "hotpot:Leonard Whiting"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5adf74075542992d7e9f937c",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:RL-83 Blindicide",
+            "hotpot:Bazooka",
+            "hotpot:Heckler &amp; Koch AG36",
+            "hotpot:ARDE 40 mm under barrel grenade launcher",
+            "hotpot:M7 grenade launcher",
+            "hotpot:LRAC F1",
+            "hotpot:T40 Whizbang",
+            "hotpot:M90 Stršljen",
+            "hotpot:M1 Grenade Adapter",
+            "hotpot:United States Army Air Forces"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8f38fa55429924144829f5",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Java",
+            "hotpot:Rampokan",
+            "hotpot:Volcanology of Java",
+            "hotpot:Madura Island",
+            "hotpot:Javan leopard",
+            "hotpot:Mount Merbabu",
+            "hotpot:State of East Java",
+            "hotpot:Giant gourami",
+            "hotpot:Hydrocotyle javanica",
+            "hotpot:Tanjung Layar"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "5a88451655429938390d3f12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Grigory Drozd",
+            "hotpot:Tony Bellew",
+            "hotpot:Dave Allen (boxer)",
+            "hotpot:Mike Tyson",
+            "hotpot:Daniel Radcliffe",
+            "hotpot:José López (boxer)",
+            "hotpot:Ali (film)",
+            "hotpot:Dangal (film)",
+            "hotpot:Go Joo-won",
+            "hotpot:Carl Frampton"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab4832e5542991751b4d79d",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:William Preston (actor)",
+            "hotpot:The Crucible (1996 film)",
+            "hotpot:Vanity Fair (2004 film)",
+            "hotpot:Romeo + Juliet",
+            "hotpot:The Ghost and the Darkness",
+            "hotpot:The Namesake (film)",
+            "hotpot:Juarez (film)",
+            "hotpot:Tromeo and Juliet",
+            "hotpot:Hamlet (1996 film)",
+            "hotpot:The Christmas Tree (1996 film)"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae0156455429942ec259c15",
+          "category": "multi_step",
+          "ranked_documents": [
+            "hotpot:Faena Arts Center",
+            "hotpot:Alan Faena",
+            "hotpot:Dolce &amp; Gabbana",
+            "hotpot:Marc Ecko",
+            "hotpot:Comme des Garçons",
+            "hotpot:Acne Studios",
+            "hotpot:Fader Label",
+            "hotpot:Wertheim Performing Arts Center",
+            "hotpot:Manimal Vinyl",
+            "hotpot:Disco Ruined My Life"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae0f2bf5542997b2ef7d09e",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Spring 1945 offensive in Italy",
+            "hotpot:Battle of Guam (1941)",
+            "hotpot:Battle of Bologna",
+            "hotpot:Battle of Manila (1945)",
+            "hotpot:South German Offensive",
+            "hotpot:Battle of the Argenta Gap",
+            "hotpot:Battle of Guam (1944)",
+            "hotpot:Battle of Belleau Wood",
+            "hotpot:Battle of France",
+            "hotpot:Operation Grapeshot order of battle"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae234005542994d89d5b392",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:James Dean Bradfield",
+            "hotpot:Thomas James (businessman)",
+            "hotpot:Rob Thomas (musician)",
+            "hotpot:James Dean",
+            "hotpot:Thomas James Reeves",
+            "hotpot:Disease (song)",
+            "hotpot:James Stewart",
+            "hotpot:Thomas Robsahm",
+            "hotpot:Rob Koll",
+            "hotpot:Jay Thomas"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab56f3e5542992aa134a317",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Crocosmia",
+            "hotpot:Cimicifuga",
+            "hotpot:Crocosmia paniculata",
+            "hotpot:Crocosmia aurea",
+            "hotpot:Actaea racemosa",
+            "hotpot:Tritonia (plant)",
+            "hotpot:Arenaria (plant)",
+            "hotpot:Dictyosperma",
+            "hotpot:Dracula (plant)",
+            "hotpot:Tibouchina"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5add647a5542995b365fab26",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Aloinopsis",
+            "hotpot:Washingtonia",
+            "hotpot:Suburban Legends (Tim Remix)",
+            "hotpot:Bangjja",
+            "hotpot:Asplenium onopteris",
+            "hotpot:Castor et Pollux",
+            "hotpot:Zenji flava",
+            "hotpot:Cumberland Plateau",
+            "hotpot:Powder coating",
+            "hotpot:Jeongol"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8c5b635542996e8ac88a75",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Chinese Chongqing Dog",
+            "hotpot:Kanni",
+            "hotpot:Tugou",
+            "hotpot:Wetterhoun",
+            "hotpot:Finnish Spitz",
+            "hotpot:Chesapeake Bay Retriever",
+            "hotpot:Norrbottenspets",
+            "hotpot:Transylvanian Hound",
+            "hotpot:Bosnian Coarse-haired Hound",
+            "hotpot:Levriero Italiano"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ae2138c5542997283cd23b7",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Betrayal at House on the Hill",
+            "hotpot:Villa Paletti",
+            "hotpot:Deduction board game",
+            "hotpot:Up at the Villa (film)",
+            "hotpot:Pandemic (board game)",
+            "hotpot:At the Villa Rose (1930 film)",
+            "hotpot:Glossary of board games",
+            "hotpot:List of word board games",
+            "hotpot:Bear games",
+            "hotpot:Aston Villa F.C."
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5a8e8af55542990e94052b3f",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:University of California, Berkeley",
+            "hotpot:Brown University",
+            "hotpot:University of Southern California",
+            "hotpot:University of California Pavement Research Center",
+            "hotpot:Brown University School of Engineering",
+            "hotpot:Stanford University",
+            "hotpot:Northwestern University",
+            "hotpot:University of California, Santa Barbara",
+            "hotpot:University of California, San Francisco",
+            "hotpot:Carnegie Mellon University"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5abec2ca5542997719eab5b9",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Miami and Erie Canal",
+            "hotpot:Carondelet Canal",
+            "hotpot:Miami Canal",
+            "hotpot:Miami and Erie Canal Deep Cut",
+            "hotpot:Warren County Canal",
+            "hotpot:Beaver and Erie Canal",
+            "hotpot:Tamiami Canal",
+            "hotpot:Pennsylvania and Ohio Canal",
+            "hotpot:Walhonding Canal",
+            "hotpot:Champlain Canal"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ab73de755429928e1fe383b",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Sord M5",
+            "hotpot:Interact Home Computer",
+            "hotpot:Sord M23P",
+            "hotpot:M5 Industries",
+            "hotpot:The Home Computer Advanced Course",
+            "hotpot:Timex Sinclair 1000",
+            "hotpot:TRS-80 Color Computer",
+            "hotpot:ZX81",
+            "hotpot:Single-board computer",
+            "hotpot:Computer security"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "5ac41f1d5542991943173924",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:California State University, Dominguez Hills",
+            "hotpot:Cal State Dominguez Hills Toros",
+            "hotpot:Ohio State University",
+            "hotpot:California State University",
+            "hotpot:University of California",
+            "hotpot:Dominguez Oil Field",
+            "hotpot:California Polytechnic State University",
+            "hotpot:Ohio State University, Mansfield Campus",
+            "hotpot:California State University, San Bernardino",
+            "hotpot:Ohio State University, Lima Campus"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-01",
+          "category": "simple",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "INC-2230.md",
+            "INC-2211.md",
+            "hotpot:The Change-Up",
+            "hotpot:Transformative social change",
+            "alerts.json#ALRT-5540",
+            "hotpot:Change (Taylor Swift song)"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-02",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "runbook-gateway-rollback.txt",
+            "alerts.json#ALRT-5531",
+            "changes.csv#CHG-1052",
+            "INC-2219.md",
+            "INC-2211.md"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-03",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1043",
+            "alerts.json#ALRT-5546",
+            "INC-2211.md",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5534",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "runbook-settlement.txt"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-04",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-ledger-backlog.txt",
+            "runbook-settlement.txt",
+            "INC-2211.md",
+            "alerts.json#ALRT-5534",
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1043",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5546",
+            "hotpot:Write strategy"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-05",
+          "category": "simple",
+          "ranked_documents": [
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1044",
+            "runbook-settlement.txt",
+            "runbook-ledger-backlog.txt",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2211.md",
+            "hotpot:Comcast Spectacor",
+            "architecture.txt",
+            "hotpot:U.S. Bancorp"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-06",
+          "category": "simple",
+          "ranked_documents": [
+            "changes.csv#CHG-1052",
+            "changes.csv#CHG-1044",
+            "postmortem-INC-2207.html",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5531",
+            "changes.csv#CHG-1041",
+            "INC-2211.md",
+            "runbook-gateway-rollback.txt",
+            "INC-2219.md"
+          ],
+          "metrics": {
+            "recall@1": 1.0,
+            "full_recall@1": 1.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-07",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "changes.csv#CHG-1041",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "changes.csv#CHG-1044",
+            "INC-2230.md",
+            "runbook-gateway-rollback.txt"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-08",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2211.md",
+            "changes.csv#CHG-1043",
+            "INC-2219.md",
+            "alerts.json#ALRT-5546",
+            "postmortem-INC-2207.html",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5534",
+            "alerts.json#ALRT-5531"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-09",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2211.md",
+            "changes.csv#CHG-1043",
+            "runbook-ledger-backlog.txt",
+            "alerts.json#ALRT-5546",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5534",
+            "INC-2219.md",
+            "INC-2230.md",
+            "postmortem-INC-2207.html"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-10",
+          "category": "multi_step",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1044",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "INC-2211.md",
+            "alerts.json#ALRT-5531",
+            "runbook-gateway-rollback.txt",
+            "changes.csv#CHG-1041",
+            "changes.csv#CHG-1052"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-11",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2219.md",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "changes.csv#CHG-1042",
+            "INC-2211.md",
+            "INC-2230.md",
+            "hotpot:Email Surveillance",
+            "alerts.json#ALRT-5540",
+            "hotpot:Delayed judgement",
+            "postmortem-INC-2207.html"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-12",
+          "category": "multi_step",
+          "ranked_documents": [
+            "INC-2230.md",
+            "changes.csv#CHG-1050",
+            "runbook-settlement.txt",
+            "INC-2211.md",
+            "alerts.json#ALRT-5552",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "alerts.json#ALRT-5560",
+            "postmortem-INC-2207.html"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-13",
+          "category": "multi_document",
+          "ranked_documents": [
+            "INC-2211.md",
+            "changes.csv#CHG-1043",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5546",
+            "INC-2219.md",
+            "postmortem-INC-2207.html",
+            "alerts.json#ALRT-5531",
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-14",
+          "category": "multi_document",
+          "ranked_documents": [
+            "alerts.json#ALRT-5531",
+            "alerts.json#ALRT-5546",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5552",
+            "INC-2219.md",
+            "alerts.json#ALRT-5560",
+            "alerts.json#ALRT-5534",
+            "hotpot:March"
+          ],
+          "metrics": {
+            "recall@1": 0.3333333333333333,
+            "full_recall@1": 0.0,
+            "recall@5": 0.6666666666666666,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-15",
+          "category": "multi_document",
+          "ranked_documents": [
+            "hotpot:Revised Cardiac Risk Index",
+            "hotpot:Risk assessment",
+            "hotpot:Risk measure",
+            "INC-2219.md",
+            "INC-2230.md",
+            "hotpot:Financial condition report",
+            "hotpot:Shape risk",
+            "hotpot:Systemic risk",
+            "hotpot:Reinvestment risk",
+            "postmortem-INC-2207.html"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.0,
+            "full_recall@5": 0.0,
+            "recall@10": 0.0,
+            "full_recall@10": 0.0,
+            "mrr": 0.0
+          }
+        },
+        {
+          "question_id": "inc-16",
+          "category": "multi_document",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "INC-2211.md",
+            "postmortem-INC-2207.html",
+            "INC-2230.md",
+            "alerts.json#ALRT-5540",
+            "alerts.json#ALRT-5546",
+            "hotpot:War risk insurance",
+            "hotpot:The Kettering Incident"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 0.5,
+            "full_recall@10": 0.0,
+            "mrr": 0.2
+          }
+        },
+        {
+          "question_id": "inc-22",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "INC-2230.md",
+            "status-page-export.html",
+            "alerts.json#ALRT-5546",
+            "hotpot:Electronic Payment Services"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.3333333333333333
+          }
+        },
+        {
+          "question_id": "inc-23",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "postmortem-INC-2207.html",
+            "INC-2219.md",
+            "alerts.json#ALRT-5531",
+            "INC-2211.md",
+            "status-page-export.html",
+            "INC-2230.md",
+            "alerts.json#ALRT-5546",
+            "alerts.json#ALRT-5540"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 0.5,
+            "full_recall@5": 0.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-24",
+          "category": "conflicting",
+          "ranked_documents": [
+            "changes.csv#CHG-1044",
+            "changes.csv#CHG-1041",
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "runbook-gateway-rollback.txt",
+            "alerts.json#ALRT-5531",
+            "changes.csv#CHG-1052",
+            "postmortem-INC-2207.html",
+            "hotpot:Orchard Gateway",
+            "INC-2219.md"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        },
+        {
+          "question_id": "inc-25",
+          "category": "conflicting",
+          "ranked_documents": [
+            "copy-of-INC-2207.md",
+            "INC-2207.md",
+            "INC-2219.md",
+            "INC-2211.md",
+            "alerts.json#ALRT-5599",
+            "INC-2230.md",
+            "alerts.json#ALRT-5552",
+            "alerts.json#ALRT-5531",
+            "postmortem-INC-2207.html",
+            "status-page-export.html"
+          ],
+          "metrics": {
+            "recall@1": 0.0,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 0.5
+          }
+        },
+        {
+          "question_id": "inc-26",
+          "category": "conflicting",
+          "ranked_documents": [
+            "runbook-settlement.txt",
+            "changes.csv#CHG-1050",
+            "INC-2230.md",
+            "alerts.json#ALRT-5552",
+            "INC-2211.md",
+            "hotpot:What Time Is It There?",
+            "runbook-ledger-backlog.txt",
+            "hotpot:Land Run of 1892",
+            "hotpot:Time Pussy",
+            "alerts.json#ALRT-5560"
+          ],
+          "metrics": {
+            "recall@1": 0.5,
+            "full_recall@1": 0.0,
+            "recall@5": 1.0,
+            "full_recall@5": 1.0,
+            "recall@10": 1.0,
+            "full_recall@10": 1.0,
+            "mrr": 1.0
+          }
+        }
+      ]
+    }
+  ]
+}
