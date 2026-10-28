@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, Self
 
 Role = Literal["system", "user", "assistant", "tool"]
 
@@ -34,6 +34,12 @@ class Usage:
     @property
     def total_tokens(self) -> int:
         return self.prompt_tokens + self.completion_tokens
+
+    def __add__(self, other: Self) -> Self:
+        return type(self)(
+            prompt_tokens=self.prompt_tokens + other.prompt_tokens,
+            completion_tokens=self.completion_tokens + other.completion_tokens,
+        )
 
 
 @dataclass(frozen=True, slots=True)
