@@ -133,3 +133,18 @@ def test_iter_chunks_yields_every_chunk_once(new_store: Callable[..., CatalogSto
 
     assert sorted(chunk.id for chunk in chunks) == ["a:0", "a:1", "b:0"]
     assert {chunk.id: chunk.text for chunk in chunks}["a:1"] == "Three four."
+
+
+def test_origins_of_reports_where_each_stored_document_came_from(
+    new_store: Callable[..., CatalogStore],
+) -> None:
+    uploaded = Document(
+        id="u", text="One.", title="u", source="u.txt", metadata={"origin": "upload"}
+    )
+    store = new_store(uploaded, make_document("b", "Two."))
+
+    assert store.origins_of(["u", "b", "ghost"]) == {"u": "upload", "b": ""}
+
+
+def test_origins_of_nothing_is_empty(new_store: Callable[..., CatalogStore]) -> None:
+    assert new_store().origins_of([]) == {}

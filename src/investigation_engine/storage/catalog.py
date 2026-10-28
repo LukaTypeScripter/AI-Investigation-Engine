@@ -1,4 +1,4 @@
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -24,5 +24,7 @@ class DocumentCatalog(Protocol):
     def count_documents(self, containing: str = "") -> int: ...
 
     def count_chunks(self) -> int: ...
+
+    def origins_of(self, document_ids: Sequence[str]) -> dict[str, str]: ...
 
     def iter_chunks(self, batch_size: int = DEFAULT_STREAM_BATCH) -> Iterator[Chunk]: ...

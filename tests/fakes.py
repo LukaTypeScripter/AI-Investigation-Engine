@@ -95,6 +95,7 @@ def make_engine(
     store: InMemoryDocumentStore | None = None,
     keywords: Bm25Index | None = None,
     embedder: HashingEmbedder | None = None,
+    protect_built_in: bool = True,
 ) -> Engine:
     embedder = HashingEmbedder() if embedder is None else embedder
     return Engine(
@@ -104,4 +105,5 @@ def make_engine(
         keywords=Bm25Index() if keywords is None else keywords,
         chunker=SentenceChunker(max_words=30),
         llm=client,
+        protect_built_in=protect_built_in,
     )

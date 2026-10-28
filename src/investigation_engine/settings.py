@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     embedding_dimension: int = Field(default=384, gt=0)
     retrieval_candidates: int = Field(default=50, gt=0)
     rerank_results: bool = False
+    protect_built_in_documents: bool = True
     chunk_max_words: int = Field(default=120, gt=0)
     max_upload_bytes: int = Field(default=5_000_000, gt=0)
     max_question_chars: int = Field(default=1000, gt=0)

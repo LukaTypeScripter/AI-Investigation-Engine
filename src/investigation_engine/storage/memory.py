@@ -111,6 +111,13 @@ class InMemoryDocumentStore:
     def count_chunks(self) -> int:
         return len(self._chunks)
 
+    def origins_of(self, document_ids: Sequence[str]) -> dict[str, str]:
+        return {
+            document_id: self._documents[document_id].document.metadata.get("origin", "")
+            for document_id in document_ids
+            if document_id in self._documents
+        }
+
     def iter_chunks(self, batch_size: int = DEFAULT_STREAM_BATCH) -> Iterator[Chunk]:
         for batch in batched(sorted(self._chunks), batch_size):
             yield from (self._chunks[chunk_id] for chunk_id in batch)

@@ -1,6 +1,6 @@
 import threading
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import NamedTuple, Protocol
 
 from investigation_engine.agent.evidence import SourceLookup
@@ -30,7 +30,15 @@ NO_LANGUAGE_MODEL_MESSAGE = (
 )
 
 
+UPLOAD_ORIGIN = "upload"
+MAX_NAMED_DOCUMENTS = 3
+
+
 class NothingToIndexError(ValueError):
+    pass
+
+
+class ProtectedDocumentError(PermissionError):
     pass
 
 
@@ -72,8 +80,10 @@ class Engine:
         reranker: Reranker | None = None,
         candidates: int = DEFAULT_CANDIDATES,
         investigator_config: InvestigatorConfig | None = None,
+        protect_built_in: bool = True,
     ) -> None:
         self._store = store
+        self._protect_built_in = protect_built_in
         self._keywords = LockedKeywordIndex(keywords)
         self._ingestion = IngestionService(store, chunker)
         self._indexer = SearchIndexer(embedder, vectors, self._keywords)
@@ -97,10 +107,14 @@ class Engine:
         return loaded
 
     def upload(self, filename: str, content: bytes) -> UploadResult:
-        documents = parse_bytes(filename, content)
+        documents = [
+            replace(document, metadata={**document.metadata, "origin": UPLOAD_ORIGIN})
+            for document in parse_bytes(filename, content)
+        ]
         if not documents:
             raise NothingToIndexError(f"{filename} contains no text to index")
         with self._write_lock:
+            self._require_changeable([document.id for document in documents])
             report = self._ingestion.ingest(documents)
             self._indexer.apply(report.changes)
         return UploadResult(
@@ -115,11 +129,23 @@ class Engine:
 
     def delete_document(self, document_id: str) -> bool:
         with self._write_lock:
+            self._require_changeable([document_id])
             changes = self._ingestion.delete(document_id)
             if changes is None:
                 return False
             self._indexer.apply(changes)
             return True
+
+    def _require_changeable(self, document_ids: Sequence[str]) -> None:
+        if not self._protect_built_in:
+            return
+        origins = self._store.origins_of(document_ids)
+        locked = [document_id for document_id, origin in origins.items() if origin != UPLOAD_ORIGIN]
+        if locked:
+            raise ProtectedDocumentError(
+                f"{', '.join(locked[:MAX_NAMED_DOCUMENTS])} is part of the built-in "
+                "collection and cannot be changed"
+            )
 
     def documents(
         self, limit: int = DEFAULT_PAGE_SIZE, offset: int = 0, containing: str = ""

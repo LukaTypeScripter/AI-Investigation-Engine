@@ -11,8 +11,11 @@ from fakes import (
     search_call,
     submit_call,
 )
-from investigation_engine.app.engine import NothingToIndexError
+from investigation_engine.app.engine import NothingToIndexError, ProtectedDocumentError
+from investigation_engine.domain import Document
+from investigation_engine.ingestion.chunking import SentenceChunker
 from investigation_engine.ingestion.parsers import UnsupportedFormatError
+from investigation_engine.ingestion.service import IngestionService
 from investigation_engine.llm.errors import LlmUnavailable
 from investigation_engine.llm.factory import ConfigurationError
 from investigation_engine.retrieval.bm25 import Bm25Index
@@ -204,3 +207,63 @@ def test_a_second_upload_waits_for_the_first_to_finish_indexing() -> None:
 
     assert embedder.max_active == 1
     assert engine.stats() == (2, 2)
+
+
+def test_uploaded_documents_are_marked_as_uploads() -> None:
+    store = InMemoryDocumentStore()
+    engine = make_engine(store=store)
+
+    engine.upload("outage.txt", OUTAGE)
+
+    assert store.origins_of(["outage.txt"]) == {"outage.txt": "upload"}
+
+
+def seed_built_in_document(store: InMemoryDocumentStore) -> None:
+    IngestionService(store, SentenceChunker(max_words=30)).ingest(
+        [
+            Document(
+                id="runbook.txt", text="Restart the gateway.", title="Runbook", source="runbook.txt"
+            )
+        ]
+    )
+
+
+def test_a_built_in_document_cannot_be_deleted() -> None:
+    store = InMemoryDocumentStore()
+    seed_built_in_document(store)
+    engine = make_engine(store=store)
+
+    with pytest.raises(ProtectedDocumentError, match="runbook.txt"):
+        engine.delete_document("runbook.txt")
+
+    assert store.document_ids() == {"runbook.txt"}
+
+
+def test_an_upload_cannot_replace_a_built_in_document() -> None:
+    store = InMemoryDocumentStore()
+    seed_built_in_document(store)
+    engine = make_engine(store=store)
+
+    with pytest.raises(ProtectedDocumentError, match="runbook.txt"):
+        engine.upload("runbook.txt", b"Something else entirely.")
+
+    assert store.chunk("runbook.txt:0").text == "Restart the gateway."
+
+
+def test_an_uploaded_document_can_still_be_updated_and_deleted() -> None:
+    engine = make_engine()
+    engine.upload("notes.txt", b"First version.")
+
+    updated = engine.upload("notes.txt", b"Second version.")
+    deleted = engine.delete_document("notes.txt")
+
+    assert updated.updated == ["notes.txt"]
+    assert deleted is True
+
+
+def test_protection_can_be_turned_off_for_local_work() -> None:
+    store = InMemoryDocumentStore()
+    seed_built_in_document(store)
+    engine = make_engine(store=store, protect_built_in=False)
+
+    assert engine.delete_document("runbook.txt") is True

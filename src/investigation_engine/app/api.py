@@ -10,7 +10,7 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse
 
-from investigation_engine.app.engine import Engine, NothingToIndexError
+from investigation_engine.app.engine import Engine, NothingToIndexError, ProtectedDocumentError
 from investigation_engine.app.schemas import (
     AnswerOut,
     AskIn,
@@ -134,6 +134,8 @@ def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI
             raise HTTPException(415, str(error)) from error
         except (ParseError, NothingToIndexError) as error:
             raise HTTPException(422, str(error)) from error
+        except ProtectedDocumentError as error:
+            raise HTTPException(403, str(error)) from error
         return upload_out(result)
 
     @app.delete(
@@ -143,7 +145,11 @@ def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI
         description="Removes the document and the chunks that belong only to it.",
     )
     def delete_document(document_id: str, engine: EngineDependency) -> Response:
-        if not engine.delete_document(document_id):
+        try:
+            deleted = engine.delete_document(document_id)
+        except ProtectedDocumentError as error:
+            raise HTTPException(403, str(error)) from error
+        if not deleted:
             raise HTTPException(404, f"No document with id {document_id}.")
         return Response(status_code=204)
 

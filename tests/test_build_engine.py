@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 from fakes import HashingEmbedder
+from investigation_engine.app.engine import ProtectedDocumentError
 from investigation_engine.app.main import build_engine, create_default_app
 from investigation_engine.domain import Document
 from investigation_engine.ingestion.chunking import SentenceChunker
@@ -20,17 +21,28 @@ OUTAGE = b"Payments failed on 5 March because of a bad deploy."
 
 @pytest.fixture(autouse=True)
 def clean_environment(monkeypatch: pytest.MonkeyPatch) -> None:
-    for variable in ("GEMINI_API_KEY", "GROQ_API_KEY", "DATABASE_URL"):
+    for variable in (
+        "GEMINI_API_KEY",
+        "GROQ_API_KEY",
+        "DATABASE_URL",
+        "PROTECT_BUILT_IN_DOCUMENTS",
+    ):
         monkeypatch.delenv(variable, raising=False)
 
 
-def make_settings(url: str, tmp_path: Path, gemini_api_key: str | None = None) -> Settings:
+def make_settings(
+    url: str,
+    tmp_path: Path,
+    gemini_api_key: str | None = None,
+    protect_built_in_documents: bool = True,
+) -> Settings:
     return Settings(
         _env_file=None,
         database_url=url,
         embedding_dimension=DIMENSION,
         llm_cache_path=tmp_path / "cache.sqlite",
         gemini_api_key=gemini_api_key,
+        protect_built_in_documents=protect_built_in_documents,
     )
 
 
@@ -102,3 +114,20 @@ def test_the_default_app_is_built_without_touching_the_database(
     app = create_default_app()
 
     assert app.title == "Investigation Engine"
+
+
+def test_built_in_documents_are_protected_only_when_the_setting_says_so(
+    make_database: Callable[[int], Database], postgres_url: str, tmp_path: Path
+) -> None:
+    database = make_database(DIMENSION)
+    IngestionService(PostgresDocumentStore(database), SentenceChunker(max_words=30)).ingest(
+        [Document(id="a", text="Alpha gateway outage.", title="a", source="a.txt")]
+    )
+    protected = build_engine(make_settings(postgres_url, tmp_path), HashingEmbedder())
+    open_settings = make_settings(postgres_url, tmp_path, protect_built_in_documents=False)
+    unprotected = build_engine(open_settings, HashingEmbedder())
+
+    with pytest.raises(ProtectedDocumentError):
+        protected.delete_document("a")
+
+    assert unprotected.delete_document("a") is True

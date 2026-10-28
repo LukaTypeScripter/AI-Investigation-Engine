@@ -25,6 +25,7 @@ SELECT_SOURCES = (
     "JOIN documents d ON d.id = o.document_id WHERE o.chunk_id = ANY(%s) "
     "ORDER BY o.chunk_id, o.seq"
 )
+SELECT_ORIGINS = "SELECT id, COALESCE(metadata->>'origin', '') FROM documents WHERE id = ANY(%s)"
 LIST_DOCUMENTS = (
     "SELECT d.id, d.title, d.source, "
     "(SELECT count(*) FROM chunk_owners o WHERE o.document_id = d.id) "
@@ -126,6 +127,14 @@ class PostgresDocumentStore:
             lambda connection: connection.execute("SELECT count(*) FROM chunks").fetchone()
         )
         return row[0] if row else 0
+
+    def origins_of(self, document_ids: Sequence[str]) -> dict[str, str]:
+        if not document_ids:
+            return {}
+        rows = self._database.run(
+            lambda connection: connection.execute(SELECT_ORIGINS, (list(document_ids),)).fetchall()
+        )
+        return dict(rows)
 
     def iter_chunks(self, batch_size: int = DEFAULT_STREAM_BATCH) -> Iterator[Chunk]:
         last_id = ""

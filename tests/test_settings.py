@@ -124,3 +124,13 @@ def test_defaults_name_the_current_stable_models_of_both_providers() -> None:
 
     assert settings.gemini_model == "gemini-3.8-flash"
     assert settings.groq_model == "llama-3.3-70b-versatile"
+
+
+def test_built_in_documents_are_protected_unless_the_setting_says_otherwise(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    assert Settings(_env_file=None).protect_built_in_documents is True
+
+    monkeypatch.setenv("PROTECT_BUILT_IN_DOCUMENTS", "false")
+
+    assert Settings(_env_file=None).protect_built_in_documents is False

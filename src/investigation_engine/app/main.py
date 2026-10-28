@@ -50,6 +50,7 @@ def build_engine(settings: Settings, embedder: Embedder | None = None) -> Engine
         llm=build_language_model(settings),
         reranker=FeatureReranker() if settings.rerank_results else None,
         candidates=settings.retrieval_candidates,
+        protect_built_in=settings.protect_built_in_documents,
     )
     engine.load_keyword_index()
     return engine

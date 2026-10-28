@@ -11,6 +11,9 @@ from fakes import (
     submit_call,
 )
 from investigation_engine.app.api import ApiLimits, create_app
+from investigation_engine.domain import Document
+from investigation_engine.ingestion.chunking import SentenceChunker
+from investigation_engine.ingestion.service import IngestionService
 from investigation_engine.llm.errors import (
     LlmMalformedResponse,
     LlmRateLimited,
@@ -18,6 +21,7 @@ from investigation_engine.llm.errors import (
     LlmUnavailable,
 )
 from investigation_engine.llm.types import Completion
+from investigation_engine.storage.memory import InMemoryDocumentStore
 
 OUTAGE = b"Payments failed on 5 March because of a bad deploy."
 REFUNDS = b"Refunds were delayed by two days."
@@ -284,3 +288,31 @@ def test_a_language_model_failure_is_written_to_the_log_with_its_reason(
 
     assert "model not found" not in response.text
     assert "model not found" in caplog.text
+
+
+def client_with_built_in_document() -> TestClient:
+    store = InMemoryDocumentStore()
+    IngestionService(store, SentenceChunker(max_words=30)).ingest(
+        [Document(id="runbook.txt", text="Restart.", title="Runbook", source="runbook.txt")]
+    )
+    engine = make_engine(store=store)
+    return TestClient(create_app(lambda: engine, LIMITS))
+
+
+def test_deleting_a_built_in_document_is_forbidden() -> None:
+    with client_with_built_in_document() as client:
+        response = client.delete("/api/documents/runbook.txt")
+
+        assert response.status_code == 403
+        assert "built-in" in response.json()["detail"]
+        assert client.get("/api/health").json()["documents"] == 1
+
+
+def test_uploading_over_a_built_in_document_is_forbidden() -> None:
+    with client_with_built_in_document() as client:
+        response = client.post(
+            "/api/documents", params={"filename": "runbook.txt"}, content=b"Other text."
+        )
+
+        assert response.status_code == 403
+        assert "built-in" in response.json()["detail"]
