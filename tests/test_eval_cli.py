@@ -157,3 +157,45 @@ def test_an_unknown_chunker_is_rejected(tmp_path: Path, experiment_inputs: dict[
 
     with pytest.raises(SystemExit):
         main([*arguments, "--chunker", "nonsense"], HashingEmbedder())
+
+
+def run_failures(experiment_inputs: dict[str, Path], report: Path, config: str, k: int = 1) -> int:
+    return main(
+        [
+            "failures",
+            "--report",
+            str(report),
+            "--config",
+            config,
+            "--questions",
+            str(experiment_inputs["questions"]),
+            "--k",
+            str(k),
+        ]
+    )
+
+
+def test_failures_command_lists_the_questions_a_configuration_missed(
+    tmp_path: Path, experiment_inputs: dict[str, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
+    report = tmp_path / "report.json"
+    main(experiment_arguments("retrieval", experiment_inputs, report), HashingEmbedder())
+    capsys.readouterr()
+
+    code = run_failures(experiment_inputs, report, "bm25_only", k=1)
+
+    assert code == 0
+    assert "### b00 (multi_step)" in capsys.readouterr().out
+
+
+def test_failures_command_rejects_an_unknown_configuration(
+    tmp_path: Path, experiment_inputs: dict[str, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
+    report = tmp_path / "report.json"
+    main(experiment_arguments("retrieval", experiment_inputs, report), HashingEmbedder())
+    capsys.readouterr()
+
+    code = run_failures(experiment_inputs, report, "nonsense")
+
+    assert code == 2
+    assert "bm25_only" in capsys.readouterr().err

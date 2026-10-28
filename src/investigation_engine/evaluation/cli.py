@@ -14,6 +14,7 @@ from investigation_engine.embeddings import (
     FastEmbedEmbedder,
     SqliteEmbeddingCache,
 )
+from investigation_engine.evaluation.failure_analysis import find_failures, render_failures
 from investigation_engine.evaluation.hotpot import (
     build_documents,
     download_validation,
@@ -54,6 +55,7 @@ DOWNLOAD_ATTEMPTS = 10
 DOWNLOAD_PAUSE_SECONDS = 1.5
 DOWNLOAD_TIMEOUT_SECONDS = 60.0
 CHUNKING_CONFIGS = (RetrievalConfig("hybrid_rrf"), RetrievalConfig("hybrid_rerank", rerank=True))
+DEFAULT_FAILURE_DEPTH = 5
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -68,6 +70,12 @@ def build_parser() -> argparse.ArgumentParser:
     build.add_argument("--count", type=int, default=DEFAULT_QUESTION_COUNT)
     build.add_argument("--seed", type=int, default=DEFAULT_SEED)
     build.add_argument("--out", type=Path, required=True)
+
+    failures = commands.add_parser("failures", help="list the questions a configuration missed")
+    failures.add_argument("--report", type=Path, required=True)
+    failures.add_argument("--config", required=True)
+    failures.add_argument("--questions", type=Path, nargs="+", required=True)
+    failures.add_argument("--k", type=int, default=DEFAULT_FAILURE_DEPTH)
 
     for name, help_text in (
         ("retrieval", "compare retrieval configurations"),
@@ -100,6 +108,18 @@ def run_build_questions(arguments: argparse.Namespace) -> int:
     questions = sample_hotpot_questions(examples, arguments.count, arguments.seed)
     write_questions(arguments.out, questions)
     print(f"wrote {len(questions)} questions to {arguments.out}")
+    return 0
+
+
+def run_failures(arguments: argparse.Namespace) -> int:
+    payload = json.loads(arguments.report.read_text(encoding="utf-8"))
+    matching = [report for report in payload["reports"] if report["config"] == arguments.config]
+    if not matching:
+        known = ", ".join(report["config"] for report in payload["reports"])
+        print(f"unknown config '{arguments.config}', choose one of: {known}", file=sys.stderr)
+        return 2
+    questions = [question for path in arguments.questions for question in read_questions(path)]
+    print(render_failures(find_failures(matching[0], questions, arguments.k)))
     return 0
 
 
@@ -164,6 +184,8 @@ def main(argv: Sequence[str] | None = None, embedder: Embedder | None = None) ->
         return run_download(arguments)
     if arguments.command == "build-questions":
         return run_build_questions(arguments)
+    if arguments.command == "failures":
+        return run_failures(arguments)
     if embedder is not None:
         return run_experiment(arguments, embedder)
     cached = open_embedder(arguments.cache)
