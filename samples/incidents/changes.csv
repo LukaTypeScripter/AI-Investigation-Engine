@@ -1,0 +1,9 @@
+id,title,text,date,service,author,risk
+CHG-1038,merchant-portal theme update,Updated the merchant dashboard theme and added an export button to the transactions page.,2025-02-27,merchant-portal,j.okafor,low
+CHG-1041,payment-gateway v4.12 deploy,Deployed payment-gateway v4.12. Reduced the database connection pool size from 200 to 50 to cut idle connections.,2025-03-04,payment-gateway,a.petrov,medium
+CHG-1042,notification batching,Enabled batched receipt emails in notification-service. Flush interval raised from 5 seconds to 60 seconds.,2025-03-04,notification-service,m.silva,low
+CHG-1043,ledger commit timeout,Lowered the ledger-service commit timeout from 30 seconds to 10 seconds.,2025-03-05,ledger-service,r.chen,medium
+CHG-1044,gateway rollback,Rolled payment-gateway back to v4.11 and restored the database connection pool size of 200.,2025-03-06,payment-gateway,a.petrov,low
+CHG-1047,fraud velocity threshold,Raised the fraud-checker velocity rule threshold from 20 to 25 transactions per minute.,2025-03-12,fraud-checker,l.moreau,low
+CHG-1050,settlement schedule,Moved the nightly settlement run from 01:00 UTC to 02:30 UTC.,2025-03-18,settlement-batch,d.haddad,low
+CHG-1052,gateway retry with jitter,Added retry with jitter for ledger timeouts in payment-gateway with a maximum of 3 attempts.,2025-03-25,payment-gateway,a.petrov,medium

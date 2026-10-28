@@ -1,0 +1,10 @@
+Runbook: ledger write backlog
+Owner: Ledger team
+
+Use this runbook when the ledger-service write queue depth stays above 10,000 pending writes.
+
+Steps
+1. Pause settlement-batch so that it does not compete for ledger writes.
+2. Temporarily raise the ledger commit timeout to 30 seconds with the configuration flag LEDGER_COMMIT_TIMEOUT.
+3. Drain the queue with the command: ledger-drain --rate 500
+4. When the queue depth is below 1,000, restore the timeout and resume settlement-batch.

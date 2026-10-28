@@ -1,0 +1,10 @@
+Runbook: payment-gateway rollback
+Owner: Payments Core team
+
+Use this runbook to return the payment-gateway to the previous release.
+
+Steps
+1. Run the pipeline gateway-rollback and select the previous release tag.
+2. Wait for the deployment to finish and confirm the health check is green.
+3. Verify that the database connection pool size is 200.
+4. Announce the rollback in the incident channel.

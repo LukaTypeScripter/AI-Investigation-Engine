@@ -1,0 +1,6 @@
+Runbook: nightly settlement
+Owner: Settlement team
+
+The settlement-batch service runs the nightly settlement at 01:00 UTC and writes the settlement export used by finance.
+
+If the run has not started 10 minutes after the scheduled time, check that the ledger-service write queue is empty and start the run manually with the command: settlement-batch --run-now

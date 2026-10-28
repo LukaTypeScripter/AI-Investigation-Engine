@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<title>Postmortem: INC-2207 payment processing delay</title>
+<meta name="author" content="SRE team">
+<meta name="date" content="2025-03-10">
+<style>body { font-family: sans-serif; }</style>
+</head>
+<body>
+<h1>Postmortem: INC-2207 payment processing delay</h1>
+<p>Total duration: 3 hours 10 minutes (09:12 to 12:22 UTC on 5 March 2025).</p>
+<h2>Root cause</h2>
+<p>Change CHG-1041 reduced the payment-gateway database connection pool from 200 to 50, which exhausted connections during the morning peak.</p>
+<h2>Services affected</h2>
+<ul>
+<li>payment-gateway</li>
+<li>ledger-service</li>
+<li>notification-service</li>
+</ul>
+<h2>Action items</h2>
+<ul>
+<li>Alert on connection pool saturation.</li>
+<li>Require a load test for every connection pool change.</li>
+</ul>
+<script>window.analytics = true;</script>
+</body>
+</html>

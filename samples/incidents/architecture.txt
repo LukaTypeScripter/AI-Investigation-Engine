@@ -1,0 +1,15 @@
+Orion Pay architecture overview
+
+Services
+- payment-gateway: receives card payments and calls ledger-service and fraud-checker for every authorisation.
+- ledger-service: records every transaction and serves balances to merchant-portal.
+- fraud-checker: scores each authorisation using velocity rules.
+- notification-service: consumes payment events from payment-gateway and sends receipt emails.
+- settlement-batch: reads the ledger every night and writes the settlement export used by finance.
+- merchant-portal: dashboard for merchants, reads data from ledger-service.
+
+Dependencies
+payment-gateway depends on ledger-service and fraud-checker.
+notification-service depends on payment-gateway events.
+settlement-batch depends on ledger-service.
+merchant-portal depends on ledger-service.
