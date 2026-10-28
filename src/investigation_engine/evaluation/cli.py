@@ -7,12 +7,19 @@ from pathlib import Path
 
 import httpx
 
+from investigation_engine.agent.investigator import Investigator
 from investigation_engine.domain import Document
 from investigation_engine.embeddings import (
     CachedEmbedder,
     Embedder,
     FastEmbedEmbedder,
     SqliteEmbeddingCache,
+)
+from investigation_engine.evaluation.answer_eval import (
+    AnswerResult,
+    evaluate_answers,
+    render_answer_table,
+    summarize_answers,
 )
 from investigation_engine.evaluation.failure_analysis import find_failures, render_failures
 from investigation_engine.evaluation.hotpot import (
@@ -32,12 +39,21 @@ from investigation_engine.evaluation.retrieval_eval import (
     RetrievalReport,
     build_stack,
     limit_documents,
+    make_retriever,
     render_table,
     report_to_dict,
     run_configs,
 )
 from investigation_engine.ingestion.chunking import Chunker, FixedWindowChunker, SentenceChunker
 from investigation_engine.ingestion.parsers import parse_path
+from investigation_engine.llm.cache import SqliteResponseCache
+from investigation_engine.llm.client import ChatClient
+from investigation_engine.llm.factory import (
+    ConfigurationError,
+    build_chat_client,
+    build_http_client,
+)
+from investigation_engine.settings import Settings
 
 CHUNKERS: dict[str, Chunker] = {
     "sentence-120": SentenceChunker(max_words=120),
@@ -56,6 +72,9 @@ DOWNLOAD_PAUSE_SECONDS = 1.5
 DOWNLOAD_TIMEOUT_SECONDS = 60.0
 CHUNKING_CONFIGS = (RetrievalConfig("hybrid_rrf"), RetrievalConfig("hybrid_rerank", rerank=True))
 DEFAULT_FAILURE_DEPTH = 5
+DEFAULT_ANSWER_CONFIGS = ("hybrid_rrf", "vector_only")
+CONFIGS_BY_NAME = {config.name: config for config in DEFAULT_CONFIGS}
+PROVIDERS = ("gemini", "groq")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -80,6 +99,7 @@ def build_parser() -> argparse.ArgumentParser:
     for name, help_text in (
         ("retrieval", "compare retrieval configurations"),
         ("chunking", "compare chunking strategies"),
+        ("answers", "score cited answers from a language model"),
     ):
         experiment = commands.add_parser(name, help=help_text)
         experiment.add_argument("--hotpot", type=Path, default=DEFAULT_HOTPOT_PATH)
@@ -91,6 +111,16 @@ def build_parser() -> argparse.ArgumentParser:
         experiment.add_argument("--seed", type=int, default=DEFAULT_SEED)
         if name == "retrieval":
             experiment.add_argument("--chunker", choices=sorted(CHUNKERS), default=DEFAULT_CHUNKER)
+        if name == "answers":
+            experiment.add_argument(
+                "--configs",
+                nargs="+",
+                choices=sorted(CONFIGS_BY_NAME),
+                default=list(DEFAULT_ANSWER_CONFIGS),
+            )
+            experiment.add_argument("--provider", choices=PROVIDERS)
+            experiment.add_argument("--limit", type=int)
+            experiment.add_argument("--pause", type=float, default=0.0)
     return parser
 
 
@@ -178,7 +208,83 @@ def open_embedder(cache_path: Path) -> CachedEmbedder:
     return CachedEmbedder(FastEmbedEmbedder(), SqliteEmbeddingCache(cache_path))
 
 
-def main(argv: Sequence[str] | None = None, embedder: Embedder | None = None) -> int:
+def print_progress(result: AnswerResult) -> None:
+    verdict = "ok" if result.correct else "wrong"
+    print(f"  {result.question_id}: {verdict} ({result.status})", file=sys.stderr)
+
+
+def build_answer_model(arguments: argparse.Namespace) -> ChatClient:
+    settings = Settings()
+    settings.llm_cache_path.parent.mkdir(parents=True, exist_ok=True)
+    return build_chat_client(
+        settings,
+        build_http_client(settings),
+        SqliteResponseCache(settings.llm_cache_path),
+        provider=arguments.provider,
+    )
+
+
+def run_answers(
+    arguments: argparse.Namespace, embedder: Embedder, chat_client: ChatClient | None
+) -> int:
+    try:
+        llm = chat_client or build_answer_model(arguments)
+    except ConfigurationError as error:
+        print(str(error), file=sys.stderr)
+        return 2
+    questions = [question for path in arguments.questions for question in read_questions(path)]
+    if arguments.limit:
+        questions = questions[: arguments.limit]
+    documents = load_corpus(arguments, questions)
+    print(f"indexing {len(documents)} documents", file=sys.stderr)
+    stack, _ = build_stack(documents, CHUNKERS[DEFAULT_CHUNKER], embedder)
+    summaries: dict[str, dict[str, dict[str, float]]] = {}
+    reports: list[dict[str, object]] = []
+    for name in arguments.configs:
+        print(f"answering {len(questions)} questions with {name}", file=sys.stderr)
+        investigator = Investigator(llm, make_retriever(stack, CONFIGS_BY_NAME[name]), stack.store)
+        results = evaluate_answers(
+            investigator, questions, on_result=print_progress, pause_seconds=arguments.pause
+        )
+        summaries[name] = summarize_answers(results)
+        reports.append(
+            {"config": name, "summary": summaries[name], "results": [r.to_dict() for r in results]}
+        )
+    arguments.out.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "model": llm.model,
+        "provider": arguments.provider,
+        "seed": arguments.seed,
+        "max_documents": arguments.max_documents,
+        "questions": len(questions),
+        "reports": reports,
+    }
+    arguments.out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    print_answer_tables(summaries)
+    return 0
+
+
+def print_answer_tables(summaries: dict[str, dict[str, dict[str, float]]]) -> None:
+    print(render_answer_table(summaries, "all"))
+    categories = sorted({group for summary in summaries.values() for group in summary} - {"all"})
+    for category in categories:
+        print(f"\n{category}\n")
+        print(render_answer_table(summaries, category))
+
+
+def run_embedding_command(
+    arguments: argparse.Namespace, embedder: Embedder, chat_client: ChatClient | None
+) -> int:
+    if arguments.command == "answers":
+        return run_answers(arguments, embedder, chat_client)
+    return run_experiment(arguments, embedder)
+
+
+def main(
+    argv: Sequence[str] | None = None,
+    embedder: Embedder | None = None,
+    chat_client: ChatClient | None = None,
+) -> int:
     arguments = build_parser().parse_args(argv)
     if arguments.command == "download":
         return run_download(arguments)
@@ -187,10 +293,10 @@ def main(argv: Sequence[str] | None = None, embedder: Embedder | None = None) ->
     if arguments.command == "failures":
         return run_failures(arguments)
     if embedder is not None:
-        return run_experiment(arguments, embedder)
+        return run_embedding_command(arguments, embedder, chat_client)
     cached = open_embedder(arguments.cache)
     try:
-        return run_experiment(arguments, cached)
+        return run_embedding_command(arguments, cached, chat_client)
     finally:
         cached.close()
 

@@ -3,9 +3,16 @@ from pathlib import Path
 
 import pytest
 
-from fakes import HashingEmbedder
+from fakes import (
+    FakeClient,
+    HashingEmbedder,
+    make_tool_completion,
+    search_call,
+    submit_call,
+)
 from investigation_engine.evaluation.cli import CHUNKERS, main
 from investigation_engine.evaluation.questions import EvalQuestion, read_questions, write_questions
+from investigation_engine.llm.types import Completion
 
 
 def hotpot_row(
@@ -199,3 +206,80 @@ def test_failures_command_rejects_an_unknown_configuration(
 
     assert code == 2
     assert "bm25_only" in capsys.readouterr().err
+
+
+def scripted_client(runs: int) -> FakeClient:
+    outcomes: list[Completion | Exception] = []
+    for _ in range(runs):
+        outcomes.append(make_tool_completion(search_call("restart gateway")))
+        outcomes.append(make_tool_completion(submit_call("answered", "Use restart.", ["E1"])))
+    return FakeClient("m1", *outcomes)
+
+
+def answer_arguments(inputs: dict[str, Path], out: Path, *extra: str) -> list[str]:
+    return [*experiment_arguments("answers", inputs, out), *extra]
+
+
+def test_answers_command_scores_every_question_for_every_configuration(
+    tmp_path: Path, experiment_inputs: dict[str, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
+    out = tmp_path / "answers.json"
+    arguments = answer_arguments(experiment_inputs, out, "--configs", "hybrid_rrf", "vector_only")
+
+    code = main(arguments, HashingEmbedder(), scripted_client(runs=4))
+
+    payload = json.loads(out.read_text(encoding="utf-8"))
+    assert code == 0
+    assert [report["config"] for report in payload["reports"]] == ["hybrid_rrf", "vector_only"]
+    assert all(len(report["results"]) == 2 for report in payload["reports"])
+    assert payload["reports"][0]["summary"]["all"]["accuracy"] >= 0.0
+    assert payload["model"] == "m1"
+    assert "| config |" in capsys.readouterr().out
+
+
+def test_answers_command_compares_hybrid_and_vector_search_by_default(
+    tmp_path: Path, experiment_inputs: dict[str, Path]
+) -> None:
+    out = tmp_path / "answers.json"
+
+    main(answer_arguments(experiment_inputs, out), HashingEmbedder(), scripted_client(runs=4))
+
+    payload = json.loads(out.read_text(encoding="utf-8"))
+    assert [report["config"] for report in payload["reports"]] == ["hybrid_rrf", "vector_only"]
+
+
+def test_answers_command_can_limit_the_number_of_questions(
+    tmp_path: Path, experiment_inputs: dict[str, Path]
+) -> None:
+    out = tmp_path / "answers.json"
+    arguments = answer_arguments(experiment_inputs, out, "--limit", "1", "--configs", "hybrid_rrf")
+
+    main(arguments, HashingEmbedder(), scripted_client(runs=1))
+
+    payload = json.loads(out.read_text(encoding="utf-8"))
+    assert [len(report["results"]) for report in payload["reports"]] == [1]
+
+
+def test_answers_command_rejects_an_unknown_configuration(
+    tmp_path: Path, experiment_inputs: dict[str, Path]
+) -> None:
+    arguments = answer_arguments(experiment_inputs, tmp_path / "x.json", "--configs", "nonsense")
+
+    with pytest.raises(SystemExit):
+        main(arguments, HashingEmbedder(), scripted_client(runs=0))
+
+
+def test_answers_command_without_a_language_model_key_says_what_to_set(
+    tmp_path: Path,
+    experiment_inputs: dict[str, Path],
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+
+    code = main(answer_arguments(experiment_inputs, tmp_path / "x.json"), HashingEmbedder())
+
+    assert code == 2
+    assert "GEMINI_API_KEY" in capsys.readouterr().err
