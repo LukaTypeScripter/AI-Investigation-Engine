@@ -2,7 +2,7 @@
 
 This report covers what was measured, what the numbers say, why the system fails where it fails, and what to change next. The detailed retrieval analysis with the per-question failure lists is in [retrieval-analysis.md](retrieval-analysis.md); raw result files are in this folder.
 
-**Status.** Retrieval, chunking, storage and speed are measured on the full corpus. Answer quality (accuracy, citations, abstention, conflict detection) needs a language model key and has not been measured yet. Section 6 says exactly how to run it and what it will produce. Nothing in this report is an estimate of those numbers.
+**Status.** Retrieval, chunking, storage and speed are measured on the full corpus. Answer quality is measured for one configuration (the agent over hybrid retrieval, 56 questions, Groq `openai/gpt-oss-120b`). A second answer configuration could not be run because the model's free daily token allowance was used up. Section 6 says exactly what was and was not measured.
 
 ## 1. Setup
 
@@ -126,56 +126,87 @@ Resource use of the container: image 1.14 GB, 255 MiB after startup and 459 MiB 
 
 ## 6. Answer quality
 
-**Not measured yet.** It needs `GEMINI_API_KEY` or `GROQ_API_KEY`. Everything else is in place: the agent, the scoring code, the `answers` command and its tests, and response caching so a long run can be resumed.
+**Measured for one configuration.** The agent (hybrid retrieval, no re-ranker) answered all 56 questions with Groq `openai/gpt-oss-120b`, over the 5,026-document set that keeps every gold document and fills the rest with seeded random ones. The raw results are in [answers-groq-hybrid_rrf.json](answers-groq-hybrid_rrf.json). A second configuration (`vector_only`) was started and then stopped: the first run needed about 190,000 tokens, and the model's free allowance is 200,000 tokens per rolling day, so the second run could not finish. Nothing below is an estimate of it.
 
 ```bash
-uv run python -m investigation_engine.evaluation.cli answers --provider gemini \
+uv run python -m investigation_engine.evaluation.cli answers --provider groq \
   --samples samples/incidents --questions eval/hotpot_questions.jsonl eval/incident_questions.jsonl \
-  --max-documents 5000 --configs hybrid_rrf vector_only hybrid_rerank --pause 4 \
-  --out reports/answers-gemini.json
+  --max-documents 5000 --configs hybrid_rrf --pause 2 --out reports/answers-groq-hybrid_rrf.json
 ```
 
-It runs every question through the agent once per retrieval configuration and writes, per category:
+| Category | Questions | Accuracy | Citation precision | Citation recall | Searches | Tokens |
+| --- | --- | --- | --- | --- | --- | --- |
+| all | 56 | **0.839** | 0.899 | 0.837 | 1.68 | 3,442 |
+| simple | 6 | 1.000 | 0.806 | 1.000 | 1.00 | 1,632 |
+| multi-step | 26 | 0.885 | 0.981 | 0.897 | 1.50 | 2,807 |
+| multi-document | 14 | 0.786 | 0.821 | 0.702 | 1.36 | 2,323 |
+| unanswerable | 5 | 1.000 | not scored | not scored | 5.00 | 13,668 |
+| conflicting | 5 | **0.400** | 0.800 | 0.700 | 1.00 | 1,826 |
 
 | Metric | Meaning |
 | --- | --- |
-| accuracy | Right status, and for answered questions the answer contains a gold answer |
-| exact match and F1 | Token overlap with the gold answers, over answered questions |
+| accuracy | Right status, and for answered questions the answer contains a gold answer as whole words |
 | citation precision | Share of citations whose sources include a gold document |
 | citation recall | Share of gold documents covered by the citations |
-| hallucination rate | Share of unanswerable questions that were answered instead of refused |
-| searches, model calls, tokens | Effort per question |
+| hallucination rate | Share of unanswerable questions that were answered instead of refused (0.000 here) |
+| searches, tokens | Effort per question |
 
-`--max-documents 5000` keeps every gold document and fills up to 5,000 with seeded random ones, so a run needs thousands of embeddings instead of 81,000 and fits free-tier limits. Retrieval over the full corpus is already measured in section 2.
+Exact match (0.043) and F1 (0.287) are low by construction. The agent answers in full sentences and the gold answers are short phrases, so accuracy, which asks whether the gold phrase appears in the answer, is the headline number.
 
-Questions to answer once the numbers exist:
+### What the numbers say
 
-- Do follow-up searches recover the bridge questions that single-shot retrieval misses?
-- Does the agent refuse the five unanswerable questions, and report the five conflicts instead of picking a side?
-- Is the re-ranker better inside the agent, where several searches can compensate for a poor first ranking?
-- How do Gemini and Groq compare on the same questions (run the command with `--provider groq`)?
+1. **It refuses when it should.** All five unanswerable questions were refused and the hallucination rate is 0. But all five ended the same way: five searches and six model calls, which is the step limit. The agent refuses by running out of steps, not by deciding that the evidence is missing. That costs 13,668 tokens per question, eight times a simple question.
+2. **Conflicts are the weak spot.** Two of five were reported. In the three misses (`inc-22`, `inc-23`, `inc-26`) the agent made one search and answered from the first source it found. For `inc-22` it said the delay lasted 3 hours 10 minutes, the postmortem's figure, and did not report that the status page says 47 minutes. Nothing in the loop makes the agent look for a second source once the first one answers the question. This is also what the retrieval analysis predicted: duplicates crowd out the one document that disagrees.
+3. **Multi-document questions are the second weakest (0.786).** Of the three misses, two are quota errors (below) and one is an over-cautious refusal: for "who has the highest scope in profession, Rob Thomas or James Dean Bradfield" the agent cited both documents and then said the evidence does not rank them.
+4. **Multi-step questions are mostly answered (0.885).** Of the three misses, two are correct answers that the strict matcher rejects: "for their assistance after the 1917 Halifax Explosion" against an answer that says "the help Nova Scotia provided after the 1917 Halifax Explosion", and "drawing the name out of a hat" against "drawing the new name out of a hat". One is wrong: the answer says 1951 and the gold answer is 1952, with both documents found and cited. If the two wording mismatches counted as correct, accuracy would be 49 of 56 (0.875). The reported number keeps the strict rule.
+5. **Citations are mostly sound.** Precision 0.899 and recall 0.837. Recall is lowest on multi-document questions (0.702), where the answer needs two documents and the citations do not always cover both.
+6. **Cost.** An average question took 2.6 model calls and 3,442 tokens. The whole 56-question run used about 190,000 tokens, which is the entire free daily allowance of the model.
 
-The prompt-injection guard (evidence is quoted data, and the code refuses citations of ids that were never returned) is covered by unit tests with a scripted model. It has not been tried against a real model with a hostile document.
+### Defects that running a real model exposed
+
+| Defect | Evidence | Fix |
+| --- | --- | --- |
+| The default Groq model no longer exists | HTTP 404 on the first real request | New default `openai/gpt-oss-120b`, from the model list the key returned |
+| The model sometimes writes a broken tool call and Groq answers HTTP 400 (a tool that does not exist, arguments that are not JSON) | 3 of 56 questions on the first run | The client retries these. One of the three then passed. The other two were stopped by the quota before they could show whether the retry helps |
+| The matcher compared a non-breaking hyphen (`ALRT‑5531`) and curly quotes with their ASCII forms and failed | `inc-14` was marked wrong although its answer was right | The normaliser maps typographic dashes and quotes to ASCII. Accuracy rose from 0.821 to 0.839 with no new model call |
+| A model with no quota left made every question wait 90 to 180 s before an error | The deployed service, when the daily allowance ran out | An optional second Groq model takes over at once (`GROQ_FALLBACK_MODEL`) |
+
+The two questions that still end as errors (`5ac41f1d…` and `inc-16`) are quota errors, not model failures. They are counted as wrong, so the 0.839 includes two questions the model never got to answer. They failed earlier with the broken tool calls above.
+
+### Questions this run could not answer
+
+- **Do follow-up searches recover the bridge questions that one search misses?** The evaluation has no single-search answer baseline, so this report cannot say.
+- **Is the re-ranker better inside the agent?** Not run (`hybrid_rerank`).
+- **How do the models compare?** Gemini could not be used: Google rejected the key with "free tier is not available for this project". Groq's `openai/gpt-oss-20b` was tried on three questions (one simple, one unanswerable, one conflicting) with the same pattern: the first two right, the conflict missed. Three questions is a smoke test, not a comparison.
+- **Prompt injection.** The guard (evidence is quoted data, and the code refuses citations of ids that were never returned) is covered by unit tests with a scripted model. It has not been tried against a real model with a hostile document.
+
+The deployed service (Render with Neon) was also checked by hand: a question about change `CHG-1041` was answered correctly with three citations in 1.8 s, and a question that the documents cannot answer was refused. This is a check that the deployment works, not part of the measured results.
 
 ## 7. Where to improve next
 
 In order of expected value:
 
-1. **Run the answer evaluation and fix what it shows.** The retrieval work is ahead of the answer work, and the largest unknown is how the model behaves with real evidence.
-2. **Rank duplicates as one slot.** Duplicate documents currently crowd out the one document that disagrees with them, which is exactly what the conflict questions need.
-3. **Index dates in a normalised form** and keep the original wording as well.
-4. **Limit the re-ranker to the first few results,** or lower the weight of the term-coverage feature, so it keeps its precision gain without hurting multi-hop questions.
-5. **Let the model rewrite the query** when the first search returns weak evidence.
-6. **Grow the evaluation set.** Fifty-one scored questions detect differences of about 0.04 at best. The incident questions were written by the same author as the documents and are probably easier than real data.
+1. **Make the agent look for a second source before it answers.** Conflicting questions got one search each, and three of five were missed. A rule such as "for a number, a date or a cause, search again with different wording or another kind of document before submitting" is the cheapest fix. Measure it on the five conflict questions and check that simple questions do not get slower.
+2. **Let the agent refuse earlier.** The five unanswerable questions cost 13,668 tokens each because refusal only comes at the step limit. A rule such as "after two searches that return nothing relevant, submit `insufficient_evidence`" would cut most of that cost.
+3. **Rank duplicates as one slot.** Duplicate documents currently crowd out the one document that disagrees with them, which is exactly what the conflict questions need.
+4. **Run the second answer configuration** (`vector_only`) once the daily allowance resets, and then `hybrid_rerank`, to answer the open questions above.
+5. **Index dates in a normalised form** and keep the original wording as well.
+6. **Limit the re-ranker to the first few results,** or lower the weight of the term-coverage feature, so it keeps its precision gain without hurting multi-hop questions.
+7. **Let the model rewrite the query** when the first search returns weak evidence.
+8. **Grow the evaluation set.** Fifty-six questions detect differences of about 0.04 at best. The incident questions were written by the same author as the documents and are probably easier than real data.
 
 ## 8. Limits of this evaluation
 
-- Fifty-one scored questions is small. Treat differences under about 0.04 as noise.
+- Fifty-one scored questions is small for retrieval, and 56 for answers. Treat differences under about 0.04 as noise; one question is 0.018.
 - The incident documents and questions share an author, so that half of the evaluation is likely optimistic.
 - Retrieval is scored on a single query. The agent issues several, so single-query recall understates what the agent can reach on multi-hop questions.
 - Scoring documents instead of chunks penalises duplicates. Counting a duplicated chunk once would raise the conflict-question scores.
 - The chunking comparison used short documents.
 - English text only.
+- Answer quality was measured for one configuration, one model and one run. The model runs at temperature 0, but a hosted model is not guaranteed to repeat itself.
+- The matcher is strict: it accepts a gold phrase only as whole words in order, so correct answers in other words are counted wrong (two cases above).
+- Two of the 56 answers are missing because of the quota, and are counted as wrong.
+- Answers were generated over a 5,026-document subset, not the full 66,607 documents. Retrieval over the full corpus is measured in section 2.
 
 ## 9. Reproduce
 
