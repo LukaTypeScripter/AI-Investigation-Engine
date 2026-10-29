@@ -11,6 +11,8 @@ services:
         value: "7860"
       - key: LOG_LEVEL
         value: INFO
+      - key: GROQ_FALLBACK_MODEL
+        value: openai/gpt-oss-20b
       - key: DATABASE_URL
         sync: false
       - key: GROQ_API_KEY
