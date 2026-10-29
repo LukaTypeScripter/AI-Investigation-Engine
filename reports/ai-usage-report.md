@@ -10,7 +10,7 @@ The task allows AI tools and makes the candidate fully responsible for the code.
 | --- | --- |
 | Claude Code (Anthropic's command-line coding agent), with Claude models | Planning, writing the code and tests, running the quality gates, analysing evaluation results, writing the documentation |
 | Plugins and skills loaded into Claude Code (listed in section 4) | Style rules, testing discipline, Python tooling guidance |
-| A browser automation tool (Playwright) driven by Claude Code | Trying the web page in a real browser: upload, search, delete |
+| A browser automation tool (Playwright) driven by Claude Code | Trying the web page in a real browser: upload, search, delete. Also filling in the Render blueprint form and checking the deploy. The candidate signed in and typed the two secrets; the AI never saw them |
 | Docker, Postgres with pgvector, `uv`, `ruff`, `ty`, `pytest` | Ordinary development tooling, not AI |
 
 Models that run inside the product, as opposed to building it:
@@ -78,12 +78,17 @@ These matter for the interview because the candidate may be asked about them.
 | A test helper used `keywords or Bm25Index()`, and an empty index is falsy, so the test silently used a different index | A failing test | Explicit `is None` checks |
 | Tests connected to `localhost`, which on this Windows machine waits 20 seconds for an IPv6 timeout | A suite that took two minutes for nine tests | `127.0.0.1` |
 | The tests and the app shared one database and the tests wipe theirs | Review before the container was added | A separate test database |
+| The default Groq model name was taken from documentation | The first real request returned HTTP 404 | The default now comes from the model list that the key itself returned |
+| Hugging Face Docker Spaces were assumed to be free | Creating the Space: the Docker option was disabled without a paid plan | Render for the service and Neon for the database |
+| An old server was "stopped" with a pattern that missed it, and kept answering | A health check that looked fine but proved nothing, because Neon and the local database held identical data | All server processes were stopped, and the target was then proved with a document that exists only in Neon |
+| The three failed evaluation questions were guessed to be rate limits | Reading the results file: they were HTTP 400 broken tool calls from the model | The client retries that error type |
+| The answer scorer compared a non-breaking hyphen and curly quotes with plain ASCII and failed | One correct answer (`inc-14`) marked wrong | The normaliser maps them to ASCII. Accuracy rose from 0.821 to 0.839 |
 
 ## 7. What the AI cannot vouch for
 
-- The language models have not been run against the system yet. Answer quality, abstention behaviour, conflict reporting and prompt-injection resistance are untested with a real model. The evaluation report says so.
-- The Gemini and Groq model names were read from the providers' documentation, but no request has been sent with a real key. Free-tier limits were not published on the pages checked.
-- The hosted deployment has not been performed by the AI. It needs the candidate's accounts.
+- Answer quality was measured once, for one configuration and one model (evaluation report, section 6). Prompt-injection resistance is still untested with a real model, and a second configuration could not be run because the free daily token allowance ran out.
+- Provider details were learned only by using the providers: the first Groq default was retired (HTTP 404), Gemini refused the key because the project has no free tier, and the two Groq models used allow 200,000 tokens a day and 8,000 tokens a minute respectively. These limits were read from error messages and can change.
+- The hosted deployment lives in the candidate's own Render and Neon accounts. The candidate signed in and typed the secrets, and the AI prepared the files, drove the browser form and checked the result. The memory test of the free plan was a simulation (512 MB, 0.1 CPU, in Docker), not a measurement on Render itself.
 
 ## 8. Candidate to complete
 

@@ -2,7 +2,7 @@
 
 Ask questions across tens of thousands of documents and get answers that cite their sources. The engine searches by meaning and by keyword, follows a question across several documents, and says so when the evidence is missing or the sources disagree.
 
-- **Live demo:** `<add the public URL after deploying>`
+- **Live demo:** <https://investigation-engine-ubql.onrender.com>. It runs on Render's free plan, so after 15 minutes without traffic it sleeps, and the next visit waits a minute or more for it to wake up.
 - **Evaluation:** [reports/evaluation-report.md](reports/evaluation-report.md)
 - **AI usage:** [reports/ai-usage-report.md](reports/ai-usage-report.md)
 - **Interview notes:** [docs/walkthrough.md](docs/walkthrough.md)
