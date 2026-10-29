@@ -5,6 +5,7 @@ import pytest
 
 from investigation_engine.llm.client import OpenAiCompatibleClient, RetryPolicy
 from investigation_engine.llm.errors import (
+    LlmBadGeneration,
     LlmMalformedResponse,
     LlmRateLimited,
     LlmRejected,
@@ -202,6 +203,39 @@ def test_complete_does_not_retry_invalid_requests() -> None:
         make_client(transport).complete(USER_QUESTION)
 
     assert len(transport.requests) == 1
+
+
+TOOL_CALL_FAILURES = [
+    "Tool call validation failed: attempted to call tool 'open' which was not in request.tools",
+    "Failed to parse tool call arguments as JSON",
+    "Parsing failed. The model generated output that could not be parsed.",
+]
+
+
+@pytest.mark.parametrize("message", TOOL_CALL_FAILURES)
+def test_complete_retries_when_the_model_generates_a_broken_tool_call(message: str) -> None:
+    sleeps: list[float] = []
+    transport = ScriptedTransport(
+        httpx.Response(400, json={"error": {"message": message}}), ok_response()
+    )
+
+    completion = make_client(transport, sleeps).complete(USER_QUESTION)
+
+    assert completion.text == "Paris"
+    assert len(transport.requests) == 2
+    assert sleeps == [1.0]
+
+
+def test_complete_reports_a_broken_tool_call_that_keeps_happening() -> None:
+    broken = [
+        httpx.Response(400, json={"error": {"message": TOOL_CALL_FAILURES[1]}}) for _ in range(3)
+    ]
+    transport = ScriptedTransport(*broken)
+
+    with pytest.raises(LlmBadGeneration, match="Failed to parse tool call"):
+        make_client(transport).complete(USER_QUESTION)
+
+    assert len(transport.requests) == 3
 
 
 def test_complete_retries_connection_failures() -> None:

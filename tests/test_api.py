@@ -16,6 +16,7 @@ from investigation_engine.domain import Document
 from investigation_engine.ingestion.chunking import SentenceChunker
 from investigation_engine.ingestion.service import IngestionService
 from investigation_engine.llm.errors import (
+    LlmBadGeneration,
     LlmMalformedResponse,
     LlmRateLimited,
     LlmRejected,
@@ -251,6 +252,7 @@ def test_asking_can_return_an_abstention() -> None:
         (LlmUnavailable("down"), 503),
         (LlmRejected("bad key"), 502),
         (LlmMalformedResponse("garbage"), 502),
+        (LlmBadGeneration("garbage"), 502),
     ],
 )
 def test_language_model_failures_become_clear_http_errors(error: Exception, status: int) -> None:

@@ -16,6 +16,10 @@ class LlmUnavailable(TransientLlmError):
     pass
 
 
+class LlmBadGeneration(TransientLlmError):
+    pass
+
+
 class LlmRejected(LlmError):
     pass
 

@@ -2,6 +2,7 @@ import pytest
 
 from fakes import FakeClient, make_completion
 from investigation_engine.llm.errors import (
+    LlmBadGeneration,
     LlmMalformedResponse,
     LlmRateLimited,
     LlmRejected,
@@ -25,7 +26,12 @@ def test_fallback_uses_the_first_client_when_it_answers() -> None:
 
 @pytest.mark.parametrize(
     "failure",
-    [LlmRateLimited("slow down"), LlmUnavailable("down"), LlmMalformedResponse("garbled")],
+    [
+        LlmRateLimited("slow down"),
+        LlmUnavailable("down"),
+        LlmMalformedResponse("garbled"),
+        LlmBadGeneration("broken tool call"),
+    ],
 )
 def test_fallback_moves_to_the_next_client_on_recoverable_failures(failure: Exception) -> None:
     primary = FakeClient("gemini", failure)

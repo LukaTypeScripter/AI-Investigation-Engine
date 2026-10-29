@@ -7,6 +7,7 @@ from typing import Protocol
 import httpx
 
 from investigation_engine.llm.errors import (
+    LlmBadGeneration,
     LlmMalformedResponse,
     LlmRateLimited,
     LlmRejected,
@@ -18,8 +19,15 @@ from investigation_engine.llm.wire import build_request_body, parse_completion
 
 logger = logging.getLogger(__name__)
 
+BAD_REQUEST_STATUS = 400
 RATE_LIMITED_STATUS = 429
 UNAVAILABLE_STATUSES = frozenset({500, 502, 503, 504})
+GENERATION_FAILURE_MARKERS = (
+    "tool_use_failed",
+    "tool call validation failed",
+    "failed to parse tool call",
+    "could not be parsed",
+)
 ERROR_TEXT_LIMIT = 200
 
 
@@ -74,6 +82,11 @@ def provider_message(response: httpx.Response) -> str:
     if isinstance(error, dict) and isinstance(error.get("message"), str):
         return error["message"]
     return response.text[:ERROR_TEXT_LIMIT]
+
+
+def is_generation_failure(response: httpx.Response) -> bool:
+    body = response.text.lower()
+    return any(marker in body for marker in GENERATION_FAILURE_MARKERS)
 
 
 class OpenAiCompatibleClient:
@@ -139,4 +152,6 @@ class OpenAiCompatibleClient:
             return LlmRateLimited(f"{self.model}: rate limited: {detail}", retry_after)
         if status in UNAVAILABLE_STATUSES:
             return LlmUnavailable(f"{self.model}: HTTP {status}: {detail}", retry_after)
+        if status == BAD_REQUEST_STATUS and is_generation_failure(response):
+            return LlmBadGeneration(f"{self.model}: broken tool call: {detail}", retry_after)
         return LlmRejected(f"{self.model}: HTTP {status}: {detail}")
