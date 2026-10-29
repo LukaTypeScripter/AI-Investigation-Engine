@@ -6,6 +6,21 @@ from dataclasses import dataclass
 
 ARTICLES = re.compile(r"\b(a|an|the)\b")
 PUNCTUATION = frozenset(string.punctuation)
+TYPOGRAPHIC_TO_ASCII = str.maketrans(
+    {
+        "‐": "-",
+        "‑": "-",
+        "‒": "-",
+        "–": "-",
+        "—": "-",
+        "―": "-",
+        "−": "-",
+        "‘": "'",
+        "’": "'",
+        "“": '"',
+        "”": '"',
+    }
+)
 YES_NO_ANSWERS = frozenset({"yes", "no"})
 
 
@@ -16,7 +31,7 @@ class CitationScores:
 
 
 def normalize_answer(text: str) -> str:
-    lowered = text.lower()
+    lowered = text.translate(TYPOGRAPHIC_TO_ASCII).lower()
     without_punctuation = "".join(
         character for character in lowered if character not in PUNCTUATION
     )

@@ -18,6 +18,27 @@ def test_normalize_answer_lowercases_and_drops_punctuation_and_articles() -> Non
     assert normalize_answer("The Quick, Brown Fox!") == "quick brown fox"
 
 
+@pytest.mark.parametrize(
+    ("typographic", "plain"),
+    [
+        ("ALRT‑5531", "ALRT-5531"),
+        ("payment‑gateway", "payment-gateway"),
+        ("1980–1987", "1980-1987"),
+        ("a — b", "a - b"),
+        ("Orion Pay’s", "Orion Pay's"),
+        ("a “quoted” word", 'a "quoted" word'),
+    ],
+)
+def test_normalize_answer_treats_typographic_punctuation_like_plain_ascii(
+    typographic: str, plain: str
+) -> None:
+    assert normalize_answer(typographic) == normalize_answer(plain)
+
+
+def test_contains_answer_finds_an_identifier_written_with_a_non_breaking_hyphen() -> None:
+    assert contains_answer("The first alert (ID ALRT‑5531) fired.", "ALRT-5531") is True
+
+
 def test_exact_match_ignores_case_articles_and_punctuation() -> None:
     assert exact_match("The Eiffel Tower.", "eiffel tower") == 1.0
     assert exact_match("Eiffel Tower", "Louvre") == 0.0
