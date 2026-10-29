@@ -12,6 +12,7 @@ from investigation_engine.llm.factory import (
     build_http_client,
     configured_providers,
 )
+from investigation_engine.logging_setup import configure_logging
 from investigation_engine.retrieval.bm25 import Bm25Index
 from investigation_engine.retrieval.indexing import index_missing_vectors
 from investigation_engine.retrieval.postgres_vector import PostgresVectorIndex
@@ -58,5 +59,6 @@ def build_engine(settings: Settings, embedder: Embedder | None = None) -> Engine
 
 def create_default_app() -> FastAPI:
     settings = Settings()
+    configure_logging(settings.log_level)
     limits = ApiLimits(settings.max_upload_bytes, settings.max_question_chars)
     return create_app(lambda: build_engine(settings), limits)

@@ -129,6 +129,20 @@ def test_complete_waits_for_the_retry_after_header_when_rate_limited() -> None:
     assert len(transport.requests) == 2
 
 
+def test_complete_logs_each_retry_with_the_delay_and_the_reason(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    transport = ScriptedTransport(
+        httpx.Response(429, headers={"retry-after": "2"}, json={"error": {"message": "slow down"}}),
+        ok_response(),
+    )
+
+    make_client(transport).complete(USER_QUESTION)
+
+    assert "attempt 1 of 3 failed, retrying in 2.0s" in caplog.text
+    assert "slow down" in caplog.text
+
+
 def test_complete_backs_off_exponentially_on_server_errors() -> None:
     sleeps: list[float] = []
     transport = ScriptedTransport(httpx.Response(503), httpx.Response(502), ok_response())

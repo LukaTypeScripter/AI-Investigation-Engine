@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -24,3 +25,4 @@ class Settings(BaseSettings):
     chunk_max_words: int = Field(default=120, gt=0)
     max_upload_bytes: int = Field(default=5_000_000, gt=0)
     max_question_chars: int = Field(default=1000, gt=0)
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"

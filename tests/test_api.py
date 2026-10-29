@@ -1,3 +1,4 @@
+import logging
 from collections.abc import Iterator
 
 import pytest
@@ -26,6 +27,7 @@ from investigation_engine.storage.memory import InMemoryDocumentStore
 OUTAGE = b"Payments failed on 5 March because of a bad deploy."
 REFUNDS = b"Refunds were delayed by two days."
 LIMITS = ApiLimits(max_upload_bytes=200, max_question_chars=100)
+API_LOGGER = "investigation_engine.app.api"
 
 
 def open_client(llm: FakeClient | None = None) -> TestClient:
@@ -288,6 +290,67 @@ def test_a_language_model_failure_is_written_to_the_log_with_its_reason(
 
     assert "model not found" not in response.text
     assert "model not found" in caplog.text
+
+
+def test_an_answered_question_is_logged_with_its_outcome_and_cost(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    with (
+        caplog.at_level(logging.INFO, logger=API_LOGGER),
+        answering_client(
+            make_tool_completion(search_call("payments failed deploy")),
+            make_tool_completion(submit_call("answered", "A bad deploy.", ["E1"])),
+        ) as client,
+    ):
+        upload(client, "outage.txt", OUTAGE)
+        client.post("/api/ask", json={"question": "Why did payments fail?"})
+
+    assert "Why did payments fail?" in caplog.text
+    assert "status=answered" in caplog.text
+    assert "searches=1" in caplog.text
+    assert "llm_calls=2" in caplog.text
+
+
+def test_a_failed_question_is_named_in_the_log(caplog: pytest.LogCaptureFixture) -> None:
+    with answering_client(LlmRateLimited("m1: rate limited")) as client:
+        client.post("/api/ask", json={"question": "Why did payments fail?"})
+
+    assert "Why did payments fail?" in caplog.text
+    assert "m1: rate limited" in caplog.text
+
+
+def test_a_long_question_is_shortened_in_the_log(caplog: pytest.LogCaptureFixture) -> None:
+    with answering_client(LlmUnavailable("m1: down")) as client:
+        client.post("/api/ask", json={"question": "q" * 100})
+
+    assert "q" * 80 + "..." in caplog.text
+    assert "q" * 81 not in caplog.text
+
+
+def test_uploads_and_deletes_are_logged(
+    caplog: pytest.LogCaptureFixture, client: TestClient
+) -> None:
+    with caplog.at_level(logging.INFO, logger=API_LOGGER):
+        upload(client, "outage.txt", OUTAGE)
+        client.delete("/api/documents/outage.txt")
+
+    assert "uploaded outage.txt: added=1 updated=0 unchanged=0" in caplog.text
+    assert "deleted outage.txt" in caplog.text
+
+
+def test_a_rejected_upload_is_logged_with_the_reason(
+    caplog: pytest.LogCaptureFixture, client: TestClient
+) -> None:
+    client.post("/api/documents", params={"filename": "tool.exe"}, content=b"x")
+
+    assert "upload of tool.exe rejected (415)" in caplog.text
+
+
+def test_the_engine_being_ready_is_logged_with_its_size(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.INFO, logger=API_LOGGER), open_client():
+        pass
+
+    assert "engine ready: documents=0 chunks=0 can_answer=False" in caplog.text
 
 
 def client_with_built_in_document() -> TestClient:

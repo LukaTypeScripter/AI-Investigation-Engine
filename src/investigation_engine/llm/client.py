@@ -1,3 +1,4 @@
+import logging
 import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
@@ -14,6 +15,8 @@ from investigation_engine.llm.errors import (
 )
 from investigation_engine.llm.types import Completion, Message, ToolSpec
 from investigation_engine.llm.wire import build_request_body, parse_completion
+
+logger = logging.getLogger(__name__)
 
 RATE_LIMITED_STATUS = 429
 UNAVAILABLE_STATUSES = frozenset({500, 502, 503, 504})
@@ -102,7 +105,15 @@ class OpenAiCompatibleClient:
             try:
                 return self._send(body)
             except TransientLlmError as failure:
-                self._sleep(self._retry.delay(attempt, failure.retry_after))
+                delay = self._retry.delay(attempt, failure.retry_after)
+                logger.warning(
+                    "attempt %d of %d failed, retrying in %.1fs: %s",
+                    attempt,
+                    self._retry.max_attempts,
+                    delay,
+                    failure,
+                )
+                self._sleep(delay)
         return self._send(body)
 
     def _send(self, body: dict[str, object]) -> Completion:

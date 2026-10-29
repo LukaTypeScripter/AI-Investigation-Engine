@@ -1,8 +1,11 @@
+import logging
 from collections.abc import Sequence
 
 from investigation_engine.llm.client import ChatClient
 from investigation_engine.llm.errors import LlmMalformedResponse, LlmUnavailable, TransientLlmError
 from investigation_engine.llm.types import Completion, Message, ToolSpec
+
+logger = logging.getLogger(__name__)
 
 RECOVERABLE_ERRORS = (TransientLlmError, LlmMalformedResponse)
 
@@ -27,6 +30,7 @@ class FallbackChatClient:
             try:
                 completion = client.complete(messages, tools, temperature, max_tokens)
             except RECOVERABLE_ERRORS as error:
+                logger.warning("provider failed: %s", error)
                 failures.append(error)
                 continue
             if position > 0:

@@ -14,6 +14,7 @@ SETTING_VARIABLES = [
     "EMBEDDING_MODEL",
     "RETRIEVAL_CANDIDATES",
     "LLM_CACHE_PATH",
+    "LOG_LEVEL",
 ]
 
 
@@ -124,6 +125,23 @@ def test_defaults_name_the_current_stable_models_of_both_providers() -> None:
 
     assert settings.gemini_model == "gemini-3.8-flash"
     assert settings.groq_model == "openai/gpt-oss-120b"
+
+
+def test_the_log_level_defaults_to_info_and_is_read_from_the_environment(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    assert Settings(_env_file=None).log_level == "INFO"
+
+    monkeypatch.setenv("LOG_LEVEL", "DEBUG")
+
+    assert Settings(_env_file=None).log_level == "DEBUG"
+
+
+def test_an_unknown_log_level_is_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("LOG_LEVEL", "LOUD")
+
+    with pytest.raises(ValidationError):
+        Settings(_env_file=None)
 
 
 def test_built_in_documents_are_protected_unless_the_setting_says_otherwise(

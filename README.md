@@ -122,6 +122,31 @@ Every setting is read from the environment or `.env` through `pydantic-settings`
 | `MAX_UPLOAD_BYTES` | `5000000` | Upload size limit |
 | `MAX_QUESTION_CHARS` | `1000` | Question length limit |
 | `FASTEMBED_CACHE_PATH` | system temp folder | Where the embedding model is stored |
+| `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING` or `ERROR` |
+
+## Logs
+
+The service writes one line per event to standard error, in the form `time level logger: message`. Nothing is written to a file, so the logs live wherever the process runs:
+
+| Where it runs | Where to read the logs |
+| --- | --- |
+| `uvicorn` in a terminal | That terminal. Add `2>&1 \| tee server.log` to keep a copy |
+| `docker compose up` | `docker compose logs -f app` |
+| Hugging Face Space | The **Logs** tab of the Space (container logs) |
+| `evaluation.cli answers` | The terminal. Each question prints one line, and a failed question prints its reason. Redirect with `2> answers.log` |
+
+What is logged:
+
+```
+INFO    engine ready: documents=66607 chunks=81243 can_answer=True
+INFO    uploaded notes.md: added=1 updated=0 unchanged=0 chunks_added=1 chunks_removed=0
+WARNING upload of tool.exe rejected (415): unsupported file type '.exe', supported: ...
+INFO    ask 'Which service was modified by change CHG-1041?': status=answered searches=1 llm_calls=2 tokens=1587 elapsed_ms=3989
+WARNING attempt 1 of 4 failed, retrying in 30.0s: <model>: rate limited: ...
+WARNING language model failed on '<question>': <model>: HTTP 400: ...
+```
+
+Questions are shortened to 80 characters. API keys are never logged; provider error messages can name the model and the provider account, so do not publish raw logs. Uvicorn's own access lines (`POST /api/ask ... 200 OK`) appear alongside.
 
 ## HTTP API
 

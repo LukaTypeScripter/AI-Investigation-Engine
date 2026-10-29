@@ -38,6 +38,15 @@ def test_fallback_moves_to_the_next_client_on_recoverable_failures(failure: Exce
     assert client.fallbacks == 1
 
 
+def test_fallback_logs_which_client_failed_and_why(caplog: pytest.LogCaptureFixture) -> None:
+    primary = FakeClient("gemini", LlmUnavailable("gemini: HTTP 503"))
+    secondary = FakeClient("groq", make_completion("Paris", "groq"))
+
+    FallbackChatClient([primary, secondary]).complete(QUESTION)
+
+    assert "provider failed: gemini: HTTP 503" in caplog.text
+
+
 def test_fallback_forwards_every_request_parameter_to_the_next_client() -> None:
     primary = FakeClient("gemini", LlmUnavailable("down"))
     secondary = FakeClient("groq", make_completion())

@@ -1,15 +1,27 @@
+import logging
 import os
 from collections.abc import Callable, Iterator
 
 import psycopg
 import pytest
 
+from investigation_engine.logging_setup import PACKAGE_LOGGER
 from investigation_engine.storage.database import Database
 
 DEFAULT_TEST_DATABASE_URL = (
     "postgresql://investigation:investigation@127.0.0.1:5433/investigation_test"
 )
 CONNECT_TIMEOUT_SECONDS = 2
+
+
+@pytest.fixture(autouse=True)
+def restore_package_logger() -> Iterator[None]:
+    logger = logging.getLogger(PACKAGE_LOGGER)
+    handlers, level, propagate = list(logger.handlers), logger.level, logger.propagate
+    yield
+    logger.handlers[:] = handlers
+    logger.setLevel(level)
+    logger.propagate = propagate
 
 
 @pytest.fixture(scope="session")

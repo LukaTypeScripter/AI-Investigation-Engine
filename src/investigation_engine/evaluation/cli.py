@@ -53,6 +53,7 @@ from investigation_engine.llm.factory import (
     build_chat_client,
     build_http_client,
 )
+from investigation_engine.logging_setup import shorten
 from investigation_engine.settings import Settings
 
 CHUNKERS: dict[str, Chunker] = {
@@ -63,6 +64,7 @@ CHUNKERS: dict[str, Chunker] = {
 DEFAULT_CHUNKER = "sentence-120"
 DEFAULT_SEED = 42
 DEFAULT_QUESTION_COUNT = 30
+ERROR_PREVIEW_CHARS = 200
 DEFAULT_HOTPOT_PATH = Path("data/hotpot/validation.jsonl")
 DEFAULT_CACHE_PATH = Path("data/embeddings.sqlite")
 OVERVIEW_METRICS = ("recall@1", "recall@5", "recall@10", "full_recall@5", "full_recall@10", "mrr")
@@ -210,7 +212,8 @@ def open_embedder(cache_path: Path) -> CachedEmbedder:
 
 def print_progress(result: AnswerResult) -> None:
     verdict = "ok" if result.correct else "wrong"
-    print(f"  {result.question_id}: {verdict} ({result.status})", file=sys.stderr)
+    reason = f": {shorten(result.error, ERROR_PREVIEW_CHARS)}" if result.error else ""
+    print(f"  {result.question_id}: {verdict} ({result.status}){reason}", file=sys.stderr)
 
 
 def build_answer_model(arguments: argparse.Namespace) -> ChatClient:

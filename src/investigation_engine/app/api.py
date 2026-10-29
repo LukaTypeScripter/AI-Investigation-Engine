@@ -27,11 +27,13 @@ from investigation_engine.app.schemas import (
 from investigation_engine.ingestion.parsers import ParseError, UnsupportedFormatError
 from investigation_engine.llm.errors import LlmError, LlmRateLimited, LlmUnavailable
 from investigation_engine.llm.factory import ConfigurationError
+from investigation_engine.logging_setup import shorten
 
 logger = logging.getLogger(__name__)
 
 STATIC_DIRECTORY = Path(__file__).parent / "static"
 MILLISECONDS = 1000
+QUESTION_PREVIEW_CHARS = 80
 MAX_FILENAME_LENGTH = 255
 MAX_PAGE_SIZE = 200
 DEFAULT_PAGE_SIZE = 50
@@ -67,10 +69,23 @@ async def read_limited_body(request: Request, limit: int) -> bytes:
     return bytes(body)
 
 
+def rejected(status_code: int, error: Exception, what: str) -> HTTPException:
+    logger.warning("%s rejected (%d): %s", what, status_code, error)
+    return HTTPException(status_code, str(error))
+
+
 def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
-        app.state.engine = await run_in_threadpool(build_engine)
+        engine = await run_in_threadpool(build_engine)
+        app.state.engine = engine
+        stats = engine.stats()
+        logger.info(
+            "engine ready: documents=%d chunks=%d can_answer=%s",
+            stats.documents,
+            stats.chunks,
+            engine.can_answer,
+        )
         yield
 
     app = FastAPI(
@@ -131,11 +146,20 @@ def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI
         try:
             result = await run_in_threadpool(engine.upload, filename, content)
         except UnsupportedFormatError as error:
-            raise HTTPException(415, str(error)) from error
+            raise rejected(415, error, f"upload of {filename}") from error
         except (ParseError, NothingToIndexError) as error:
-            raise HTTPException(422, str(error)) from error
+            raise rejected(422, error, f"upload of {filename}") from error
         except ProtectedDocumentError as error:
-            raise HTTPException(403, str(error)) from error
+            raise rejected(403, error, f"upload of {filename}") from error
+        logger.info(
+            "uploaded %s: added=%d updated=%d unchanged=%d chunks_added=%d chunks_removed=%d",
+            filename,
+            len(result.added),
+            len(result.updated),
+            len(result.unchanged),
+            result.chunks_added,
+            result.chunks_removed,
+        )
         return upload_out(result)
 
     @app.delete(
@@ -148,9 +172,10 @@ def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI
         try:
             deleted = engine.delete_document(document_id)
         except ProtectedDocumentError as error:
-            raise HTTPException(403, str(error)) from error
+            raise rejected(403, error, f"delete of {document_id}") from error
         if not deleted:
             raise HTTPException(404, f"No document with id {document_id}.")
+        logger.info("deleted %s", document_id)
         return Response(status_code=204)
 
     @app.post(
@@ -181,21 +206,31 @@ def create_app(build_engine: Callable[[], Engine], limits: ApiLimits) -> FastAPI
             raise HTTPException(
                 422, f"The question is longer than {limits.max_question_chars} characters."
             )
+        preview = shorten(question, QUESTION_PREVIEW_CHARS)
         started = time.perf_counter()
         try:
             investigation = engine.ask(question)
         except ConfigurationError as error:
             raise HTTPException(503, str(error)) from error
         except LlmRateLimited as error:
-            logger.warning("language model rate limited: %s", error)
+            logger.warning("language model rate limited on %r: %s", preview, error)
             raise HTTPException(429, RATE_LIMITED_MESSAGE) from error
         except LlmUnavailable as error:
-            logger.warning("language model unavailable: %s", error)
+            logger.warning("language model unavailable on %r: %s", preview, error)
             raise HTTPException(503, UNAVAILABLE_MESSAGE) from error
         except LlmError as error:
-            logger.warning("language model failed: %s", error)
+            logger.warning("language model failed on %r: %s", preview, error)
             raise HTTPException(502, BAD_RESPONSE_MESSAGE) from error
         elapsed_ms = round((time.perf_counter() - started) * MILLISECONDS)
+        logger.info(
+            "ask %r: status=%s searches=%d llm_calls=%d tokens=%d elapsed_ms=%d",
+            preview,
+            investigation.status,
+            len(investigation.searches),
+            investigation.llm_calls,
+            investigation.usage.total_tokens,
+            elapsed_ms,
+        )
         return answer_out(investigation, elapsed_ms)
 
     return app
