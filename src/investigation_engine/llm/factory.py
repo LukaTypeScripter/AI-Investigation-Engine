@@ -13,6 +13,9 @@ from investigation_engine.llm.fallback import FallbackChatClient
 from investigation_engine.settings import Settings
 
 PROVIDER_NAMES = ("gemini", "groq")
+GROQ_FALLBACK_NAME = "groq-fallback"
+CHAIN_ORDER = (*PROVIDER_NAMES, GROQ_FALLBACK_NAME)
+FAIL_AT_ONCE = RetryPolicy(max_attempts=1, base_delay=0.0, max_delay=0.0)
 
 
 class ConfigurationError(RuntimeError):
@@ -43,6 +46,13 @@ def configured_providers(settings: Settings) -> dict[str, ProviderSettings]:
             settings.groq_api_key.get_secret_value(),
             settings.groq_model,
         )
+        if settings.groq_fallback_model:
+            providers[GROQ_FALLBACK_NAME] = ProviderSettings(
+                GROQ_FALLBACK_NAME,
+                settings.groq_base_url,
+                settings.groq_api_key.get_secret_value(),
+                settings.groq_fallback_model,
+            )
     return providers
 
 
@@ -53,7 +63,7 @@ def select_providers(settings: Settings, provider: str | None) -> list[ProviderS
             raise ConfigurationError(
                 "no LLM provider is configured: set GEMINI_API_KEY or GROQ_API_KEY"
             )
-        return [available[name] for name in PROVIDER_NAMES if name in available]
+        return [available[name] for name in CHAIN_ORDER if name in available]
     if provider not in PROVIDER_NAMES:
         raise ConfigurationError(
             f"unknown provider '{provider}', choose one of: {', '.join(PROVIDER_NAMES)}"
@@ -74,17 +84,19 @@ def build_chat_client(
     provider: str | None = None,
     retry: RetryPolicy = DEFAULT_RETRY_POLICY,
 ) -> ChatClient:
+    chosen = select_providers(settings, provider)
+    last = len(chosen) - 1
     clients: list[ChatClient] = [
         CachedChatClient(
             OpenAiCompatibleClient(
-                base_url=chosen.base_url,
-                api_key=chosen.api_key,
-                model=chosen.model,
+                base_url=entry.base_url,
+                api_key=entry.api_key,
+                model=entry.model,
                 http=http,
-                retry=retry,
+                retry=retry if position == last else FAIL_AT_ONCE,
             ),
             cache,
         )
-        for chosen in select_providers(settings, provider)
+        for position, entry in enumerate(chosen)
     ]
     return clients[0] if len(clients) == 1 else FallbackChatClient(clients)

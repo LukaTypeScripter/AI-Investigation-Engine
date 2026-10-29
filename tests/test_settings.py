@@ -11,6 +11,7 @@ SETTING_VARIABLES = [
     "DATABASE_URL",
     "GEMINI_MODEL",
     "GROQ_MODEL",
+    "GROQ_FALLBACK_MODEL",
     "EMBEDDING_MODEL",
     "RETRIEVAL_CANDIDATES",
     "LLM_CACHE_PATH",
@@ -125,6 +126,16 @@ def test_defaults_name_the_current_stable_models_of_both_providers() -> None:
 
     assert settings.gemini_model == "gemini-3.8-flash"
     assert settings.groq_model == "openai/gpt-oss-120b"
+
+
+def test_the_groq_fallback_model_is_off_by_default_and_read_from_the_environment(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    assert Settings(_env_file=None).groq_fallback_model is None
+
+    monkeypatch.setenv("GROQ_FALLBACK_MODEL", "small-model")
+
+    assert Settings(_env_file=None).groq_fallback_model == "small-model"
 
 
 def test_the_log_level_defaults_to_info_and_is_read_from_the_environment(

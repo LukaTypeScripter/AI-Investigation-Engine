@@ -21,7 +21,13 @@ NO_RETRY = RetryPolicy(max_attempts=1, base_delay=0.0, max_delay=0.0)
 
 @pytest.fixture(autouse=True)
 def clean_environment(monkeypatch: pytest.MonkeyPatch) -> None:
-    for variable in ("GEMINI_API_KEY", "GROQ_API_KEY", "GEMINI_MODEL", "GROQ_MODEL"):
+    for variable in (
+        "GEMINI_API_KEY",
+        "GROQ_API_KEY",
+        "GEMINI_MODEL",
+        "GROQ_MODEL",
+        "GROQ_FALLBACK_MODEL",
+    ):
         monkeypatch.delenv(variable, raising=False)
 
 
@@ -54,6 +60,16 @@ def client_for(provider: Provider) -> httpx.Client:
 
 def hosts(provider: Provider) -> list[str]:
     return [request.url.host for request in provider.requests]
+
+
+def models(provider: Provider) -> list[str]:
+    return [json.loads(request.content)["model"] for request in provider.requests]
+
+
+def configure_two_groq_models(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GROQ_API_KEY", "groq-secret")
+    monkeypatch.setenv("GROQ_MODEL", "big-model")
+    monkeypatch.setenv("GROQ_FALLBACK_MODEL", "small-model")
 
 
 def test_without_any_key_no_client_can_be_built() -> None:
@@ -95,6 +111,86 @@ def test_with_two_providers_the_second_takes_over_when_the_first_is_rate_limited
     assert isinstance(client, FallbackChatClient)
     assert completion.text == "Paris"
     assert hosts(provider) == ["generativelanguage.googleapis.com", "api.groq.com"]
+
+
+def test_a_second_groq_model_takes_over_at_once_when_the_first_is_rate_limited(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    configure_two_groq_models(monkeypatch)
+    provider = Provider(429)
+
+    client = build_chat_client(
+        Settings(_env_file=None), client_for(provider), InMemoryResponseCache()
+    )
+    completion = client.complete(QUESTION)
+
+    assert isinstance(client, FallbackChatClient)
+    assert completion.model == "small-model"
+    assert models(provider) == ["big-model", "small-model"]
+    assert hosts(provider) == ["api.groq.com", "api.groq.com"]
+
+
+def test_only_the_last_client_in_the_chain_keeps_retrying(monkeypatch: pytest.MonkeyPatch) -> None:
+    configure_two_groq_models(monkeypatch)
+    provider = Provider(429, 429)
+    patient = RetryPolicy(max_attempts=2, base_delay=0.0, max_delay=0.0)
+
+    client = build_chat_client(
+        Settings(_env_file=None), client_for(provider), InMemoryResponseCache(), retry=patient
+    )
+    completion = client.complete(QUESTION)
+
+    assert completion.model == "small-model"
+    assert models(provider) == ["big-model", "small-model", "small-model"]
+
+
+def test_the_chain_runs_gemini_then_the_main_groq_model_then_the_fallback_model(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    configure_two_groq_models(monkeypatch)
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-secret")
+    provider = Provider(429, 429)
+
+    client = build_chat_client(
+        Settings(_env_file=None), client_for(provider), InMemoryResponseCache()
+    )
+    completion = client.complete(QUESTION)
+
+    assert completion.model == "small-model"
+    assert hosts(provider) == [
+        "generativelanguage.googleapis.com",
+        "api.groq.com",
+        "api.groq.com",
+    ]
+
+
+def test_naming_the_groq_provider_uses_the_main_model_alone(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    configure_two_groq_models(monkeypatch)
+    provider = Provider(429)
+
+    client = build_chat_client(
+        Settings(_env_file=None),
+        client_for(provider),
+        InMemoryResponseCache(),
+        provider="groq",
+        retry=NO_RETRY,
+    )
+
+    assert not isinstance(client, FallbackChatClient)
+    with pytest.raises(Exception, match="rate limited"):
+        client.complete(QUESTION)
+    assert models(provider) == ["big-model"]
+
+
+def test_a_fallback_model_without_a_groq_key_configures_nothing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GROQ_FALLBACK_MODEL", "small-model")
+
+    with pytest.raises(ConfigurationError, match="no LLM provider"):
+        build_chat_client(Settings(_env_file=None), client_for(Provider()), InMemoryResponseCache())
 
 
 def test_a_named_provider_is_used_alone_even_when_both_are_configured(
