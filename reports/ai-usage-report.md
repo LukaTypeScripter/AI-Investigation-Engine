@@ -99,7 +99,7 @@ Facts from the session, which the candidate can confirm and extend:
 Add the decisions below that are truly yours, in your own words:
 
 - [ ] Why I accepted hybrid search without the re-ranker as the default:
-- [ ] Why I accepted the hosting choice (Hugging Face Spaces and Neon):
+- [ ] Why I chose Render and Neon for hosting (Hugging Face Docker Spaces turned out to need a paid plan):
 - [ ] Any design change I asked for that is not in this list:
 
 ### 8.2 What I changed or wrote myself

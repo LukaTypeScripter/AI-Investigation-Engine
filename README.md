@@ -1,10 +1,3 @@
----
-title: Investigation Engine
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # Investigation Engine
 
 Ask questions across tens of thousands of documents and get answers that cite their sources. The engine searches by meaning and by keyword, follows a question across several documents, and says so when the evidence is missing or the sources disagree.
@@ -13,8 +6,6 @@ Ask questions across tens of thousands of documents and get answers that cite th
 - **Evaluation:** [reports/evaluation-report.md](reports/evaluation-report.md)
 - **AI usage:** [reports/ai-usage-report.md](reports/ai-usage-report.md)
 - **Interview notes:** [docs/walkthrough.md](docs/walkthrough.md)
-
-The front matter at the top of this file is required by Hugging Face Spaces and can be ignored elsewhere.
 
 ## What it does
 
@@ -52,15 +43,16 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    U[Browser] --> S[Hugging Face Space<br/>Docker, FastAPI, ONNX embeddings, BM25 in memory]
+    U[Browser] --> S[Render web service, free plan<br/>Docker, FastAPI, ONNX embeddings, BM25 in memory]
     S --> N[(Neon Postgres<br/>pgvector: documents, chunks, vectors)]
-    S --> L[Gemini API, then Groq as fallback]
+    S --> L[Groq API, or Gemini first with Groq as fallback]
 ```
 
-- The Space holds no data. Everything that must survive a restart lives in Postgres.
-- At startup the Space creates any missing table, embeds any chunk that has no vector yet, and rebuilds the BM25 index from the stored chunks (about 5 s for 81,243 chunks on a laptop).
+- The web service holds no data. Everything that must survive a restart lives in Postgres.
+- At startup the service creates any missing table, embeds any chunk that has no vector yet, and rebuilds the BM25 index from the stored chunks (about 5 s for 81,243 chunks on a laptop with a local database).
 - The embedding model is baked into the image, so a cold start does not download it.
-- Secrets (`DATABASE_URL`, `GEMINI_API_KEY`, `GROQ_API_KEY`) are Space secrets. They are read through typed settings, held as `SecretStr` and never printed. `.env` is git-ignored.
+- The service is described in [render.yaml](render.yaml): Docker runtime, free plan, the Ohio region (next to a Neon project in AWS us-east-2) and a health check on `/api/health`.
+- Secrets (`DATABASE_URL`, `GROQ_API_KEY`, and `GEMINI_API_KEY` if used) are Render environment variables. In `render.yaml` they are declared with `sync: false`, so their values are typed into the dashboard and never stored in the repository. They are read through typed settings, held as `SecretStr` and never printed. `.env` is git-ignored.
 
 ## Run it locally
 
@@ -132,7 +124,7 @@ The service writes one line per event to standard error, in the form `time level
 | --- | --- |
 | `uvicorn` in a terminal | That terminal. Add `2>&1 \| tee server.log` to keep a copy |
 | `docker compose up` | `docker compose logs -f app` |
-| Hugging Face Space | The **Logs** tab of the Space (container logs) |
+| Render | The **Logs** tab of the service in the Render dashboard |
 | `evaluation.cli answers` | The terminal. Each question prints one line, and a failed question prints its reason. Redirect with `2> answers.log` |
 
 What is logged:
@@ -206,25 +198,24 @@ The `answers` command needs a model key. It prints each question as it finishes,
 
 ## Deploy
 
-1. **Database.** Create a free [Neon](https://neon.tech) project and copy its connection string (with `?sslmode=require`).
-2. **Load the data once from your machine.** Seed a local database, then copy it to Neon:
+1. **Database.** Create a free [Neon](https://neon.tech) project and copy its **direct** connection string: the host has no `-pooler` in it, and the string ends in `?sslmode=require`. The pooled string is meant for many short connections and can break prepared statements, which this app uses.
+2. **Load the data once from your machine.** Seed a local database, then copy it to Neon. The connection string goes through an environment variable so that it stays out of the command line and the shell history:
 
    ```bash
+   export NEON_URL="the direct connection string"
    docker exec investigation-db sh -c "pg_dump -Fc -U investigation investigation_full > /tmp/full.dump"
-   docker exec investigation-db pg_restore --no-owner --no-acl -d "NEON_CONNECTION_STRING" /tmp/full.dump
+   docker exec -e NEON_URL -e PGOPTIONS="-c maintenance_work_mem=256MB" investigation-db sh -c 'pg_restore --no-owner --no-acl -d "$NEON_URL" /tmp/full.dump'
    ```
 
-   The dump is about 160 MB and the full corpus needs about 280 MB, which fits the 512 MB free tier. HNSW is rebuilt by the restore (26 s locally). In Git Bash on Windows, prefix the commands with `MSYS_NO_PATHCONV=1` so that `/tmp/full.dump` is not rewritten as a Windows path.
-3. **Space.** Create a Hugging Face Space with the Docker SDK, add `DATABASE_URL`, `GEMINI_API_KEY` and `GROQ_API_KEY` as Secrets, and push this repository to it:
+   Measured: the dump is about 150 MB, the restore took about 5 minutes (the HNSW index about 30 s of that), and the database takes 271 MB in Neon, which fits the 512 MB free tier. Neon's default `maintenance_work_mem` is 64 MB, too little for the vector index, so the restore raises it for its own session. In Git Bash on Windows, prefix the `docker exec` commands with `MSYS_NO_PATHCONV=1` so that `/tmp/full.dump` is not rewritten as a Windows path. Check the copy by comparing `select count(*) from documents` in both databases (66,607).
+3. **Render.** Sign in to [Render](https://render.com) with GitHub, choose **New, Blueprint**, select this repository and apply it. `render.yaml` sets the Docker runtime, the `free` plan, the Ohio region, the health check and `PORT=7860`. Render then asks for the two values marked `sync: false`: `DATABASE_URL` (the direct Neon string) and `GROQ_API_KEY`. Pick the Render region closest to your Neon region and change `region` in `render.yaml` if it differs. Add `GEMINI_API_KEY` only if that key really works: a key the provider rejects (for example a project without a free tier) makes every question fail, because the fallback only covers temporary errors.
+4. The first deploy builds the image, which takes several minutes. Open the service URL and confirm `/api/health` reports the document count.
 
-   ```bash
-   git remote add space https://huggingface.co/spaces/YOUR_USER/YOUR_SPACE
-   git push space main
-   ```
+Hugging Face Docker Spaces were the first choice but need a paid plan, so they are not used.
 
-4. Open the Space URL and confirm `/api/health` reports the document count.
+**Free plan limits.** At the time of writing, a Render free web service has 512 MB of memory and 0.1 CPU, and it spins down after 15 minutes without traffic; check Render's current terms. The container was run under the same limits (`docker run --memory 512m --memory-swap 512m --cpus 0.1`) against Neon: it was ready after 144 s, and memory peaked at 440 MiB of 512 when the first search loaded the embedding model. That first search took 77 s and later searches took 11 to 17 s. The container was not killed for running out of memory. The image sets `MALLOC_ARENA_MAX=2`, which stops the memory allocator from keeping a separate arena per thread; without it the same test peaked at 486 MiB (a margin of about 5%) and the first search took 140 s. Each setting was measured once, so treat the numbers as indicative. After a sleep, the next visitor pays the whole startup again, so expect a wait of several minutes. Neon suspends an idle database in the same way; the first query after a pause reconnects automatically.
 
-Free Spaces sleep after a period without traffic and wake on the next request. Neon suspends an idle database the same way; the first query after a pause reconnects automatically.
+For comparison, from a laptop with full CPU the service took 101 s to start (the keyword index is rebuilt by streaming all 81,243 chunks over the internet; it takes about 5 s from a local database), and a search took 1.4 to 1.6 s.
 
 ## Known limits
 
