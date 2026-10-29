@@ -109,7 +109,7 @@ Every setting is read from the environment or `.env` through `pydantic-settings`
 | `GEMINI_API_KEY` | none | Enables Gemini |
 | `GEMINI_MODEL` | `gemini-3.8-flash` | Gemini model name. Check the current list at ai.google.dev/gemini-api/docs/models; `gemini-3.5-flash-lite` is a lighter alternative |
 | `GROQ_API_KEY` | none | Enables Groq, used as the fallback |
-| `GROQ_MODEL` | `llama-3.3-70b-versatile` | Groq model name |
+| `GROQ_MODEL` | `openai/gpt-oss-120b` | Groq model name. `llama-3.3-70b-versatile` no longer exists for new keys (HTTP 404 on 2026-10-29). List the models your key can use with `GET https://api.groq.com/openai/v1/models` |
 | `GEMINI_BASE_URL`, `GROQ_BASE_URL` | the providers' OpenAI-compatible endpoints | Override for testing |
 | `LLM_TIMEOUT_SECONDS` | `30` | Per model request |
 | `LLM_CACHE_PATH` | `data/llm_cache.sqlite` | Cache of model responses |

@@ -18,7 +18,7 @@ Models that run inside the product, as opposed to building it:
 | Model | Role |
 | --- | --- |
 | `BAAI/bge-small-en-v1.5` through FastEmbed (ONNX, local) | Embeddings for semantic search |
-| Gemini (default `gemini-3.8-flash`) with Groq (default `llama-3.3-70b-versatile`) as a fallback | Language models for the agent. Both are configured by environment variables. The default names and endpoints were checked against the providers' documentation on 2026-10-28; model availability changes, so check again before running |
+| Gemini (default `gemini-3.8-flash`) with Groq (default `openai/gpt-oss-120b`) as a fallback | Language models for the agent. Both are configured by environment variables. The first Groq default, `llama-3.3-70b-versatile`, was read from documentation and returned HTTP 404 on the first real request (2026-10-29), so the default was changed to a model that the key's own model list returned. Model availability changes, so list the models before running |
 
 No paid AI service is needed to run the project.
 

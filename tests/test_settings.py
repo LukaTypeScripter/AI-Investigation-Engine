@@ -123,7 +123,7 @@ def test_defaults_name_the_current_stable_models_of_both_providers() -> None:
     settings = Settings(_env_file=None)
 
     assert settings.gemini_model == "gemini-3.8-flash"
-    assert settings.groq_model == "llama-3.3-70b-versatile"
+    assert settings.groq_model == "openai/gpt-oss-120b"
 
 
 def test_built_in_documents_are_protected_unless_the_setting_says_otherwise(

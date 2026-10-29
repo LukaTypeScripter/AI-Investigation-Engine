@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     gemini_model: str = "gemini-3.8-flash"
     groq_api_key: SecretStr | None = None
     groq_base_url: str = "https://api.groq.com/openai/v1"
-    groq_model: str = "llama-3.3-70b-versatile"
+    groq_model: str = "openai/gpt-oss-120b"
     llm_timeout_seconds: float = Field(default=30.0, gt=0)
     llm_cache_path: Path = Path("data/llm_cache.sqlite")
     database_url: SecretStr | None = None
